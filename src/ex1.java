@@ -1,3 +1,5 @@
+package snpp;
+
 import com.espertech.esper.client.*;
 import java.util.Random;
 import java.util.Date;
