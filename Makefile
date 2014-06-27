@@ -1,17 +1,9 @@
 all: snpp
 
 snpp:
-	if [ -z "${JAVA_HOME}" ]
-	then
-		echo "JAVA_HOME not set"
-		exit 0
-	fi
+	if [ -z "${JAVA_HOME}" ] ; then echo "JAVA_HOME not set" & exit 0 ; fi
 
-	if [ ! -x "${JAVA_HOME}/bin/java" ]
-	then
-		echo Cannot find java executable, check JAVA_HOME
-		exit 0
-	fi
+	if [ ! -x "${JAVA_HOME}/bin/java" ] ; then echo Cannot find java executable, check JAVA_HOME & exit 0 ; fi
 
 	LIB=esper/lib
 	CLASSPATH=.
@@ -23,15 +15,9 @@ snpp:
 	CLASSPATH=$CLASSPATH:$LIB/antlr-runtime-4.1.jar
 	export CLASSPATH="$CLASSPATH"
 
-	if [ ! -d "target" ]
-	then
-		mkdir target
-	fi
+	if [ ! -d "target" ] ; then mkdir target ; fi
 
-	if [ ! -d "target/classes" ]
-	then
-		mkdir target/classes
-	fi
+	if [ ! -d "target/classes" ] ; then mkdir target/classes ; fi
 
 	# SOURCEPATH=src/main/java
 	SOURCEPATH=src
