@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>lib</name>
+			<type>2</type>
+			<location>/home/kacper/workspace/Springfield Nuclear Power Plant/esper/lib</location>
+		</link>
+	</linkedResources>
 </projectDescription>
