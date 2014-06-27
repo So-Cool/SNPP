@@ -33,9 +33,11 @@ snpp:
 		mkdir target/classes
 	fi
 
-	SOURCEPATH=src/main/java
-	
-	${JAVA_HOME}/bin/javac -cp ${CLASSPATH} -d ../target/classes -source 1.6 -sourcepath ${SOURCEPATH} ${SOURCEPATH}/com/espertech/esper/example/marketdatafeed/FeedSimMain.java
+	# SOURCEPATH=src/main/java
+	SOURCEPATH=src
+
+	# ${JAVA_HOME}/bin/javac -cp ${CLASSPATH} -d ../target/classes -source 1.6 -sourcepath ${SOURCEPATH} ${SOURCEPATH}/com/espertech/esper/example/marketdatafeed/FeedSimMain.java
+	${JAVA_HOME}/bin/javac -cp ${CLASSPATH} -d target/classes -source 1.6 -sourcepath ${SOURCEPATH} ${SOURCEPATH}/ex1.java
 
 
 run:
