@@ -4,6 +4,10 @@ import com.espertech.esper.client.*;
 
 // exampleMain
 public class ex1 {
+	
+	private static final int windowLength = 2;
+	
+	public static int getWinLen() { return windowLength; }
  
     public static void main(String[] args) {
  
@@ -15,7 +19,7 @@ public class ex1 {
  
         EPAdministrator cepAdm = cep.getEPAdministrator();
         EPStatement cepStatement = cepAdm.createEPL("select * from " +
-                "StockTick(symbol='AAPL').win:length(2) " +
+                "StockTick(symbol='AAPL').win:length(" + getWinLen() + ") " +
                 "having avg(price) > 6.0");
  
         cepStatement.addListener(new CEPListener());
