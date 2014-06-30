@@ -3,9 +3,9 @@ package testRun;
 import java.util.Date;
 
 public class Tick {
-    String symbol;
-    Double price;
-    Date timeStamp;
+    private String symbol;
+    private Double price;
+    private Date timeStamp;
 
     public Tick(String s, double p, long t) {
         symbol = s;
