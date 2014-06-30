@@ -18,15 +18,22 @@ public class ex1 {
         EPRuntime cepRT = cep.getEPRuntime();
  
         EPAdministrator cepAdm = cep.getEPAdministrator();
-        EPStatement cepStatement = cepAdm.createEPL("select * from " +
-                "StockTick(symbol='AAPL').win:length(" + getWinLen() + ") " +
-                "having avg(price) > 6.0");
+        EPStatement cepStatement = cepAdm.createEPL(
+        		"select * from StockTick(symbol='AAPL').win:length(" + getWinLen() + ") having avg(price) > 6.0"
+        		);
  
         cepStatement.addListener(new CEPListener());
  
        // We generate a few ticks...
-        for (int i = 0; i < 5; i++) {
+        /**
+         * for(int i = 0; i < 5; i++) {
+        	RandomEventGenerator.GenerateRandomTick(cepRT);
+        }*/
+        
+        // Generate a stream
+        while(true) {
         	RandomEventGenerator.GenerateRandomTick(cepRT);
         }
+        
     }
 }
