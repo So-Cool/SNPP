@@ -2,6 +2,7 @@ package testRun;
 
 import java.util.Random;
 import com.espertech.esper.client.EPRuntime;
+import java.util.*;
 
 public class RandomEventGenerator {
 
@@ -26,14 +27,31 @@ public class RandomEventGenerator {
         long timeStamp = System.currentTimeMillis();
         String symbol = "AAPL";
         Tick tick = new Tick(symbol, price, timeStamp);
-        System.out.println("Sending tick:" + tick);
+        System.out.println("Sending tick AAPL:" + tick);
         
+
+        double price1 = (double) generator.nextInt(20);
+        long timeStamp1 = System.currentTimeMillis();
+        String symbol1 = "GOOG";
+        Tick tick1 = new Tick(symbol1, price1, timeStamp);
+        System.out.println("Sending tick GOOG:" + tick1);
+
+
+
         // print the average
         avg = (int)price + previousPrice;
         no ++;
         System.out.println("Average so far: " + (double)(avg)/(double)(frame));
         
+
+        // Map events and send a map
+        // Map event = new HashMap();
+        // event.put("a",tick);
+        // event.put("b",tick1);
+        // cepRT.sendEvent(event);
+
         cepRT.sendEvent(tick);
+        cepRT.sendEvent(tick1);
 
         // initialize to proper value after first tick
         frame = ex1.getWinLen();
