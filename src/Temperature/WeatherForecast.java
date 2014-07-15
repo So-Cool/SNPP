@@ -16,7 +16,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 // get the weather forecast form Yahoo!
-public class WeatherForecast {
+public class WeatherForecast implements Runnable {
 	
 	private static String t0 = "http://weather.yahooapis.com/forecastrss?w=";
 	private static String t1 = "&u=";
@@ -59,6 +59,48 @@ public class WeatherForecast {
 		this.location = loc1 + ", " + loc3;
 
 		System.out.println(toString());
+	}
+	
+	// Define what to do in the thread
+	public void run() {
+		String prevessin = "618067";
+		String units     = "c";
+		int oldTemp;
+		int newTemp;
+		long timeToWait = 1;
+		try {
+			
+			WeatherForecast prev = new WeatherForecast( prevessin, units );
+			while (true) {
+				oldTemp = prev.getTemperature();
+				prev.updateTemperature();
+				newTemp = prev.getTemperature();
+				
+				if (oldTemp != newTemp) {
+					System.out.println( prev.toString() );
+					// send message
+				}
+				
+				// generate timeToWait according to Poisson distribution
+				
+				
+				//Pause for timeToWait seconds
+				Thread.sleep( timeToWait * 1000);
+			}
+			
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	// Read the temperature from the forecast

@@ -32,7 +32,7 @@ import org.xml.sax.SAXException;
  *	</thermometer>
  */
 
-public class CERNtermometer {
+public class CERNtermometer implements Runnable {
 	// Define location of thermometer
 	private String location;
 	// Define current temperature
@@ -64,6 +64,46 @@ public class CERNtermometer {
         System.out.println(toString());
 	}
 	
+	// Define what to do in the thread
+	public void run() {
+		String t1URL = "http://137.138.196.84/tme.xml";
+		int oldTemp;
+		int newTemp;
+		long timeToWait = 1;
+		try {
+			
+			CERNtermometer t1 = new CERNtermometer( t1URL );
+			while (true) {
+				oldTemp = t1.getTemperature();
+				t1.updateTemperature();
+				newTemp = t1.getTemperature();
+				
+				if (oldTemp != newTemp) {
+					System.out.println( t1.toString() );
+					// send message
+				}
+				
+				// generate timeToWait according to Poisson distribution
+				
+				//Pause for timeToWait seconds
+				Thread.sleep( timeToWait * 1000);
+			}
+			
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+		
 	// Define *getters*
 	public String getLocation() {return location;}
 	public Date getTime() {return time;}

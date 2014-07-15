@@ -2,9 +2,8 @@ package Temperature;
 
 /*
  * ToDo:
- * run it as a process
- * send the weather conditions randomly according to some distribution
- * 
+ * run it as a process and send the weather conditions randomly according to some distribution
+ * do the channels -> JMS
  */
 
 import java.io.IOException;
