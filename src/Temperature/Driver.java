@@ -10,18 +10,17 @@ public class Driver {
 
 	public static void main(String[] args) {
 		String t1URL = "http://137.138.196.84/tme.xml";
-		long timeStamp = System.currentTimeMillis();
 		
 		try {
 			
 			
-			CERNtermometer t1 = new CERNtermometer( t1URL, timeStamp );
+			CERNtermometer t1 = new CERNtermometer( t1URL );
 			while (true) {
 				t1.updateTemperature();
 				System.out.println( t1.toString() );
-				//Pause for 4 seconds
-				Thread.sleep(4000);
-			
+				//Pause for 10 seconds
+				Thread.sleep(10000);
+			}
 			
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block

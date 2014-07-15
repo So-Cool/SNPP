@@ -45,7 +45,7 @@ public class CERNtermometer {
 	private Document document;
 	
 	// class definition
-	public CERNtermometer(String xml, long tStamp) throws ParserConfigurationException, SAXException, IOException {
+	public CERNtermometer(String xml) throws ParserConfigurationException, SAXException, IOException {
 		
 		this.url = new URL(xml);
 		String tDir = System.getProperty("java.io.tmpdir");
@@ -59,7 +59,7 @@ public class CERNtermometer {
         this.location = this.document.getElementsByTagName("description").item(0).getTextContent();
         String tempTemp = this.document.getElementsByTagName("temperature").item(0).getTextContent();
         this.temperature = Integer.parseInt(tempTemp);
-        this.time = new Date(tStamp);
+        this.time = new Date( System.currentTimeMillis() );
         
         System.out.println("Location: " + location);
         System.out.println("Temperature: " + temperature);
@@ -72,21 +72,29 @@ public class CERNtermometer {
 	public int getTemperature() {return temperature;}
 	
 	// Read the temperature from the sensors
-	public void updateTemperature() throws IOException, ParserConfigurationException, SAXException {
+	public void updateTemperature( ) throws IOException, ParserConfigurationException, SAXException {
 		FileUtils.copyURLToFile(url, this.tempFile);
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		this.document = db.parse(this.tempFile);
 		String tempTemp = this.document.getElementsByTagName("temperature").item(0).getTextContent();
 		
-		System.out.println("Temperature update: " + this.temperature + " --> " + tempTemp);
+		System.out.println("Temperature update: " + readableTemp(temperature) + " --> " + readableTemp(Integer.parseInt(tempTemp)) );
 		
 		this.temperature = Integer.parseInt(tempTemp);
+		this.time.setTime( System.currentTimeMillis() );
+	}
+	
+	// Create readable temperature
+	public String readableTemp( int tmp ) {
+		int rest = tmp % 10;
+		int whole = (tmp - rest) / 10 ;
+		return whole + "." + rest + "oC";
 	}
 	
 	// Return string
     @Override
     public String toString() {
-        return "Location: " + location + " | Temperature: " + temperature + " | Time: " + time;
+        return "Location: " + location + " | Temperature: " + readableTemp(temperature) + " | Time: " + time;
     }
 }
