@@ -49,7 +49,7 @@ public class CERNtermometer {
 		
 		this.url = new URL(xml);
 		String tDir = System.getProperty("java.io.tmpdir");
-		this.tempFile = new File(tDir+"/temperature.tmp");
+		this.tempFile = new File(tDir+"/temperatureTerm.tmp");
 		FileUtils.copyURLToFile(url, this.tempFile);
 		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -61,9 +61,7 @@ public class CERNtermometer {
         this.temperature = Integer.parseInt(tempTemp);
         this.time = new Date( System.currentTimeMillis() );
         
-        System.out.println("Location: " + location);
-        System.out.println("Temperature: " + temperature);
-        System.out.println("Time: " + time);
+        System.out.println(toString());
 	}
 	
 	// Define *getters*
