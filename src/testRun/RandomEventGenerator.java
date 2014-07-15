@@ -2,7 +2,7 @@ package testRun;
 
 import java.util.Random;
 import com.espertech.esper.client.EPRuntime;
-import java.util.*;
+//import java.util.*;
 
 public class RandomEventGenerator {
 
@@ -18,8 +18,8 @@ public class RandomEventGenerator {
     private static int frame = 1;
     
     // define mean and std for normal distribution
-    private static int mean = 50;
-    private static int std = 100;
+//    private static int mean = 50;
+//    private static int std = 100;
     
     public static void GenerateRandomTick(EPRuntime cepRT) {
  
@@ -33,7 +33,7 @@ public class RandomEventGenerator {
         double price1 = (double) generator.nextInt(20);
         long timeStamp1 = System.currentTimeMillis();
         String symbol1 = "GOOG";
-        Tick tick1 = new Tick(symbol1, price1, timeStamp);
+        Tick tick1 = new Tick(symbol1, price1, timeStamp1);
         System.out.println("Sending tick GOOG:" + tick1);
 
 
@@ -41,7 +41,7 @@ public class RandomEventGenerator {
         // print the average
         avg = (int)price + previousPrice;
         no ++;
-        System.out.println("Average so far: " + (double)(avg)/(double)(frame));
+        System.out.println("Average of "+no+" so far: " + (double)(avg)/(double)(frame));
         
 
         // Map events and send a map
@@ -62,38 +62,38 @@ public class RandomEventGenerator {
     
     
     // stream generators
-    public static void stream1() {
-    	while( true ) {
-    		double s1 = (double) generator.nextGaussian() * (double)std + (double)mean;
-    		if( s1 > 3*(double)mean/4) {
-    			// send signal
-    			double signal1 = (double) generator.nextInt(10);
-    		}
-    		//Pause for 4 seconds
-            try {
-				Thread.sleep(4000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	}
-    }
-    public static void stream2() {
-    	while( true ) {
-    		double s2 = (double) generator.nextGaussian() * (double)std*2 + (double)mean*2;
-    		if( s2 > 3*(double)mean*2/4) {
-    			// send signal
-    			double signal2 = (double) generator.nextInt(20);
-    		}
-    		//Pause for 4 seconds
-            try {
-				Thread.sleep(4000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	}
-    }
+//    public static void stream1() {
+//    	while( true ) {
+//    		double s1 = (double) generator.nextGaussian() * (double)std + (double)mean;
+//    		if( s1 > 3*(double)mean/4) {
+//    			// send signal
+//    			double signal1 = (double) generator.nextInt(10);
+//    		}
+//    		//Pause for 4 seconds
+//            try {
+//				Thread.sleep(4000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//    	}
+//    }
+//    public static void stream2() {
+//    	while( true ) {
+//    		double s2 = (double) generator.nextGaussian() * (double)std*2 + (double)mean*2;
+//    		if( s2 > 3*(double)mean*2/4) {
+//    			// send signal
+//    			double signal2 = (double) generator.nextInt(20);
+//    		}
+//    		//Pause for 4 seconds
+//            try {
+//				Thread.sleep(4000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//    	}
+//    }
     
     
     

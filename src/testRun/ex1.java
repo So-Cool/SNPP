@@ -10,7 +10,7 @@ public class ex1 {
 	public static int getWinLen() { return windowLength; }
  
     public static void main(String[] args) {
- 
+    	System.out.println("LOL\n");
         //The Configuration is meant only as an initialization-time object.
         Configuration cepConfig = new Configuration();
         cepConfig.addEventType("StockTick", Tick.class.getName());
@@ -26,7 +26,7 @@ public class ex1 {
                 "select AAPLa.price, GOOGa.price from " +
                     "StockTick(symbol='AAPL').win:length(4) as AAPLa, "+
                     "StockTick(symbol='GOOG').win:length(4) as GOOGa "+
-                    "having avg(AAPLa.price) > (GOOGa.price)"
+                    "having avg(AAPLa.price) > avg(GOOGa.price)"
 
 
                 // "select price from " +
