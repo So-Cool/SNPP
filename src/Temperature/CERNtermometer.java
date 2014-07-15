@@ -78,8 +78,10 @@ public class CERNtermometer {
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		this.document = db.parse(this.tempFile);
 		String tempTemp = this.document.getElementsByTagName("temperature").item(0).getTextContent();
+		int tempTempInt = Integer.parseInt(tempTemp);
 		
-		System.out.println("Temperature update: " + readableTemp(temperature) + " --> " + readableTemp(Integer.parseInt(tempTemp)) );
+		if (temperature != tempTempInt)
+			System.out.println("Temperature update: " + readableTemp(temperature) + " --> " + readableTemp(tempTempInt) );
 		
 		this.temperature = Integer.parseInt(tempTemp);
 		this.time.setTime( System.currentTimeMillis() );
