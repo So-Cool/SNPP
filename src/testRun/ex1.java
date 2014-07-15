@@ -10,7 +10,6 @@ public class ex1 {
 	public static int getWinLen() { return windowLength; }
  
     public static void main(String[] args) {
-    	System.out.println("LOL\n");
         //The Configuration is meant only as an initialization-time object.
         Configuration cepConfig = new Configuration();
         cepConfig.addEventType("StockTick", Tick.class.getName());
