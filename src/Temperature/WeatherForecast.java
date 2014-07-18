@@ -64,8 +64,8 @@ public class WeatherForecast implements Runnable {
 	
 	// Define what to do in the thread
 	public void run() {
-		String prevessin = "618067";
-		String units     = "c";
+//		String prevessin = "618067";
+//		String units     = "c";
 		int oldTemp;
 		int newTemp;
 		long timeToWait = 1;
@@ -75,14 +75,14 @@ public class WeatherForecast implements Runnable {
 		
 		try {
 			
-			WeatherForecast prev = new WeatherForecast( prevessin, units );
+//			WeatherForecast prev = new WeatherForecast( prevessin, units );
 			while (true) {
-				oldTemp = prev.getTemperature();
-				prev.updateTemperature();
-				newTemp = prev.getTemperature();
+				oldTemp = this.getTemperature();
+				this.updateTemperature();
+				newTemp = this.getTemperature();
 				
 				if (oldTemp != newTemp) {
-					System.out.println( prev.toString() );
+					System.out.println( this.toString() );
 					// send message
 				}
 				
@@ -90,6 +90,7 @@ public class WeatherForecast implements Runnable {
 				
 				//Pause for timeToWait seconds
 				Thread.sleep( timeToWait * 1000);
+				System.out.println( "Tick fore!" );
 			}
 			
 		} catch (ParserConfigurationException e) {

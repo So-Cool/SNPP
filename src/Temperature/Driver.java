@@ -17,46 +17,52 @@ public class Driver {
 	private static String prevessin = "618067";
 	private static String units     = "c";
 	
-	public static void main(String[] args) {
-		int oldTemp1;
-		int newTemp1;
-		int oldTemp2;
-		int newTemp2;
-		
-		try {
-			CERNtermometer t1 = new CERNtermometer( t1URL );
-			WeatherForecast prev = new WeatherForecast( prevessin, units );
-			while (true) {
-				oldTemp1 = t1.getTemperature();
-				t1.updateTemperature();
-				newTemp1 = t1.getTemperature();
-				
-				oldTemp2 = prev.getTemperature();
-				prev.updateTemperature();
-				newTemp2 = prev.getTemperature();
-				
-				if (oldTemp2 != newTemp2 || oldTemp1 != newTemp1) {
-					System.out.println( t1.toString() );
-					System.out.println( prev.toString() );
-				}
-					
-				//Pause for 10 seconds
-				Thread.sleep(10000);
-			}
-			
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+		( new Thread( new CERNtermometer(t1URL) ) ).start();
+		( new Thread( new WeatherForecast( prevessin, units ) ) ).start();
 	}
+
+//	
+//	public static void main(String[] args) {
+//		int oldTemp1;
+//		int newTemp1;
+//		int oldTemp2;
+//		int newTemp2;
+//		
+//		try {
+//			CERNtermometer t1 = new CERNtermometer( t1URL );
+//			WeatherForecast prev = new WeatherForecast( prevessin, units );
+//			while (true) {
+//				oldTemp1 = t1.getTemperature();
+//				t1.updateTemperature();
+//				newTemp1 = t1.getTemperature();
+//				
+//				oldTemp2 = prev.getTemperature();
+//				prev.updateTemperature();
+//				newTemp2 = prev.getTemperature();
+//				
+//				if (oldTemp2 != newTemp2 || oldTemp1 != newTemp1) {
+//					System.out.println( t1.toString() );
+//					System.out.println( prev.toString() );
+//				}
+//					
+//				//Pause for 10 seconds
+//				Thread.sleep(10000);
+//			}
+//			
+//		} catch (ParserConfigurationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (SAXException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 }

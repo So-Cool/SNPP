@@ -67,7 +67,7 @@ public class CERNtermometer implements Runnable {
 	
 	// Define what to do in the thread
 	public void run() {
-		String t1URL = "http://137.138.196.84/tme.xml";
+//		String t1URL = "http://137.138.196.84/tme.xml";
 		int oldTemp;
 		int newTemp;
 		long timeToWait = 1;
@@ -77,14 +77,14 @@ public class CERNtermometer implements Runnable {
 		
 		try {
 			
-			CERNtermometer t1 = new CERNtermometer( t1URL );
+//			CERNtermometer t1 = new CERNtermometer( t1URL );
 			while (true) {
-				oldTemp = t1.getTemperature();
-				t1.updateTemperature();
-				newTemp = t1.getTemperature();
+				oldTemp = this.getTemperature();
+				this.updateTemperature();
+				newTemp = this.getTemperature();
 				
 				if (oldTemp != newTemp) {
-					System.out.println( t1.toString() );
+					System.out.println( this.toString() );
 					// send message
 				}
 				
@@ -92,6 +92,7 @@ public class CERNtermometer implements Runnable {
 				
 				//Pause for timeToWait seconds
 				Thread.sleep( timeToWait * 1000);
+				System.out.println( "Tick term!" );
 			}
 			
 		} catch (ParserConfigurationException e) {
