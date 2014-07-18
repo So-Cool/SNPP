@@ -7,6 +7,9 @@ package Temperature;
  */
 
 import java.io.IOException;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
@@ -17,9 +20,14 @@ public class Driver {
 	private static String prevessin = "618067";
 	private static String units     = "c";
 	
-	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, NamingException {
 		( new Thread( new CERNtermometer(t1URL) ) ).start();
 		( new Thread( new WeatherForecast( prevessin, units ) ) ).start();
+	
+		InitialContext jndiContext = new InitialContext();
+		ConnectionFactory cf = jndiContext.lookup(connectionfactoryname);
+		
+		
 	}
 
 //	
