@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -70,6 +71,10 @@ public class CERNtermometer implements Runnable {
 		int oldTemp;
 		int newTemp;
 		long timeToWait = 1;
+		
+		// generate timeToWait according to Poisson distribution
+		PoissonDistribution gen = new PoissonDistribution( 47 );
+		
 		try {
 			
 			CERNtermometer t1 = new CERNtermometer( t1URL );
@@ -83,7 +88,7 @@ public class CERNtermometer implements Runnable {
 					// send message
 				}
 				
-				// generate timeToWait according to Poisson distribution
+				timeToWait = gen.sample();
 				
 				//Pause for timeToWait seconds
 				Thread.sleep( timeToWait * 1000);

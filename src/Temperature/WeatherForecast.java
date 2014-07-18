@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -68,6 +69,10 @@ public class WeatherForecast implements Runnable {
 		int oldTemp;
 		int newTemp;
 		long timeToWait = 1;
+		
+		// generate timeToWait according to Poisson distribution
+		PoissonDistribution gen = new PoissonDistribution( 72 );
+		
 		try {
 			
 			WeatherForecast prev = new WeatherForecast( prevessin, units );
@@ -81,8 +86,7 @@ public class WeatherForecast implements Runnable {
 					// send message
 				}
 				
-				// generate timeToWait according to Poisson distribution
-				
+				timeToWait = gen.sample();
 				
 				//Pause for timeToWait seconds
 				Thread.sleep( timeToWait * 1000);
