@@ -2,13 +2,12 @@ package Temperature;
 
 /*
  * ToDo:
- * run it as a process and send the weather conditions randomly according to some distribution
  * do the channels -> JMS
  */
 
 import java.io.IOException;
 
-import javax.naming.InitialContext;
+//import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -24,8 +23,8 @@ public class Driver {
 		( new Thread( new CERNtermometer(t1URL) ) ).start();
 		( new Thread( new WeatherForecast( prevessin, units ) ) ).start();
 	
-		InitialContext jndiContext = new InitialContext();
-		ConnectionFactory cf = jndiContext.lookup(connectionfactoryname);
+//		InitialContext jndiContext = new InitialContext();
+//		ConnectionFactory cf = jndiContext.lookup(connectionfactoryname);
 		
 		
 	}
