@@ -16,8 +16,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.espertech.esper.client.EventBean;
+
 // get the weather forecast form Yahoo!
-public class WeatherForecast implements Runnable {
+public class WeatherForecast implements Runnable, com.espertech.esper.client.UpdateListener {
 	
 	private static String t0 = "http://weather.yahooapis.com/forecastrss?w=";
 	private static String t1 = "&u=";
@@ -60,6 +62,12 @@ public class WeatherForecast implements Runnable {
 		this.location = loc1 + ", " + loc3;
 
 		System.out.println(toString());
+	}
+	
+	@Override
+	public void update(EventBean[] arg0, EventBean[] arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	// Define what to do in the thread

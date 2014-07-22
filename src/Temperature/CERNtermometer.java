@@ -14,6 +14,8 @@ import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import com.espertech.esper.client.EventBean;
+
 /* once you call this object with property: locaton of xml file
  * it creates and object connected to this xml file and when you call
  * the getter returns current temperature
@@ -33,7 +35,7 @@ import org.xml.sax.SAXException;
  *	</thermometer>
  */
 
-public class CERNtermometer implements Runnable {
+public class CERNtermometer implements Runnable, com.espertech.esper.client.UpdateListener {
 	// Define location of thermometer
 	private String location;
 	// Define current temperature
@@ -63,6 +65,12 @@ public class CERNtermometer implements Runnable {
         this.time = new Date( System.currentTimeMillis() );
         
         System.out.println(toString());
+	}
+	
+	@Override
+	public void update(EventBean[] arg0, EventBean[] arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	// Define what to do in the thread
