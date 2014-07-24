@@ -17,7 +17,7 @@ public class Normal implements Runnable {
 	public Normal( long mean, long variance, int inter ) {
 		this.gen = new NormalDistribution( mean, variance );
 		this.elaps = new PoissonDistribution(inter);
-		this.timer = new Date( System.currentTimeMillis() );;
+		this.timer = new Date( System.currentTimeMillis() );
 	}
 	
 	public Date getTimer() { return this.timer; }
