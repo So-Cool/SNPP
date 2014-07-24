@@ -7,16 +7,16 @@ import org.apache.commons.math3.distribution.PoissonDistribution;
 
 // Math.PI
 
-public class Sine implements Runnable {
+public class Cosine implements Runnable {
 
 	private double current = 0;
 	private double x = 1;
 	private double y = 1;
 	private PoissonDistribution gen;
 	private Date timer;
-	private String genName = "Sine";
+	private String genName = "Cosine";
 	
-	public Sine( double xScale, double yScale, int jump ) {
+	public Cosine( double xScale, double yScale, int jump ) {
 		this.timer = new Date( System.currentTimeMillis() );
 		this.gen = new PoissonDistribution( jump );
 		this.x = xScale;
@@ -37,7 +37,7 @@ public class Sine implements Runnable {
 					e.printStackTrace();
 				}
 			}
-		    this.timer.setTime( System.currentTimeMillis() );
+		    this.timer.setTime( System.currentTimeMillis()-1000 );
 		    if( degrees > 360000 )
 		    	degrees = degrees % 360;
 		    
