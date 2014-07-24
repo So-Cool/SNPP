@@ -3,19 +3,19 @@ package RandomGenerators;
 import java.util.Date;
 
 import org.apache.commons.math3.distribution.PoissonDistribution;
-import org.apache.commons.math3.distribution.UniformRealDistribution;
+import org.apache.commons.math3.distribution.NormalDistribution;
 
-public class Uniform implements Runnable {
+public class Normal implements Runnable {
 
 	// generate timeToWait according to Poisson distribution
-	private UniformRealDistribution gen;
+	private NormalDistribution gen;
 	private Date timer;
 	private PoissonDistribution elaps;
 	private double current;
-	private String genName = "Uniform Real";
+	private String genName = "Normal";
 	
-	public Uniform( long lower, long upper, int inter ) {
-		this.gen = new UniformRealDistribution( lower, upper );
+	public Normal( long mean, long variance, int inter ) {
+		this.gen = new NormalDistribution( mean, variance );
 		this.elaps = new PoissonDistribution(inter);
 		this.timer = new Date( System.currentTimeMillis() );;
 	}

@@ -3,25 +3,25 @@ package RandomGenerators;
 import java.util.Date;
 
 import org.apache.commons.math3.distribution.PoissonDistribution;
-import org.apache.commons.math3.distribution.UniformRealDistribution;
+import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 
-public class Uniform implements Runnable {
+public class MultivariateNormal implements Runnable {
 
 	// generate timeToWait according to Poisson distribution
-	private UniformRealDistribution gen;
+	private MultivariateNormalDistribution gen;
 	private Date timer;
 	private PoissonDistribution elaps;
-	private double current;
-	private String genName = "Uniform Real";
+	private double[] current;
+	private String genName = "Multivariate Normal";
 	
-	public Uniform( long lower, long upper, int inter ) {
-		this.gen = new UniformRealDistribution( lower, upper );
+	public MultivariateNormal( double[] means, double[][] covariances, int inter ) {
+		this.gen = new MultivariateNormalDistribution( means, covariances );
 		this.elaps = new PoissonDistribution(inter);
 		this.timer = new Date( System.currentTimeMillis() );;
 	}
 	
 	public Date getTimer() { return this.timer; }
-	public double getCurrent() { return this.current; }
+	public double[] getCurrent() { return this.current; }
 	
 	// Define what to do in the thread
 	public void run() {
@@ -50,7 +50,15 @@ public class Uniform implements Runnable {
 	// Return string
     @Override
     public String toString() {
-        return "Tick! -> Generator: " + genName + " | Sample: " + current + " | Time: " + timer;
+    	String list = "(";
+    	for(int i = 0; i < current.length; i++) {
+            list += current[i];
+            if( i+1 != current.length )
+            	list += ", ";
+        }
+    	list += ")";
+    	
+        return "Tick! -> Generator: " + genName + " | Sample: " + list + " | Time: " + timer;
     }
 	
 }
