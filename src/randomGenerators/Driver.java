@@ -1,13 +1,12 @@
 package randomGenerators;
 
-import testRun.CEPListener;
-
+import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 
 public class Driver {
-	private static int time1 = 222;
+	private static int time1 = 17;
 	private static int time2 = 122;
 	private static int time3 = 22;
 	private static int time4 = 15;
@@ -31,22 +30,31 @@ public class Driver {
 	private static double yCos = 1;
 	
 	public static void main(String[] args) {
-		// Initialize ESPER server
-		EPServiceProvider epService = EPServiceProviderManager.getDefaultProvider();
-		String expression = "select temperature from temperature.CERNtermometer.win:time(5 sec) having avg(temperature) > 5.0";
-		EPStatement statement = epService.getEPAdministrator().createEPL(expression);
+		// Initialize ESPER config
+		Configuration cepConfig = new Configuration();
+		cepConfig.addEventType("SinTick", Sine.class.getName());
+		cepConfig.addEventType("CosTick", Cosine.class.getName());
+		cepConfig.addEventType("NormTick", Normal.class.getName());
+		cepConfig.addEventType("UnifTick", Uniform.class.getName());
+		cepConfig.addEventType("NmvtTick", MultivariateNormal.class.getName());
 		
-//		CERNListener listener = new CERNListener();
-//		statement.addListener(listener);
-		statement.addListener(new CEPListener());
+		// Initialize ESPER server
+		EPServiceProvider epService = EPServiceProviderManager.getProvider("myCEPEngine", cepConfig); //.getDefaultProvider();
+		
+		
+		String expression1 = "select avg(current) as NormAvgCur from NormTick.win:time(10 sec)";
+		EPStatement statement = epService.getEPAdministrator().createEPL(expression1);
+		
+		NormalListener NormList = new NormalListener();
+		statement.addListener(NormList);
 		
 		
 		( new Thread( new Normal( mean, variance, time1, epService ) ) ).start();
-		( new Thread( new Uniform( lower, upper, time2, epService ) ) ).start();	
-		( new Thread( new MultivariateNormal( means, covariances, time3, epService ) ) ).start();
+//		( new Thread( new Uniform( lower, upper, time2, epService ) ) ).start();	
+//		( new Thread( new MultivariateNormal( means, covariances, time3, epService ) ) ).start();
 		
-		( new Thread( new Sine( xSin, ySin, time4, epService ) ) ).start();
-		( new Thread( new Cosine( xCos, yCos, time5, epService ) ) ).start();
+//		( new Thread( new Sine( xSin, ySin, time4, epService ) ) ).start();
+//		( new Thread( new Cosine( xCos, yCos, time5, epService ) ) ).start();
 	}
 	
 }
