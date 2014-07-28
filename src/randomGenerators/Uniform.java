@@ -1,4 +1,4 @@
-package RandomGenerators;
+package randomGenerators;
 
 import java.util.Date;
 

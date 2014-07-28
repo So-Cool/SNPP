@@ -1,4 +1,4 @@
-package Temperature;
+package temperature;
 
 import java.util.Date;
 import java.io.File;

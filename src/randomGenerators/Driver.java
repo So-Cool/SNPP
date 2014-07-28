@@ -1,4 +1,4 @@
-package RandomGenerators;
+package randomGenerators;
 
 public class Driver {
 	private static int time1 = 222;

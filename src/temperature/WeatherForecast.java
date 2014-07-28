@@ -1,4 +1,4 @@
-package Temperature;
+package temperature;
 
 import java.io.File;
 import java.io.IOException;
