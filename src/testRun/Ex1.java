@@ -3,7 +3,7 @@ package testRun;
 import com.espertech.esper.client.*;
 
 // exampleMain
-public class ex1 {
+public class Ex1 {
 	
 	private static final int windowLength = 2;
 	

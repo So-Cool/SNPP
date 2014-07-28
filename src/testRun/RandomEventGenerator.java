@@ -54,7 +54,7 @@ public class RandomEventGenerator {
         cepRT.sendEvent(tick1);
 
         // initialize to proper value after first tick
-        frame = ex1.getWinLen();
+        frame = Ex1.getWinLen();
         // initialize previous price
         previousPrice = (int)price;
 
