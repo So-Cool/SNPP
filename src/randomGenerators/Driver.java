@@ -8,9 +8,9 @@ import com.espertech.esper.client.EPStatement;
 public class Driver {
 	private static int time1 = 17;
 	private static int time2 = 122;
-	private static int time3 = 22;
-	private static int time4 = 15;
-	private static int time5 = 3;
+	private static int time3 = 122;
+	private static int time4 = 115;
+	private static int time5 = 113;
 	
 	private static long mean = 123;
 	private static long variance = 17;
@@ -43,16 +43,26 @@ public class Driver {
 		
 		
 		String expression1 = "select avg(current) as NormAvgCur from NormTick.win:time(10 sec)";
-		EPStatement statement = epService.getEPAdministrator().createEPL(expression1);
-		
+		String expression11 = "select current from NormTick";
+		EPStatement statement1 = epService.getEPAdministrator().createEPL(expression1);
+		EPStatement statement11 = epService.getEPAdministrator().createEPL(expression11);
+		////////////////////////////////////////////////////////////////
 		NormalListener NormList = new NormalListener();
-		statement.addListener(NormList);
+		statement1.addListener(NormList);
+		statement11.addListener(NormList);
+		
+		
+//		String expression2 = "select avg(current) as UnifAvgCur from UnifTick.win:time(5 sec)";
+//		EPStatement statement2 = epService.getEPAdministrator().createEPL(expression2);
+//		////////////////////////////////////////////////////////////////
+//		UniformListener UnifList = new UniformListener();
+//		statement2.addListener(UnifList);
 		
 		
 		( new Thread( new Normal( mean, variance, time1, epService ) ) ).start();
 //		( new Thread( new Uniform( lower, upper, time2, epService ) ) ).start();	
 //		( new Thread( new MultivariateNormal( means, covariances, time3, epService ) ) ).start();
-		
+//		
 //		( new Thread( new Sine( xSin, ySin, time4, epService ) ) ).start();
 //		( new Thread( new Cosine( xCos, yCos, time5, epService ) ) ).start();
 	}
