@@ -1,5 +1,11 @@
 package randomGenerators;
 
+import testRun.CEPListener;
+
+import com.espertech.esper.client.EPServiceProvider;
+import com.espertech.esper.client.EPServiceProviderManager;
+import com.espertech.esper.client.EPStatement;
+
 public class Driver {
 	private static int time1 = 222;
 	private static int time2 = 122;
@@ -25,12 +31,22 @@ public class Driver {
 	private static double yCos = 1;
 	
 	public static void main(String[] args) {
-		( new Thread( new Normal( mean, variance, time1 ) ) ).start();
-		( new Thread( new Uniform( lower, upper, time2 ) ) ).start();	
-		( new Thread( new MultivariateNormal( means, covariances, time3 ) ) ).start();
+		// Initialize ESPER server
+		EPServiceProvider epService = EPServiceProviderManager.getDefaultProvider();
+		String expression = "select temperature from temperature.CERNtermometer.win:time(5 sec) having avg(temperature) > 5.0";
+		EPStatement statement = epService.getEPAdministrator().createEPL(expression);
 		
-		( new Thread( new Sine( xSin, ySin, time4 ) ) ).start();
-		( new Thread( new Cosine( xCos, yCos, time5 ) ) ).start();
+//		CERNListener listener = new CERNListener();
+//		statement.addListener(listener);
+		statement.addListener(new CEPListener());
+		
+		
+		( new Thread( new Normal( mean, variance, time1, epService ) ) ).start();
+		( new Thread( new Uniform( lower, upper, time2, epService ) ) ).start();	
+		( new Thread( new MultivariateNormal( means, covariances, time3, epService ) ) ).start();
+		
+		( new Thread( new Sine( xSin, ySin, time4, epService ) ) ).start();
+		( new Thread( new Cosine( xCos, yCos, time5, epService ) ) ).start();
 	}
 	
 }

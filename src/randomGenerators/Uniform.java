@@ -5,6 +5,8 @@ import java.util.Date;
 import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.apache.commons.math3.distribution.UniformRealDistribution;
 
+import com.espertech.esper.client.EPServiceProvider;
+
 public class Uniform implements Runnable {
 
 	// generate timeToWait according to Poisson distribution
@@ -14,10 +16,16 @@ public class Uniform implements Runnable {
 	private double current;
 	private String genName = "Uniform Real";
 	
-	public Uniform( long lower, long upper, int inter ) {
+	// ESPER service provider
+	private EPServiceProvider myService;
+	
+	public Uniform( long lower, long upper, int inter, EPServiceProvider service ) {
 		this.gen = new UniformRealDistribution( lower, upper );
 		this.elaps = new PoissonDistribution(inter);
-		this.timer = new Date( System.currentTimeMillis() );;
+		this.timer = new Date( System.currentTimeMillis() );
+		
+		// Initialize my service provider
+        this.myService = service;
 	}
 	
 	public Date getTimer() { return this.timer; }
@@ -35,7 +43,8 @@ public class Uniform implements Runnable {
 			
 			// Print and send tick
 			System.out.println( toString() );
-			//send
+			// once updated send
+			myService.getEPRuntime().sendEvent(this);
 			
 			//Pause for timeToWait seconds
 			try {

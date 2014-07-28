@@ -5,6 +5,8 @@ import java.util.Date;
 import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 
+import com.espertech.esper.client.EPServiceProvider;
+
 public class Normal implements Runnable {
 
 	// generate timeToWait according to Poisson distribution
@@ -14,10 +16,16 @@ public class Normal implements Runnable {
 	private double current;
 	private String genName = "Normal";
 	
-	public Normal( long mean, long variance, int inter ) {
+	// ESPER service provider
+	private EPServiceProvider myService;
+	
+	public Normal( long mean, long variance, int inter, EPServiceProvider service ) {
 		this.gen = new NormalDistribution( mean, variance );
 		this.elaps = new PoissonDistribution(inter);
 		this.timer = new Date( System.currentTimeMillis() );
+		
+		// Initialize my service provider
+        this.myService = service;
 	}
 	
 	public Date getTimer() { return this.timer; }
@@ -35,7 +43,8 @@ public class Normal implements Runnable {
 			
 			// Print and send tick
 			System.out.println( toString() );
-			//send
+			// once updated send
+			myService.getEPRuntime().sendEvent(this);
 			
 			//Pause for timeToWait seconds
 			try {

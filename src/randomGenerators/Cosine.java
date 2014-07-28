@@ -5,6 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.math3.distribution.PoissonDistribution;
 
+import com.espertech.esper.client.EPServiceProvider;
+
 // Math.PI
 
 public class Cosine implements Runnable {
@@ -16,11 +18,17 @@ public class Cosine implements Runnable {
 	private Date timer;
 	private String genName = "Cosine";
 	
-	public Cosine( double xScale, double yScale, int jump ) {
+	// ESPER service provider
+	private EPServiceProvider myService;
+	
+	public Cosine( double xScale, double yScale, int jump, EPServiceProvider service ) {
 		this.timer = new Date( System.currentTimeMillis() );
 		this.gen = new PoissonDistribution( jump );
 		this.x = xScale;
 		this.y = yScale;
+		
+		// Initialize my service provider
+        this.myService = service;
 	}
 	
 	public void run() {
@@ -43,7 +51,8 @@ public class Cosine implements Runnable {
 		    
 			// Print and send tick
 			System.out.println( toString() );
-			//send
+			// once updated send
+			myService.getEPRuntime().sendEvent(this);
 		}			
 	}
 	
