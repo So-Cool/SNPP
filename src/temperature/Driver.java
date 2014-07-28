@@ -12,6 +12,10 @@ import javax.naming.NamingException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
+import com.espertech.esper.client.EPServiceProvider;
+import com.espertech.esper.client.EPServiceProviderManager;
+import com.espertech.esper.client.EPStatement;
+
 public class Driver {
 
 	private static String t1URL = "http://137.138.196.84/tme.xml";
@@ -20,8 +24,18 @@ public class Driver {
 	private static String units     = "c";
 	
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, NamingException {
-		( new Thread( new CERNtermometer(t1URL) ) ).start();
-		( new Thread( new WeatherForecast( prevessin, units ) ) ).start();
+		// Initialize ESPER server
+		EPServiceProvider epService = EPServiceProviderManager.getDefaultProvider();
+		String expression = "select temperature from temperature.CERNtermometer.win:time(5 sec) having avg(temperature) > 5.0";
+		EPStatement statement = epService.getEPAdministrator().createEPL(expression);
+		
+		CERNListener listener = new CERNListener();
+		statement.addListener(listener);
+		
+		
+		
+		( new Thread( new CERNtermometer(t1URL, epService) ) ).start();
+		( new Thread( new WeatherForecast( prevessin, units, epService ) ) ).start();
 	
 //		InitialContext jndiContext = new InitialContext();
 //		ConnectionFactory cf = jndiContext.lookup(connectionfactoryname);

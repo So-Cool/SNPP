@@ -16,10 +16,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.espertech.esper.client.EventBean;
+import com.espertech.esper.client.EPServiceProvider;
 
 // get the weather forecast form Yahoo!
-public class WeatherForecast implements Runnable, com.espertech.esper.client.UpdateListener {
+public class WeatherForecast implements Runnable {
 	
 	private static String t0 = "http://weather.yahooapis.com/forecastrss?w=";
 	private static String t1 = "&u=";
@@ -31,7 +31,10 @@ public class WeatherForecast implements Runnable, com.espertech.esper.client.Upd
 	private String yahooDate;
 	private int temperature;
 	
-	public WeatherForecast( String where, String units ) throws IOException, ParserConfigurationException, SAXException {
+	// ESPER service provider
+	private EPServiceProvider myService;
+	
+	public WeatherForecast( String where, String units, EPServiceProvider service ) throws IOException, ParserConfigurationException, SAXException {
 		
 		this.feed = new URL(t0 + where + t1 + units);
 		String tDir = System.getProperty("java.io.tmpdir");
@@ -60,14 +63,11 @@ public class WeatherForecast implements Runnable, com.espertech.esper.client.Upd
 		this.temperature = Integer.parseInt(temp) * 10;
 		this.time = new Date( System.currentTimeMillis() );
 		this.location = loc1 + ", " + loc3;
+		
+		// Initialize my service provider
+        this.myService = service;
 
 		System.out.println(toString());
-	}
-	
-	@Override
-	public void update(EventBean[] arg0, EventBean[] arg1) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	// Define what to do in the thread
@@ -87,11 +87,15 @@ public class WeatherForecast implements Runnable, com.espertech.esper.client.Upd
 			while (true) {
 				oldTemp = this.getTemperature();
 				this.updateTemperature();
+				
+				// once updated send
+				myService.getEPRuntime().sendEvent(this);
+				
 				newTemp = this.getTemperature();
 				
 				if (oldTemp != newTemp) {
 					System.out.println( this.toString() );
-					// send message
+					// send message --- not only when changed
 				}
 				
 				timeToWait = gen.sample();

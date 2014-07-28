@@ -14,7 +14,7 @@ import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import com.espertech.esper.client.EventBean;
+import com.espertech.esper.client.EPServiceProvider;
 
 /* once you call this object with property: locaton of xml file
  * it creates and object connected to this xml file and when you call
@@ -35,7 +35,7 @@ import com.espertech.esper.client.EventBean;
  *	</thermometer>
  */
 
-public class CERNtermometer implements Runnable, com.espertech.esper.client.UpdateListener {
+public class CERNtermometer implements Runnable {
 	// Define location of thermometer
 	private String location;
 	// Define current temperature
@@ -47,8 +47,11 @@ public class CERNtermometer implements Runnable, com.espertech.esper.client.Upda
 	private File tempFile;
 	private Document document;
 	
+	// ESPER service provider
+	private EPServiceProvider myService;
+	
 	// class definition
-	public CERNtermometer(String xml) throws ParserConfigurationException, SAXException, IOException {
+	public CERNtermometer(String xml, EPServiceProvider service) throws ParserConfigurationException, SAXException, IOException {
 		
 		this.url = new URL(xml);
 		String tDir = System.getProperty("java.io.tmpdir");
@@ -64,13 +67,10 @@ public class CERNtermometer implements Runnable, com.espertech.esper.client.Upda
         this.temperature = Integer.parseInt(tempTemp);
         this.time = new Date( System.currentTimeMillis() );
         
+        // Initialize my service provider
+        this.myService = service;
+        
         System.out.println(toString());
-	}
-	
-	@Override
-	public void update(EventBean[] arg0, EventBean[] arg1) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	// Define what to do in the thread
@@ -89,11 +89,15 @@ public class CERNtermometer implements Runnable, com.espertech.esper.client.Upda
 			while (true) {
 				oldTemp = this.getTemperature();
 				this.updateTemperature();
+				
+				// once updated send
+				myService.getEPRuntime().sendEvent(this);
+				
 				newTemp = this.getTemperature();
 				
 				if (oldTemp != newTemp) {
 					System.out.println( this.toString() );
-					// send message
+					// send message --- not because it is the same
 				}
 				
 				timeToWait = gen.sample();
