@@ -29,6 +29,10 @@ public class Driver {
 	private static double xCos = 1;
 	private static double yCos = 1;
 	
+	public static double n10(double n) {
+		return n-10;
+	}
+	
 	public static void main(String[] args) {
 		// Initialize ESPER config
 		Configuration cepConfig = new Configuration();
@@ -43,7 +47,8 @@ public class Driver {
 		
 		
 //		String expression1 = "select avg(current) as NormAvgCur from NormTick.win:length(2)";
-		String expression1 = "select stddev(current) from NormTick.win:time(60 sec)";
+//			String expression1 = "select stddev(current) from NormTick.win:time(60 sec)";
+		String expression1 = "select randomGenerators.Driver.n10(current) from NormTick";
 //		String expression11 = "select current as NormCur from NormTick.win:length(2)";
 		EPStatement statement1 = epService.getEPAdministrator().createEPL(expression1);
 //		EPStatement statement11 = epService.getEPAdministrator().createEPL(expression11);
