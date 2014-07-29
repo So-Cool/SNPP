@@ -28,6 +28,15 @@ public class Normal implements Runnable {
         this.myService = service;
 	}
 	
+	// get copy of object
+	  public Normal(Normal another) {
+		    this.gen = another.gen;
+		    this.timer = another.timer;
+		    this.elaps = another.elaps;
+		    this.current = another.current;
+		    this.genName = another.genName;
+		  }
+	
 	public void gen() {
 		this.current = this.gen.sample();
 		this.timer.setTime( System.currentTimeMillis() );
@@ -50,7 +59,7 @@ public class Normal implements Runnable {
 			// Print and send tick
 			System.out.println( this.toString() );
 			// once updated send
-			myService.getEPRuntime().sendEvent(this);
+			myService.getEPRuntime().sendEvent( new Normal(this) );
 			
 			
 			//Pause for timeToWait seconds

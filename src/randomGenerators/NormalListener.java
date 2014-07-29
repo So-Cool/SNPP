@@ -16,7 +16,7 @@ public class NormalListener implements com.espertech.esper.client.UpdateListener
 //		System.out.println("Normal Current=" + newEvents[1].get("NormCur"));
 		
 //		System.out.println("Normal Current=" + newEvents.length );
-		System.out.println("Normal Current=" + newEvents[0].getUnderlying());
+			System.out.println("Normal Current=" + newEvents[0].getUnderlying());
 		
 		//		System.out.println("lololo " + all1);
 		

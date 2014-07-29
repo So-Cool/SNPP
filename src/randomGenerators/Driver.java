@@ -6,7 +6,7 @@ import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 
 public class Driver {
-	private static int time1 = 5;
+	private static int time1 = 17;
 	private static int time2 = 122;
 	private static int time3 = 122;
 	private static int time4 = 115;
@@ -46,10 +46,11 @@ public class Driver {
 		EPServiceProvider epService = EPServiceProviderManager.getProvider("myCEPEngine", cepConfig); //.getDefaultProvider();
 		
 		
-//		String expression1 = "select avg(current) as NormAvgCur from NormTick.win:length(2)";
+		String expression1 = "select avg(current) as NormAvgCur from NormTick.win:time(30 sec)";
 //			String expression1 = "select stddev(current) from NormTick.win:time(60 sec)";
-		String expression1 = "select randomGenerators.Driver.n10(current) from NormTick";
-//		String expression11 = "select current as NormCur from NormTick.win:length(2)";
+			//String expression1 = "select randomGenerators.Driver.n10(current) from NormTick.win:time(60 sec)";
+//			String expression1 = "select prev(2, current) from NormTick.win:time(60 sec)";
+			//		String expression11 = "select current as NormCur from NormTick.win:length(2)";
 		EPStatement statement1 = epService.getEPAdministrator().createEPL(expression1);
 //		EPStatement statement11 = epService.getEPAdministrator().createEPL(expression11);
 		////////////////////////////////////////////////////////////////
