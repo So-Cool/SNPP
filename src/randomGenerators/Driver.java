@@ -6,7 +6,7 @@ import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 
 public class Driver {
-	private static int time1 = 17;
+	private static int time1 = 5;
 	private static int time2 = 122;
 	private static int time3 = 122;
 	private static int time4 = 115;
@@ -32,24 +32,25 @@ public class Driver {
 	public static void main(String[] args) {
 		// Initialize ESPER config
 		Configuration cepConfig = new Configuration();
-		cepConfig.addEventType("SinTick", Sine.class.getName());
-		cepConfig.addEventType("CosTick", Cosine.class.getName());
+//		cepConfig.addEventType("SinTick", Sine.class.getName());
+//		cepConfig.addEventType("CosTick", Cosine.class.getName());
 		cepConfig.addEventType("NormTick", Normal.class.getName());
-		cepConfig.addEventType("UnifTick", Uniform.class.getName());
-		cepConfig.addEventType("NmvtTick", MultivariateNormal.class.getName());
+//		cepConfig.addEventType("UnifTick", Uniform.class.getName());
+//		cepConfig.addEventType("NmvtTick", MultivariateNormal.class.getName());
 		
 		// Initialize ESPER server
 		EPServiceProvider epService = EPServiceProviderManager.getProvider("myCEPEngine", cepConfig); //.getDefaultProvider();
 		
 		
-		String expression1 = "select avg(current) as NormAvgCur from NormTick.win:time(10 sec)";
-		String expression11 = "select current from NormTick";
+//		String expression1 = "select avg(current) as NormAvgCur from NormTick.win:length(2)";
+		String expression1 = "select stddev(current) from NormTick.win:time(60 sec)";
+//		String expression11 = "select current as NormCur from NormTick.win:length(2)";
 		EPStatement statement1 = epService.getEPAdministrator().createEPL(expression1);
-		EPStatement statement11 = epService.getEPAdministrator().createEPL(expression11);
+//		EPStatement statement11 = epService.getEPAdministrator().createEPL(expression11);
 		////////////////////////////////////////////////////////////////
 		NormalListener NormList = new NormalListener();
 		statement1.addListener(NormList);
-		statement11.addListener(NormList);
+//		statement11.addListener(NormList);
 		
 		
 //		String expression2 = "select avg(current) as UnifAvgCur from UnifTick.win:time(5 sec)";

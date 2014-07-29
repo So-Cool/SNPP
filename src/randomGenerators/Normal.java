@@ -28,6 +28,14 @@ public class Normal implements Runnable {
         this.myService = service;
 	}
 	
+	public void gen() {
+		this.current = this.gen.sample();
+		this.timer.setTime( System.currentTimeMillis() );
+	}
+	public long waita() {
+		return this.elaps.sample();
+	}
+	
 	public Date getTimer() { return this.timer; }
 	public double getCurrent() { return this.current; }
 	
@@ -36,15 +44,14 @@ public class Normal implements Runnable {
 		long timeToWait = 0;
 		
 		while(true) {
-			timeToWait = elaps.sample();
-			
-			this.timer.setTime( System.currentTimeMillis() );
-			this.current = gen.sample();
+			timeToWait = this.waita();
+			this.gen();
 			
 			// Print and send tick
-			System.out.println( toString() );
+			System.out.println( this.toString() );
 			// once updated send
 			myService.getEPRuntime().sendEvent(this);
+			
 			
 			//Pause for timeToWait seconds
 			try {
