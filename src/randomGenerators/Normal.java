@@ -29,13 +29,13 @@ public class Normal implements Runnable {
 	}
 	
 	// get copy of object
-	  public Normal(Normal another) {
-		    this.gen = another.gen;
-		    this.timer = another.timer;
-		    this.elaps = another.elaps;
-		    this.current = another.current;
-		    this.genName = another.genName;
-		  }
+	public Normal(Normal another) {
+	   this.gen = another.gen;
+	   this.timer = another.timer;
+	   this.elaps = another.elaps;
+	   this.current = another.current;
+	   this.genName = another.genName;
+	}
 	
 	public void gen() {
 		this.current = this.gen.sample();

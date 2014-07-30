@@ -31,21 +31,42 @@ public class Sine implements Runnable {
         this.myService = service;
 	}
 	
+	// get copy of object
+	public Sine(Sine another) {
+	   this.gen = another.gen;
+	   this.timer = another.timer;
+	   this.current = another.current;
+	   this.x = another.x;
+	   this.y = another.y;
+	   this.genName = another.genName;
+	}
+	
+	public double gen( int timeToWait, double degrees ) {
+		for (long stop=System.nanoTime()+TimeUnit.SECONDS.toNanos(timeToWait); stop>System.nanoTime(); degrees++ ) {
+			current = y* Math.sin( x* Math.toRadians(degrees) );
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	    this.timer.setTime( System.currentTimeMillis()-1000 );
+		
+	    return degrees;
+	}
+	public int waita() {
+		return this.gen.sample();
+	}
+	
 	public void run() {
 		int timeToWait = gen.sample();
 		double degrees = 0;
 		
 		while( true ) {
-		    for (long stop=System.nanoTime()+TimeUnit.SECONDS.toNanos(timeToWait); stop>System.nanoTime(); degrees++ ) {
-				current = y* Math.sin( x* Math.toRadians(degrees) );
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		    this.timer.setTime( System.currentTimeMillis() );
+			degrees = this.gen( timeToWait, degrees );
+		    timeToWait = this.waita();
+		   
 		    if( degrees > 360000 )
 		    	degrees = degrees % 360;
 		    

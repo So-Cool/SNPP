@@ -28,6 +28,23 @@ public class MultivariateNormal implements Runnable {
         this.myService = service;
 	}
 	
+	// get copy of object
+	public MultivariateNormal(MultivariateNormal another) {
+	   this.gen = another.gen;
+	   this.timer = another.timer;
+	   this.elaps = another.elaps;
+	   this.current = another.current;
+	   this.genName = another.genName;
+	}
+	  
+	public void gen() {
+		this.current = this.gen.sample();
+		this.timer.setTime( System.currentTimeMillis() );
+	}
+	public long waita() {
+		return this.elaps.sample();
+	}
+	
 	public Date getTimer() { return this.timer; }
 	public double[] getCurrent() { return this.current; }
 	
@@ -36,10 +53,9 @@ public class MultivariateNormal implements Runnable {
 		long timeToWait = 0;
 		
 		while(true) {
-			timeToWait = elaps.sample();
+			timeToWait = waita();
 			
-			this.timer.setTime( System.currentTimeMillis() );
-			this.current = gen.sample();
+			this.gen();
 			
 			// Print and send tick
 			System.out.println( toString() );
