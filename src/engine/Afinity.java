@@ -1,5 +1,21 @@
 package engine;
 
 public class Afinity {
-
+/////////////////////////////////////////////////////////////////////////////////////
+	// class properties //
+	
+	// expandible array for the POOL
+	// expandible array for memorized data = i.e. = exemplars
+	
+	
+/////////////////////////////////////////////////////////////////////////////////////
+	// functions //
+	
+	// initialize
+	// append new point
+	
+	// build
+	// check whether to rebuild
+	// rebuild
+	
 }

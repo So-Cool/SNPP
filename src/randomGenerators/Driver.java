@@ -34,7 +34,7 @@ public class Driver {
 	}
 	
 	public static void main(String[] args) {
-		// Initialize ESPER config
+		// Initialize ESPER configuration
 		Configuration cepConfig = new Configuration();
 //		cepConfig.addEventType("SinTick", Sine.class.getName());
 //		cepConfig.addEventType("CosTick", Cosine.class.getName());
@@ -68,7 +68,7 @@ public class Driver {
 		
 		( new Thread( new Normal( mean, variance, time1, epService ) ) ).start();
 //		( new Thread( new Uniform( lower, upper, time2, epService ) ) ).start();	
-//		( new Thread( new MultivariateNormal( means, covariances, time3, epService ) ) ).start();
+//		( new Thread( new MultivariateNormal( means, co-variances, time3, epService ) ) ).start();
 //		
 //		( new Thread( new Sine( xSin, ySin, time4, epService ) ) ).start();
 //		( new Thread( new Cosine( xCos, yCos, time5, epService ) ) ).start();
