@@ -14,7 +14,7 @@ public class Uniform implements Runnable {
 	private Date timer;
 	private PoissonDistribution elaps;
 	private double current;
-	private String genName = "Uniform Real";
+	private static String genName = "Uniform Real";
 	
 	// ESPER service provider
 	private EPServiceProvider myService;
@@ -34,7 +34,7 @@ public class Uniform implements Runnable {
 	   this.timer = another.timer;
 	   this.elaps = another.elaps;
 	   this.current = another.current;
-	   this.genName = another.genName;
+	   this.myService = another.myService;
 	}
 	
 	public void gen() {

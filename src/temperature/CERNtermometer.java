@@ -73,6 +73,19 @@ public class CERNtermometer implements Runnable {
         System.out.println(toString());
 	}
 	
+	// make a copy
+	public CERNtermometer( CERNtermometer another ) {
+		this.location = another.location;
+		this.temperature = another.temperature;
+		this.time = another.time;
+		
+		this.url = another.url;
+		this.tempFile = another.tempFile;
+		this.document = another.document;
+		
+		this.myService = another.myService;
+	}
+	
 	// Define what to do in the thread
 	public void run() {
 //		String t1URL = "http://137.138.196.84/tme.xml";
@@ -91,7 +104,7 @@ public class CERNtermometer implements Runnable {
 				this.updateTemperature();
 				
 				// once updated send
-				myService.getEPRuntime().sendEvent(this);
+				myService.getEPRuntime().sendEvent( new CERNtermometer(this) );
 				
 				newTemp = this.getTemperature();
 				

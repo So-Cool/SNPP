@@ -70,6 +70,17 @@ public class WeatherForecast implements Runnable {
 		System.out.println(toString());
 	}
 	
+	// make a copy
+	public WeatherForecast( WeatherForecast another ) {
+		this.feed = another.feed;
+		this.tempFile = another.tempFile;
+		this.location = another.location;
+		this.time = another.time;
+		this.yahooDate = another.yahooDate;
+		this.temperature = another.temperature;
+		this.myService = another.myService;
+	}
+	
 	// Define what to do in the thread
 	public void run() {
 //		String prevessin = "618067";
@@ -89,7 +100,7 @@ public class WeatherForecast implements Runnable {
 				this.updateTemperature();
 				
 				// once updated send
-				myService.getEPRuntime().sendEvent(this);
+				myService.getEPRuntime().sendEvent( new WeatherForecast(this) );
 				
 				newTemp = this.getTemperature();
 				

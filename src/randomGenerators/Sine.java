@@ -16,7 +16,7 @@ public class Sine implements Runnable {
 	private double y = 1;
 	private PoissonDistribution gen;
 	private Date timer;
-	private String genName = "Sine";
+	private static String genName = "Sine";
 	
 	// ESPER service provider
 	private EPServiceProvider myService;
@@ -38,7 +38,7 @@ public class Sine implements Runnable {
 	   this.current = another.current;
 	   this.x = another.x;
 	   this.y = another.y;
-	   this.genName = another.genName;
+	   this.myService = another.myService;
 	}
 	
 	public double gen( int timeToWait, double degrees ) {
