@@ -1,7 +1,10 @@
 package engine;
 
-public class ClusterInterface extends JFrame {
+// Graphical interface for clustering
+public class ClusterInterface {
 
+	/*
+	 *  extends JFrame
 	public static void main(String args[]) {
 		new HelloWorldFrame();
 	}
@@ -21,6 +24,5 @@ public class ClusterInterface extends JFrame {
 		}
 
 	}
-
-	
+	*/
 }

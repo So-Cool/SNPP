@@ -16,6 +16,11 @@ public class Afinity {
 	private List<Double> exemplars = new ArrayList<Double>();
 	
 	// Data for printing ??????
+		// Do separate class for printing and sending to esper engine
+		//-> which would just copy the necessary elements and send it as "new XYZ(x, y, z)"
+		//
+		// #clusters | mean values of each cluster | print to which class each newcomming point belong
+	//
 	private List<Double> printable = new ArrayList<Double>();
 	
 	// Remember the current cluster count
@@ -24,18 +29,33 @@ public class Afinity {
 	// Maximal size of reservoir
 	private int resSize;
 	
+	// number of data for initialization
+	private int initSize;
+	
+	// number of datapoints reseived
+	private int received = 0;
+	
 	// values for statistical tests
 	private double p;
+	
+	// Boolean flag for initial build
+	Boolean initialBuild = true;
 	
 	// ESPER engine
 	private EPServiceProvider EsperService;
 	
+	// FEATURES??????? - feature functions for signal, etc
+	// HOW TO HANDLE??????????????????????
+	
+	// Maximum number of points that can be remembered
+	// ????????????????????????
 	
 /////////////////////////////////////////////////////////////////////////////////////
 	// functions //
 	
 	// Initialize
-	public Afinity( int reservoirSize, double pValue, EPServiceProvider EPSP ) {
+	public Afinity( int reservoirSize, int initialSize, double pValue, EPServiceProvider EPSP ) {
+		this.initSize = initialSize;
 		this.resSize = reservoirSize;
 		this.EsperService = EPSP;
 		this.p = pValue;
@@ -43,6 +63,21 @@ public class Afinity {
 	
 	// Append new point
 	public void addNewPoint( double point ) {
+		// increment the counter of received points
+		received++;
+		
+		if ( received < initSize && initialBuild ) {
+			// append point for initial build
+			pool.add( point );
+			return;
+		} else if ( initialBuild ) {
+			// append point for initial build
+			pool.add( point );
+			// build initial model
+			build();
+			return;
+		}
+		
 		// check similarity to what we already have
 		Boolean sim = simmilarity( point );
 		
@@ -72,6 +107,12 @@ public class Afinity {
 	private Boolean needRebuild() {
 		/* FILL WITH CODE */
 		return true;
+	}
+
+	// Build the model
+	private void build() {
+		/* FILL WITH CODE */
+		initialBuild = false;
 	}
 	
 	// Rebuild the model
