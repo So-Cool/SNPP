@@ -67,6 +67,7 @@ public class Driver {
 		    public void run() {
 		    	System.out.println("\nClosing file writer.");
 		    	writer.close();
+		    	// Do WEKA comparison
 		    }
 		}));
 		

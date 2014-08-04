@@ -87,51 +87,38 @@ public class NormalListener implements com.espertech.esper.client.UpdateListener
 		System.out.println("Features=" + newEvents[0].getUnderlying()); // get("NormAvgCur") is *Object* // length
 		
 		// Extract features
-/*		double AvgCur   = Double.parseDouble( newEvents[0].get("AvgCur").toString() );
-		double StdCur   = Double.parseDouble( newEvents[0].get("StdCur").toString() );
-		double LagICur  = Double.parseDouble( newEvents[0].get("Lag1Cur").toString() );
-		double LagIICur = Double.parseDouble( newEvents[0].get("Lag2Cur").toString() );
+		double AvgCur   = Double.parseDouble( newEvents[0].get("AvgCur").toString() );
+		double StdCur   = (newEvents[0].get("StdCur") == null ) ? Double.NaN : Double.parseDouble( newEvents[0].get("StdCur").toString() );
+		double LagICur  = (newEvents[0].get("Lag1Cur") == null ) ? Double.NaN : Double.parseDouble( newEvents[0].get("Lag1Cur").toString() );
+		double LagIICur = (newEvents[0].get("Lag2Cur") == null ) ? Double.NaN : Double.parseDouble( newEvents[0].get("Lag2Cur").toString() );
 		double CurCur   = Double.parseDouble( newEvents[0].get("CurCur").toString() );
 		int    ThrCur   = Integer.parseInt( newEvents[0].get("thrCur").toString() );
 		String TimeCur  = newEvents[0].get("TimeCur").toString();
-*/		
+		
 		// Write features to file
-		System.out.println( newEvents[0].get("AvgCur").toString() );
 		csv.element( newEvents[0].get("AvgCur").toString() );
 		csv.comma();
-		
-		System.out.println( newEvents[0].get("StdCur") );
-		csv.element( newEvents[0].get("StdCur").toString() );
+		csv.element( (newEvents[0].get("Lag1Cur") == null) ? "?" : newEvents[0].get("StdCur").toString() );
 		csv.comma();
-		
-		System.out.println( newEvents[0].get("Lag1Cur") );
-		csv.element(newEvents[0].get("Lag1Cur").toString() );
+		csv.element( (newEvents[0].get("Lag1Cur") == null) ? "?" : newEvents[0].get("Lag1Cur").toString() );
 		csv.comma();
-		
-		System.out.println( newEvents[0].get("Lag2Cur") );
-		csv.element( newEvents[0].get("Lag2Cur").toString() );
+		csv.element( (newEvents[0].get("Lag2Cur") == null) ? "?" :  newEvents[0].get("Lag2Cur").toString() );
 		csv.comma();
-		
-		System.out.println( newEvents[0].get("CurCur").toString() );
 		csv.element( newEvents[0].get("CurCur").toString() );
 		csv.comma();
-		
-		System.out.println( newEvents[0].get("thrCur").toString() );
 		csv.element( newEvents[0].get("thrCur").toString() );
 		csv.comma();
-		
-		System.out.println( newEvents[0].get("TimeCur").toString() );
 		csv.element( newEvents[0].get("TimeCur").toString() );
 		csv.newLine();
 		
 		// Send features to clustering algorithm
-/*		clustering.getSome(AvgCur);
+		clustering.getSome(AvgCur);
 		clustering.getSome(StdCur);
 		clustering.getSome(LagICur);
 		clustering.getSome(LagIICur);
 		clustering.getSome(CurCur);
 		clustering.getSome(ThrCur);
-		clustering.getSome(TimeCur);*/
+		clustering.getSome(TimeCur);
 	}
 	
 }
