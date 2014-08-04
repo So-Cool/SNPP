@@ -9,6 +9,10 @@ public class FeatureExtractor {
 	// Lag1 value
 	private double lag1val = 0;
 	
+	public static double n10(double n) {
+		return n-10;
+	}
+	
 	private double lagged( double current ) {
 		double temp = current - lag1val;
 		lag1val = current;
