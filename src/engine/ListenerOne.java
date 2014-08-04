@@ -1,16 +1,14 @@
-package randomGenerators;
+package engine;
 
 import com.espertech.esper.client.EventBean;
 
-import engine.Afinity;
-import engine.GeneratorCSV;
 
-public class NormalListener implements com.espertech.esper.client.UpdateListener {
+public class ListenerOne implements com.espertech.esper.client.UpdateListener {
 
 	private Afinity clustering;
 	private GeneratorCSV csv;
 	
-	public NormalListener( Afinity cls ) {
+	public ListenerOne( Afinity cls ) {
 		this.clustering = cls;
 		// Create CSV writer
 		csv = new GeneratorCSV("NormalListener");
@@ -50,6 +48,7 @@ public class NormalListener implements com.espertech.esper.client.UpdateListener
 		csv.newLine();
 		
 		// Send features to clustering algorithm
+		// or better send them to channel
 		clustering.getSome(AvgCur);
 		clustering.getSome(StdCur);
 		clustering.getSome(LagICur);

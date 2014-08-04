@@ -12,7 +12,7 @@ import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 
-public class Driver {
+public class DriveTemp {
 
 	private static String t1URL = "http://137.138.196.84/tme.xml";
 	
@@ -33,7 +33,7 @@ public class Driver {
 		
 		
 		( new Thread( new CERNtermometer(t1URL, epService) ) ).start();
-		//( new Thread( new WeatherForecast( prevessin, units, epService ) ) ).start();
+		( new Thread( new WeatherForecast( prevessin, units, epService ) ) ).start();
 		
 		
 	}
