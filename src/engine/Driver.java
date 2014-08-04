@@ -53,12 +53,16 @@ public class Driver {
 		
 		// Create a clustering instance
 		Afinity clustering = new Afinity( 1, 1, 1.0, null );
+		
 		// Choose EPL statement
 		EPStatement features1 = FeatureExtractor.getStatement(epService, 1);
+		
 		// create new listener
 		ListenerOne NormList = new ListenerOne( clustering );
 		features1.addListener(NormList);
 
+		//////
+		
 		GeneratorCSV writer = NormList.getCsv();
 		( new Thread( new Killer( writer ) ) ).start();
 		
