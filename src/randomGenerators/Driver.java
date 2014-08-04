@@ -6,6 +6,7 @@ import com.espertech.esper.client.EPServiceProviderManager;
 
 import engine.Afinity;
 import engine.GeneratorCSV;
+import engine.Killer;
 
 public class Driver {
 	private static Boolean printout = false;
@@ -53,24 +54,14 @@ public class Driver {
 		NormalListener NormList = new NormalListener( epService, clustering, 1 );
 		NormList.getStatement().addListener(NormList);
 
-
+		GeneratorCSV writer = NormList.getCsv();
+		( new Thread( new Killer( writer ) ) ).start();
+		
 		( new Thread( new Normal( mean, variance, time1, epService, printout ) ) ).start();
 //		( new Thread( new Uniform( lower, upper, time2, epService, printout ) ) ).start();	
 //		( new Thread( new MultivariateNormal( means, co-variances, time3, epService, printout ) ) ).start();
 //		( new Thread( new Sine( xSin, ySin, time4, epService, printout ) ) ).start();
 //		( new Thread( new Cosine( xCos, yCos, time5, epService, printout ) ) ).start();
-		
-		
-		// close file writing on exit
-		final GeneratorCSV writer = NormList.getCsv();
-		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-		    public void run() {
-		    	System.out.println("\nClosing file writer.");
-		    	writer.close();
-		    	// Do WEKA comparison
-		    }
-		}));
-		
 	}
 	
 }

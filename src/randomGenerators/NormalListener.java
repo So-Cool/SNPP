@@ -119,6 +119,7 @@ public class NormalListener implements com.espertech.esper.client.UpdateListener
 		clustering.getSome(CurCur);
 		clustering.getSome(ThrCur);
 		clustering.getSome(TimeCur);
+		System.out.println( AvgCur + "," + StdCur + "," + LagICur + "," + LagIICur + "," + CurCur + "," + ThrCur + "," + TimeCur );
 	}
 	
 }
