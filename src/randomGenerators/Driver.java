@@ -5,18 +5,21 @@ import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 
 import engine.Afinity;
+import engine.GeneratorCSV;
 
 public class Driver {
+	private static Boolean printout = false;
+	
 	private static int time1 = 17;
-	private static int time2 = 122;
+	/*private static int time2 = 122;
 	private static int time3 = 122;
 	private static int time4 = 115;
-	private static int time5 = 113;
+	private static int time5 = 113;*/
 	
 	private static long mean = 123;
 	private static long variance = 17;
 	
-	private static long lower = 155;
+	/*private static long lower = 155;
 	private static long upper = 177;
 	
 	private static double[] means = {22, 123};
@@ -28,7 +31,7 @@ public class Driver {
 	private static double ySin = 1;
 
 	private static double xCos = 1;
-	private static double yCos = 1;
+	private static double yCos = 1;*/
 	
 	public static void main(String[] args) {
 		// Initialize ESPER configuration
@@ -51,11 +54,22 @@ public class Driver {
 		NormList.getStatement().addListener(NormList);
 
 
-		( new Thread( new Normal( mean, variance, time1, epService ) ) ).start();
-//		( new Thread( new Uniform( lower, upper, time2, epService ) ) ).start();	
-//		( new Thread( new MultivariateNormal( means, co-variances, time3, epService ) ) ).start();
-//		( new Thread( new Sine( xSin, ySin, time4, epService ) ) ).start();
-//		( new Thread( new Cosine( xCos, yCos, time5, epService ) ) ).start();
+		( new Thread( new Normal( mean, variance, time1, epService, printout ) ) ).start();
+//		( new Thread( new Uniform( lower, upper, time2, epService, printout ) ) ).start();	
+//		( new Thread( new MultivariateNormal( means, co-variances, time3, epService, printout ) ) ).start();
+//		( new Thread( new Sine( xSin, ySin, time4, epService, printout ) ) ).start();
+//		( new Thread( new Cosine( xCos, yCos, time5, epService, printout ) ) ).start();
+		
+		
+		// close file writing on exit
+		final GeneratorCSV writer = NormList.getCsv();
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+		    public void run() {
+		    	System.out.println("\nClosing file writer.");
+		    	writer.close();
+		    }
+		}));
+		
 	}
 	
 }

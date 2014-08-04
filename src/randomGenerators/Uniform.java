@@ -15,14 +15,16 @@ public class Uniform implements Runnable {
 	private PoissonDistribution elaps;
 	private double current;
 	private static String genName = "Uniform Real";
+	private Boolean printOut;
 	
 	// ESPER service provider
 	private EPServiceProvider myService;
 	
-	public Uniform( long lower, long upper, int inter, EPServiceProvider service ) {
+	public Uniform( long lower, long upper, int inter, EPServiceProvider service, Boolean print ) {
 		this.gen = new UniformRealDistribution( lower, upper );
 		this.elaps = new PoissonDistribution(inter);
 		this.timer = new Date( System.currentTimeMillis() );
+		this.printOut = print;
 		
 		// Initialize my service provider
         this.myService = service;
@@ -35,6 +37,7 @@ public class Uniform implements Runnable {
 	   this.elaps = another.elaps;
 	   this.current = another.current;
 	   this.myService = another.myService;
+	   this.printOut = another.printOut;
 	}
 	
 	public void gen() {
@@ -58,7 +61,8 @@ public class Uniform implements Runnable {
 			this.gen();
 			
 			// Print and send tick
-			System.out.println( toString() );
+			if( printOut )
+				System.out.println( toString() );
 			// once updated send
 			myService.getEPRuntime().sendEvent(this);
 			

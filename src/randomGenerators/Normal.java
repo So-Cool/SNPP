@@ -15,14 +15,16 @@ public class Normal implements Runnable {
 	private PoissonDistribution elaps;
 	private double current;
 	private static String genName = "Normal";
+	private Boolean printOut;
 	
 	// ESPER service provider
 	private EPServiceProvider myService;
 	
-	public Normal( long mean, long variance, int inter, EPServiceProvider service ) {
+	public Normal( long mean, long variance, int inter, EPServiceProvider service, Boolean print ) {
 		this.gen = new NormalDistribution( mean, variance );
 		this.elaps = new PoissonDistribution(inter);
 		this.timer = new Date( System.currentTimeMillis() );
+		this.printOut = print;
 		
 		// Initialize my service provider
         this.myService = service;
@@ -35,6 +37,7 @@ public class Normal implements Runnable {
 	   this.elaps = another.elaps;
 	   this.current = another.current;
 	   this.myService = another.myService;
+	   this.printOut = another.printOut;
 	}
 	
 	public void gen() {
@@ -57,7 +60,8 @@ public class Normal implements Runnable {
 			this.gen();
 			
 			// Print and send tick
-			System.out.println( this.toString() );
+			if( printOut )
+				System.out.println( this.toString() );
 			// once updated send
 			myService.getEPRuntime().sendEvent( new Normal(this) );
 			

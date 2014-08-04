@@ -17,15 +17,17 @@ public class Sine implements Runnable {
 	private PoissonDistribution gen;
 	private Date timer;
 	private static String genName = "Sine";
+	private Boolean printOut;
 	
 	// ESPER service provider
 	private EPServiceProvider myService;
 	
-	public Sine( double xScale, double yScale, int jump, EPServiceProvider service ) {
+	public Sine( double xScale, double yScale, int jump, EPServiceProvider service, Boolean print ) {
 		this.timer = new Date( System.currentTimeMillis() );
 		this.gen = new PoissonDistribution( jump );
 		this.x = xScale;
 		this.y = yScale;
+		this.printOut = print;
 		
 		// Initialize my service provider
         this.myService = service;
@@ -39,6 +41,7 @@ public class Sine implements Runnable {
 	   this.x = another.x;
 	   this.y = another.y;
 	   this.myService = another.myService;
+	   this.printOut = another.printOut;
 	}
 	
 	public double gen( int timeToWait, double degrees ) {
@@ -71,7 +74,8 @@ public class Sine implements Runnable {
 		    	degrees = degrees % 360;
 		    
 			// Print and send tick
-			System.out.println( toString() );
+		    if( printOut )
+		    	System.out.println( toString() );
 			// once updated send
 			myService.getEPRuntime().sendEvent(this);
 		}			

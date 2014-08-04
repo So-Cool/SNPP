@@ -124,4 +124,10 @@ public class Afinity {
 	public int getClusters() { return clusters; }
 	// Get the clustering in readable format
 	public List<Double> getPrintable() { return printable; }
+	
+	
+	
+	public void getSome(Object lol) {
+		//do sweet nothing
+	}
 }

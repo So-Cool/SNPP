@@ -15,3 +15,6 @@ bin/*
 
 # Eclipse
 .classpath
+
+# CSV results
+*.csv
