@@ -3,8 +3,10 @@ package randomGenerators;
 import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
+import com.espertech.esper.client.EPStatement;
 
 import engine.Afinity;
+import engine.FeatureExtractor;
 import engine.GeneratorCSV;
 import engine.Killer;
 
@@ -49,10 +51,11 @@ public class Driver {
 		
 		// Create a clustering instance
 		Afinity clustering = new Afinity( 1, 1, 1.0, null );
-		
+		// Choose EPL statement
+		EPStatement features1 = FeatureExtractor.getStatement(epService, 1);
 		// create new listener
-		NormalListener NormList = new NormalListener( epService, clustering, 1 );
-		NormList.getStatement().addListener(NormList);
+		NormalListener NormList = new NormalListener( clustering );
+		features1.addListener(NormList);
 
 		GeneratorCSV writer = NormList.getCsv();
 		( new Thread( new Killer( writer ) ) ).start();

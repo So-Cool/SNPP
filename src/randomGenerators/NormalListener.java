@@ -1,7 +1,5 @@
 package randomGenerators;
 
-import com.espertech.esper.client.EPServiceProvider;
-import com.espertech.esper.client.EPStatement;
 import com.espertech.esper.client.EventBean;
 
 import engine.Afinity;
@@ -10,74 +8,14 @@ import engine.GeneratorCSV;
 public class NormalListener implements com.espertech.esper.client.UpdateListener {
 
 	private Afinity clustering;
-	private EPServiceProvider epService;
 	private GeneratorCSV csv;
 	
-	
-	private int features;
-	private String expression;
-	private EPStatement statement;
-	
-	/////////////////////////////features extractors///////////////////////////////
-	public static int threshold(double n) {
-		if( n > 100 )
-			return 1;
-		else
-			return 0;
-	}
-	public static int gradient(double n) {
-		if( n < 25 )
-			return 0;
-		else if( n < 50 )
-			return 1;
-		else if( n < 75 )
-			return 2;
-		else if( n < 100 )
-			return 3;
-		else if( n < 125 )
-			return 4;
-		else if( n < 150 )
-			return 5;
-		else
-			return 6;
-	}
-	///////////////////////////////////////////////////////////////////////////////
-	
-	
-	public NormalListener( EPServiceProvider epsp, Afinity cls, int type ) {
+	public NormalListener( Afinity cls ) {
 		this.clustering = cls;
-		this.epService = epsp;
-
-		switch (type) {
-		case 1: this.expression = "select avg(current) as AvgCur, stddev(current) as StdCur, (current - prev(1, current)) as Lag1Cur, "+
-					"(current - prev(2, current)) as Lag2Cur, current as CurCur, randomGenerators.NormalListener.threshold(current) as thrCur, "+
-					"timer as TimeCur from NormTick.win:time(60 sec)";
-				this.features = 7;
-				break;
-		case 2: this.expression = "select avg(current) as AvgCur, stddev(current) as StdCur, (current - prev(1, current)) as Lag1Cur, "+
-					"(current - prev(2, current)) as Lag2Cur, current as CurCur, randomGenerators.NormalListener.threshold(current) as thrCur, "+
-					"timer as TimeCur from NormTick.win:time_batch(1 min)";
-				this.features = 7;
-				break;
-		case 3: this.expression = "select avg(current) as AvgCur, stddev(current) as StdCur, (current - prev(1, current)) as Lag1Cur, "+
-					"(current - prev(2, current)) as Lag2Cur, current as CurCur, randomGenerators.NormalListener.threshold(current) as thrCur, "+
-					"timer as TimeCur from NormTick.win:length(10)";
-				this.features = 7;
-				break;
-		}
-
-		this.statement = epService.getEPAdministrator().createEPL(expression);
-		
 		// Create CSV writer
 		csv = new GeneratorCSV("NormalListener");
 		csv.header( "AvgCur,StdCur,LagICur,LagIICur,CurCur,ThrCur,TimeCur" );
-		
-		// Acknowledge clustering algorithm of features number
-		clustering.getSome(features);
 	}
-	
-	// Get the statement back
-	public EPStatement getStatement() { return this.statement; }
 	
 	// Get the CSV handler back
 	public GeneratorCSV getCsv() { return this.csv; }
