@@ -16,13 +16,21 @@ public class NormalListener implements com.espertech.esper.client.UpdateListener
 	private String expression;
 	private EPStatement statement;
 	
+	/////////////////////////////features extractors///////////////////////////////
+	public static double n10(double n) {
+		return n-10;
+	}
+///////////////////////////////////////////////////////////////////////////////
+	
+	
 	public NormalListener( EPServiceProvider epsp, Afinity cls, int type ) {
 		this.clustering = cls;
 		this.epService = epsp;
 
 		switch (type) {
-		case 1: this.expression = "select avg(current) as NormAvgCur, stddev(current) as NormStdCur, (current - prev(1, current)) as NormLag1Cur, "+
-					"(current - prev(2, current)) as NormLag2Cur, current as NormCurCur, engine.FeatureExtractor.n10(current) as Normn10Cur from NormTick.win:time(30 sec)";
+		case 1: this.expression = "select avg(current) as AvgCur, stddev(current) as StdCur, (current - prev(1, current)) as Lag1Cur, "+
+					"(current - prev(2, current)) as Lag2Cur, current as CurCur, engine.FeatureExtractor.n10(current) as n10Cur "+
+					"from NormTick.win:time(30 sec)";
 				this.features = 5;
 				break;
 		case 2: this.expression = "select avg(current) as NormAvgCur from NormTick.win:time(30 sec)";
