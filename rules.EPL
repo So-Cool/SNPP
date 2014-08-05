@@ -1,0 +1,42 @@
+// File Structure
+// [module module_name;]
+// [uses module_name; | import import_name;] [uses module_name; | import import_name;] [...]
+// [epl_statement;] [epl_statement;] [...]
+
+// Declare the name for the module
+module SpringfieldNuclearPowerPlant.engine.ExternalFeatureExtractor;
+
+// Declare other module(s) that this module depends on
+//uses xxx.xxx;
+
+// Import any Java/.NET classes in an application package 
+import randomGenerators.*;
+import engine.FeatureExtractor;
+
+// Declare an event type based on a Java class in the package that was imported as above
+create schema SinTick  as Sine;
+create schema CosTick  as Cosine;
+create schema NormTick as Normal;
+create schema UnifTick as Uniform;
+create schema NmvtTick as MultivariateNormal;
+
+// Time window statement
+@Name('Time-frame')
+@Description('Extract features form time window')
+select avg(current) as AvgCur, stddev(current) as StdCur, (current - prev(1, current)) as Lag1Cur, 
+(current - prev(2, current)) as Lag2Cur, current as CurCur, engine.FeatureExtractor.threshold(current) as thrCur, 
+timer as TimeCur from NormTick.win:time(60 sec);
+
+// Batch window statement
+@Name('Batch-frame')
+@Description('Extract features form batch window')
+select avg(current) as AvgCur, stddev(current) as StdCur, (current - prev(1, current)) as Lag1Cur, 
+(current - prev(2, current)) as Lag2Cur, current as CurCur, engine.FeatureExtractor.threshold(current) as thrCur, 
+timer as TimeCur from NormTick.win:time_batch(1 min);
+
+// Length window statement
+@Name('Length-frame')
+@Description('Extract features form time window')
+select avg(current) as AvgCur, stddev(current) as StdCur, (current - prev(1, current)) as Lag1Cur, 
+(current - prev(2, current)) as Lag2Cur, current as CurCur, engine.FeatureExtractor.threshold(current) as thrCur, 
+timer as TimeCur from NormTick.win:length(10);
