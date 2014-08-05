@@ -127,7 +127,10 @@ public class Afinity {
 	
 	
 	
-	public void getSome(Object lol) {
-		//do sweet nothing
+	public void getSome(Object o) {
+		if( o instanceof double[] ) {}
+//			System.out.println( "Data received!" );
+		if( o instanceof String ) {}
+//			System.out.println( "TimeStamp received!" );
 	}
 }
