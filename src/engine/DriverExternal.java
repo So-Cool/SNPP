@@ -54,13 +54,13 @@ public class DriverExternal {
 		Afinity clustering = new Afinity( 1, 1, 1.0, null );
 		
 		// create new listener
-		ListenerOne NormList = new ListenerOne( clustering );
+		ListenerFeatures ListFea = new ListenerFeatures( clustering );
 		
-		epService.getEPAdministrator().getStatement("Time-frame").addListener( NormList );
+		epService.getEPAdministrator().getStatement("Time-frame-fea").addListener( ListFea );
 
 		////////////////////////////////////////////////////////////////////////////////////
 	
-		GeneratorCSV writer = NormList.getCsv();
+		GeneratorCSV writer = ListFea.getCsv();
 		( new Thread( new Killer( writer ) ) ).start();
 	
 		( new Thread( new Normal( mean, variance, time1, epService, printout ) ) ).start();
