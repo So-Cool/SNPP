@@ -12,7 +12,7 @@ public class ListenerFeatures implements com.espertech.esper.client.UpdateListen
 		this.clustering = cls;
 		// Create CSV writer
 		csv = new GeneratorCSV(name);
-		csv.header( "F1,F2,F3,F4,F5,F6,F7,TS" );
+		csv.header( "F1,F2,F3,F4,F5,F6,F7,FN,TS" );
 	}
 	
 	// Get the CSV handler back
