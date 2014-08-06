@@ -5,18 +5,21 @@ import com.espertech.esper.client.EventBean;
 
 public class ListenerOne implements com.espertech.esper.client.UpdateListener {
 
+	private String name = "NormalListener";
 	private Afinity clustering;
 	private GeneratorCSV csv;
 	
 	public ListenerOne( Afinity cls ) {
 		this.clustering = cls;
 		// Create CSV writer
-		csv = new GeneratorCSV("NormalListener");
+		csv = new GeneratorCSV(name);
 		csv.header( "AvgCur,StdCur,LagICur,LagIICur,CurCur,ThrCur,TimeCur" );
 	}
 	
 	// Get the CSV handler back
 	public GeneratorCSV getCsv() { return this.csv; }
+	// Get the name back
+	public String getName() { return this.name; }
 	
 	@Override
 	public void update(EventBean[] newEvents, EventBean[] oldEvents) {

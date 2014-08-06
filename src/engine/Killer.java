@@ -5,10 +5,12 @@ import java.io.IOException;
 public class Killer implements Runnable {
 
 	// close file writing on exit
-	private GeneratorCSV writer;
+	private GeneratorCSV[] writer;
+	private String[] name;
 	
-	public Killer( GeneratorCSV wrt ) {
+	public Killer( GeneratorCSV[] wrt, String [] nam ) {
 		this.writer = wrt;
+		this.name = nam;
 	}
 	
 	public void run() {
@@ -21,10 +23,13 @@ public class Killer implements Runnable {
 			}
 			
 			System.out.println("Closing file writer.");
-			writer.close();
+			for (GeneratorCSV element : writer)
+			    element.close();
 			
 			// Do WEKA comparison
-			System.out.println("Doing WEKA comparison...not yet.");
+			System.out.println("Doing WEKA comparison...");
+			for (String element : name)
+				System.out.println(element + ".CSV");
 			
 			System.out.println("Exiting.");
 			System.exit(0);

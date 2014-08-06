@@ -43,7 +43,7 @@ timer as TimeCur from NormTick.win:length(10);
 
 // Time window statement for FEATURES
 @Name('Time-frame-fea')
-@Description('Extract features form time window for features extractions---up to 7 features + time stamp')
+@Description('Extract features form time window for features extractions---up to 7 features + features number + time stamp')
 select avg(current) as F1, stddev(current) as F2, (current - prev(1, current)) as F3,
 (current - prev(2, current)) as F4, current as F5, engine.FeatureExtractor.threshold(current) as F6, 
-timer as TS from NormTick.win:time(60 sec);
+6 as FN , timer as TS from NormTick.win:time(60 sec);

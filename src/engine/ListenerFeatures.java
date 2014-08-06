@@ -4,18 +4,21 @@ import com.espertech.esper.client.EventBean;
 
 public class ListenerFeatures implements com.espertech.esper.client.UpdateListener {
 
+	private String name = "ListenerFeatures";
 	private Afinity clustering;
 	private GeneratorCSV csv;
 	
 	public ListenerFeatures( Afinity cls ) {
 		this.clustering = cls;
 		// Create CSV writer
-		csv = new GeneratorCSV("ListenerFeatures");
+		csv = new GeneratorCSV(name);
 		csv.header( "F1,F2,F3,F4,F5,F6,F7,TS" );
 	}
 	
 	// Get the CSV handler back
 	public GeneratorCSV getCsv() { return this.csv; }
+	// Get the name back
+	public String getName() { return this.name; }
 	
 	@Override
 	public void update(EventBean[] newEvents, EventBean[] oldEvents) {
@@ -46,6 +49,9 @@ public class ListenerFeatures implements com.espertech.esper.client.UpdateListen
 		double F7 = Double.NaN;
 		if( container.contains("F7") )
 			F7 = (newEvents[0].get("F7") == null ) ? Double.NaN : Double.parseDouble( newEvents[0].get("F7").toString() );
+		double FN = Double.NaN;
+		if( container.contains("FN") )
+			FN = (newEvents[0].get("FN") == null ) ? Double.NaN : Double.parseDouble( newEvents[0].get("FN").toString() );
 		String TS = "";
 		if( container.contains("TS") )
 			TS  = (newEvents[0].get("TS") == null ) ? "" : newEvents[0].get("TS").toString();
@@ -65,14 +71,17 @@ public class ListenerFeatures implements com.espertech.esper.client.UpdateListen
 		csv.comma();
 		csv.element( Double.isNaN(F7) ? "?" : Double.toString(F7) );
 		csv.comma();
+		csv.element( Double.isNaN(FN) ? "?" : Double.toString(FN) );
+		csv.comma();
 		csv.element( (TS == "") ? "?" : TS );
 		csv.newLine();
 		
 		// Send features to clustering algorithm
 		double[] x = {F1, F2, F3, F4, F5, F6, F7};
 		clustering.getSome( x );
+		clustering.getSome( FN );
 		clustering.getSome( TS );
-		System.out.println( F1 + "," + F2 + "," + F3 + "," + F4 + "," + F5 + "," + F6 + "," + F7 + "," + TS );
+		System.out.println( F1 + "," + F2 + "," + F3 + "," + F4 + "," + F5 + "," + F6 + "," + F7 + " | " + FN + "," + TS );
 	}
 	
 }
