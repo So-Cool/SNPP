@@ -8,6 +8,9 @@ import sys
 import csv
 from pprint import pprint
 
+import time
+import datetime
+
 # CSV files to visualize
 filesCols = []
 
@@ -46,6 +49,9 @@ if __name__ == '__main__':
 			# graph of each feature along time STAMP
 			print col
 			print oneFile[-1]
+
+			date = oneFile[-1][1]
+			print time.mktime(datetime.datetime.strptime( " ".join(list() [:-2]) + " " + list(oneFile[-1][1])[-1], "%c" ).timetuple())
 			pass
 	
 	# graph of clusters 1x1 for each feature
