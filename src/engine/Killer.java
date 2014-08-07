@@ -6,6 +6,8 @@ import java.util.List;
 
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
+import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.Remove;
 
 public class Killer implements Runnable {
 
@@ -36,8 +38,7 @@ public class Killer implements Runnable {
 			List<Instances> sets = new ArrayList<Instances>();
 			Instances set;
 			DataSource source;
-			int attributesAll = -1;
-			int attributes = -1;
+
 			for (String element : name) {
 				try {
 					System.out.println(element + ".CSV");
@@ -46,28 +47,53 @@ public class Killer implements Runnable {
 					set = source.getDataSet();
 
 					// setting class attribute
-					if (set.classIndex() == -1) {
-						attributesAll = set.numAttributes();
-						attributes = (int) ( set.attributeToDoubleArray( set.numAttributes() - 2 ) )[0];
-						
-						for( int i = attributesAll; i > attributes; --i ) {
-							set.deleteAttributeAt( i );
-						}
-						System.out.println( "Lo: " + set.numAttributes() );
+					if (set.classIndex() == -1)
+						set.setClassIndex(set.numAttributes() - 1);
 
-						set.setClassIndex( attributes );
-					}
-					
+
+					int attributesAll = set.numAttributes();
+					int attributes = (int) set.attributeToDoubleArray( set.numAttributes() - 2 )[0];
+					String[] options = new String[2];
+					// "range"
+					options[0] = "-R";
+					// first attribute
+					options[1] = Integer.toString( attributes+1 ) + "-" + Integer.toString(attributesAll);
+					// new instance of filter
+					Remove remove = new Remove();
+					// set options
+					remove.setOptions( options );
+					// inform filter about data-set **AFTER** setting options
+					remove.setInputFormat( set );
+					// apply filter
+					set = Filter.useFilter( set, remove );
 					
 					sets.add( set );
-						
+
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			// Ask which features use for classification, or better use all defined features
-
+			
+			for (Instances setElement : sets) {
+//				DBSCAN
+				// weka.clusterers.SimpleKMeans -N 2 -A "weka.core.EuclideanDistance -R first-last" -I 500 -S 10
+			}
+			
+			// call Python script for visualization
+			try {
+				System.out.println( "Visualizing results..." );
+				String fNames = " ";
+				for (String element : name)
+					fNames += ( element + ".csv " );
+					Runtime.getRuntime().exec("./visualize.py" + fNames).waitFor();
+				} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			System.out.println("Exiting.");
 			System.exit(0);
