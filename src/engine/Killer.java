@@ -75,10 +75,12 @@ public class Killer implements Runnable {
 				}
 			}
 			
-			for (Instances setElement : sets) {
+//			for (Instances setElement : sets) {
 //				DBSCAN
 				// weka.clusterers.SimpleKMeans -N 2 -A "weka.core.EuclideanDistance -R first-last" -I 500 -S 10
-			}
+//			}
+			
+			// Clusteriong evaluation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			
 			// call Python script for visualization
 			try {

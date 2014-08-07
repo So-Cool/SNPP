@@ -45,6 +45,7 @@ if __name__ == '__main__':
 		for col in oneFile[:arguments]:
 			# graph of each feature along time STAMP
 			print col
+			print oneFile[-1]
 			pass
 	
 	# graph of clusters 1x1 for each feature
