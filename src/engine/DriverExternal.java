@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import randomGenerators.*;
+import afinityPropagation.Afinity;
 
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
@@ -13,6 +14,8 @@ import com.espertech.esper.client.deploy.DeploymentException;
 import com.espertech.esper.client.deploy.EPDeploymentAdmin;
 import com.espertech.esper.client.deploy.Module;
 import com.espertech.esper.client.deploy.ParseException;
+
+import featureExtractors.ListenerFeatures;
 
 public class DriverExternal {
 	private static Boolean printout = false;

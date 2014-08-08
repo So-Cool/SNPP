@@ -1,4 +1,4 @@
-package engine;
+package afinityPropagation;
 
 // Graphical interface for clustering
 public class ClusterInterface {

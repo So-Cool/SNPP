@@ -1,6 +1,10 @@
-package engine;
+package featureExtractors;
+
+import afinityPropagation.Afinity;
 
 import com.espertech.esper.client.EventBean;
+
+import engine.GeneratorCSV;
 
 public class ListenerFeatures implements com.espertech.esper.client.UpdateListener {
 
