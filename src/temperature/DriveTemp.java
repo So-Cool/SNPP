@@ -6,8 +6,6 @@ import javax.naming.NamingException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
-import testRun.CEPListener;
-
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
