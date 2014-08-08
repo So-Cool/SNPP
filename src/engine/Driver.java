@@ -65,7 +65,7 @@ public class Driver {
 		
 		GeneratorCSV[] writer = { NormList.getCsv() };
 		String[] name = { NormList.getName() };
-		( new Thread( new Killer( writer, name ) ) ).start();
+		( new Thread( new Killer( writer, name, null ) ) ).start();
 		
 		( new Thread( new Normal( mean, variance, time1, epService, printout ) ) ).start();
 //		( new Thread( new Uniform( lower, upper, time2, epService, printout ) ) ).start();	

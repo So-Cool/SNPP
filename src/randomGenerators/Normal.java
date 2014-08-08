@@ -7,7 +7,7 @@ import org.apache.commons.math3.distribution.NormalDistribution;
 
 import com.espertech.esper.client.EPServiceProvider;
 
-public class Normal extends RG implements Runnable{
+public class Normal extends RG{
 	
 	private Boolean running = true;
 
@@ -76,10 +76,8 @@ public class Normal extends RG implements Runnable{
 				e.printStackTrace();
 			}
 		}
+		closer();
 	}
-	
-	// Stop the thread
-	public void stop() { this.running = false; }
 	
 	// Return string
     @Override

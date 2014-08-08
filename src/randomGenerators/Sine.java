@@ -9,7 +9,7 @@ import com.espertech.esper.client.EPServiceProvider;
 
 // Math.PI
 
-public class Sine extends RG implements Runnable{
+public class Sine extends RG{
 
 	private Boolean running = true;
 	
@@ -80,15 +80,13 @@ public class Sine extends RG implements Runnable{
 		    	System.out.println( toString() );
 			// once updated send
 			myService.getEPRuntime().sendEvent(this);
-		}			
+		}
+		closer();
 	}
 	
 	// Current getter
 	public double getCurrent() { return this.current; }
 	public Date getTimer() { return this.timer; }
-	
-	// Stop the thread
-	public void stop() { this.running = false; }
 	
 	// Return string
     @Override

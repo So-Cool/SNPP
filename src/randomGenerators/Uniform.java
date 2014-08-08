@@ -7,7 +7,7 @@ import org.apache.commons.math3.distribution.UniformRealDistribution;
 
 import com.espertech.esper.client.EPServiceProvider;
 
-public class Uniform extends RG implements Runnable{
+public class Uniform extends RG{
 	
 	private Boolean running = true;
 
@@ -76,15 +76,7 @@ public class Uniform extends RG implements Runnable{
 				e.printStackTrace();
 			}
 		}
+		closer();
 	}
-	
-	// Stop the thread
-	public void stop() { this.running = false; }
-	
-	// Return string
-    @Override
-    public String toString() {
-        return "Tick! -> Generator: " + genName + " | Sample: " + current + " | Time: " + timer;
-    }
 	
 }

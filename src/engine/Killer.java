@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import randomGenerators.RG;
-
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
@@ -35,7 +34,19 @@ public class Killer implements Runnable {
 			
 			// Stop threads
 			for (RG o : threads) {
+				System.out.println( "Waiting for " + o.getClass() + " to shut down..." );
 			    o.stop();
+			    synchronized ( o ) {
+			    	if (!o.done()) {
+			    		try {
+			    			o.wait();
+			    		} catch (InterruptedException e) {
+			    			// TODO Auto-generated catch block
+			    			e.printStackTrace();
+			    		}
+			    	}
+				}
+			    System.out.println( o.getClass() + " closed." );
 			}
 			
 			System.out.println("Closing file writer.");
