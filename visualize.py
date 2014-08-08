@@ -45,10 +45,21 @@ def dateToStamp( dateList ):
 		stamps.append( time.mktime(datetime.datetime.strptime( d3, "%c" ).timetuple()) )
 	return stamps
 
+# scan collumns for abnormalities
+def scanCols():
+	for i in range( len(filesCols) ):
+		for j in range( len(filesCols[i]) ):
+			for k in range( len(filesCols[i][j]) ):
+				tr = filesCols[i][j][k]
+				filesCols[i][j][k] = float('nan') if ( tr == "?" ) else tr
+
 
 if __name__ == '__main__':
 	# extract the collumns from files
 	extractCols( sys.argv )
+
+	# scan collumns for abnormalities, i.e. '?'
+	scanCols()
 
 	# for each file
 	for oneFile in filesCols:
@@ -59,14 +70,45 @@ if __name__ == '__main__':
 		arguments = int(float(oneFile[-2][1]))
 
 		# for each collumn
-		for col in oneFile[:arguments]:
+		for i, col in enumerate( oneFile[:arguments]):
+			print zip( stamps, col )
 			# graph of each feature along time STAMP
-			print col
-			print stamps
+			plt.figure(i)
+			plt.plot(stamps,col)
+			plt.scatter(stamps,col)
+			plt.xlabel("time stamp")
+			plt.ylabel("value")
+			plt.title("Feature " + str(i+1) + " in time")
+			
+			# set constant time axes
+			ax = plt.axis()
+			dif = stamps[1] - stamps[0]
+			plt.axis( [ stamps[0]-dif, stamps[-1]+dif, ax[2], ax[3] ] )
+
+			plt.savefig("feature"+str(i+1)+".png", dpi=300, pad_inches=0.2)
+			plt.show()
 	
 	# graph of clusters 1x1 for each feature
+	for oneFile in filesCols:
 
-	# np.random.seed(9221999)
-	# data = randn(75)
-	# plt.hist(data);
-	# plt.show()
+		# get the number of usefull arguments
+		arguments = int(float(oneFile[-2][1]))
+
+		for i, col1 in enumerate( oneFile[:arguments]):
+			for j, col2 in enumerate( oneFile[:arguments]):
+
+				# do not print x to x
+				if i == j :
+					continue
+
+				# print zip( col1, col2 )
+				# graph of each feature along time STAMP
+				plt.figure(7+i)
+				plt.scatter(col1,col2)
+				plt.xlabel( "Feature " + str(i+1) )
+				plt.ylabel( "Feature " + str(j+1) )
+				plt.title("Feature " + str(i+1) + " against feature " + str(j+1))
+				# plt.axis([ 0, 1, -0.075, -0.035 ])
+				plt.savefig("f"+str(i+1)+"f"+str(j+1)+".png", dpi=300, pad_inches=0.2)
+				plt.show()
+				# !!!!!!!!!!! GIVE COLOURS TO POINTS HERE !!!!!!!!!!!!!!! #
