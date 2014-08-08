@@ -16,7 +16,6 @@ import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 
-import featureExtractors.FeatureExtractor;
 import featureExtractors.ListenerOne;
 
 
@@ -46,6 +45,28 @@ public class Driver {
 //	private static double xCos = 1;
 //	private static double yCos = 1;
 	
+	public static String getStatement( int type ) {
+
+		String expression = "";
+
+		switch (type) {
+			case 1: expression = "select avg(current) as AvgCur, stddev(current) as StdCur, (current - prev(1, current)) as Lag1Cur, "+
+						"(current - prev(2, current)) as Lag2Cur, current as CurCur, engine.FeatureExtractor.threshold(current) as thrCur, "+
+						"timer as TimeCur from NormTick.win:time(60 sec)";
+					break;
+			case 2: expression = "select avg(current) as AvgCur, stddev(current) as StdCur, (current - prev(1, current)) as Lag1Cur, "+
+						"(current - prev(2, current)) as Lag2Cur, current as CurCur, engine.FeatureExtractor.threshold(current) as thrCur, "+
+						"timer as TimeCur from NormTick.win:time_batch(1 min)";
+					break;
+			case 3: expression = "select avg(current) as AvgCur, stddev(current) as StdCur, (current - prev(1, current)) as Lag1Cur, "+
+						"(current - prev(2, current)) as Lag2Cur, current as CurCur, engine.FeatureExtractor.threshold(current) as thrCur, "+
+						"timer as TimeCur from NormTick.win:length(10)";
+					break;
+		}
+
+		return expression;
+	}
+	
 	public static void main(String[] args) {
 		// Initialize ESPER configuration
 		Configuration cepConfig = new Configuration();
@@ -63,9 +84,10 @@ public class Driver {
 		Afinity clustering = new Afinity( 1, 1, 1.0, null );
 		
 		// create new listener
-		ListenerOne List = new ListenerOne( clustering );
+		ListenerOne List = new ListenerOne( clustering, 7 );
 		// Choose EPL statement
-		EPStatement features = FeatureExtractor.getStatement(epService, 1);
+		
+		EPStatement features = epService.getEPAdministrator().createEPL( getStatement(1) );
 		features.addListener(List);
 
 		////////////////////////////////////////////////////////////////////////////////////

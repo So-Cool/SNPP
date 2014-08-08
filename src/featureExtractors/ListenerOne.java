@@ -11,9 +11,12 @@ public class ListenerOne implements com.espertech.esper.client.UpdateListener {
 	private String name = "NormalListener";
 	private Afinity clustering;
 	private GeneratorCSV csv;
+	private int features;
 	
-	public ListenerOne( Afinity cls ) {
+	
+	public ListenerOne( Afinity cls, int feats ) {
 		this.clustering = cls;
+		this.features = feats;
 		// Create CSV writer
 		csv = new GeneratorCSV(name);
 		csv.header( "AvgCur,StdCur,LagICur,LagIICur,CurCur,ThrCur,TimeCur" );
@@ -62,6 +65,7 @@ public class ListenerOne implements com.espertech.esper.client.UpdateListener {
 		clustering.getSome(CurCur);
 		clustering.getSome(ThrCur);
 		clustering.getSome(TimeCur);
+		clustering.getSome(features);
 		System.out.println( AvgCur + "," + StdCur + "," + LagICur + "," + LagIICur + "," + CurCur + "," + ThrCur + "," + TimeCur );
 	}
 	
