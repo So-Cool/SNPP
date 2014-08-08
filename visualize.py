@@ -98,7 +98,7 @@ if __name__ == '__main__':
 			for j, col2 in enumerate( oneFile[:arguments]):
 
 				# do not print x to x
-				if i == j :
+				if i == j or j < i :
 					continue
 
 				# print zip( col1, col2 )
