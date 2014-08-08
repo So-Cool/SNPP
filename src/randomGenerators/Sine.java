@@ -11,22 +11,13 @@ import com.espertech.esper.client.EPServiceProvider;
 
 public class Sine extends RG{
 
-	private Boolean running = true;
-	
-	private double current = 0;
 	private double x = 1;
 	private double y = 1;
-	private PoissonDistribution gen;
-	private Date timer;
-	private static String genName = "Sine";
-	private Boolean printOut;
-	
-	// ESPER service provider
-	private EPServiceProvider myService;
 	
 	public Sine( double xScale, double yScale, int jump, EPServiceProvider service, Boolean print ) {
+		genName = "Sine";
 		this.timer = new Date( System.currentTimeMillis() );
-		this.gen = new PoissonDistribution( jump );
+		this.elaps = new PoissonDistribution( jump );
 		this.x = xScale;
 		this.y = yScale;
 		this.printOut = print;
@@ -37,7 +28,7 @@ public class Sine extends RG{
 	
 	// get copy of object
 	public Sine(Sine another) {
-	   this.gen = another.gen;
+	   this.elaps = another.elaps;
 	   this.timer = another.timer;
 	   this.current = another.current;
 	   this.x = another.x;
@@ -60,12 +51,10 @@ public class Sine extends RG{
 		
 	    return degrees;
 	}
-	public int waita() {
-		return this.gen.sample();
-	}
 	
+	@Override
 	public void run() {
-		int timeToWait = gen.sample();
+		int timeToWait = elaps.sample();
 		double degrees = 0;
 		
 		while( running ) {
@@ -83,15 +72,5 @@ public class Sine extends RG{
 		}
 		closer();
 	}
-	
-	// Current getter
-	public double getCurrent() { return this.current; }
-	public Date getTimer() { return this.timer; }
-	
-	// Return string
-    @Override
-    public String toString() {
-        return "Tick! -> Generator: " + genName + " | Sample: " + current + " | Time: " + timer;
-    }
 		
 }

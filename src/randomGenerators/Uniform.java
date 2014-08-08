@@ -8,21 +8,12 @@ import org.apache.commons.math3.distribution.UniformRealDistribution;
 import com.espertech.esper.client.EPServiceProvider;
 
 public class Uniform extends RG{
-	
-	private Boolean running = true;
 
 	// generate timeToWait according to Poisson distribution
 	private UniformRealDistribution gen;
-	private Date timer;
-	private PoissonDistribution elaps;
-	private double current;
-	private static String genName = "Uniform Real";
-	private Boolean printOut;
-	
-	// ESPER service provider
-	private EPServiceProvider myService;
 	
 	public Uniform( long lower, long upper, int inter, EPServiceProvider service, Boolean print ) {
+		genName = "Uniform Real";
 		this.gen = new UniformRealDistribution( lower, upper );
 		this.elaps = new PoissonDistribution(inter);
 		this.timer = new Date( System.currentTimeMillis() );
@@ -46,14 +37,9 @@ public class Uniform extends RG{
 		this.current = this.gen.sample();
 		this.timer.setTime( System.currentTimeMillis() );
 	}
-	public long waita() {
-		return this.elaps.sample();
-	}
-	
-	public Date getTimer() { return this.timer; }
-	public double getCurrent() { return this.current; }
 	
 	// Define what to do in the thread
+	@Override
 	public void run() {
 		long timeToWait = 0;
 		

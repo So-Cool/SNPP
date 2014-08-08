@@ -8,21 +8,12 @@ import org.apache.commons.math3.distribution.NormalDistribution;
 import com.espertech.esper.client.EPServiceProvider;
 
 public class Normal extends RG{
-	
-	private Boolean running = true;
 
 	// generate timeToWait according to Poisson distribution
 	private NormalDistribution gen;
-	private Date timer;
-	private PoissonDistribution elaps;
-	private double current;
-	private static String genName = "Normal";
-	private Boolean printOut;
-	
-	// ESPER service provider
-	private EPServiceProvider myService;
 	
 	public Normal( long mean, long variance, int inter, EPServiceProvider service, Boolean print ) {
+		genName = "Normal";
 		this.gen = new NormalDistribution( mean, variance );
 		this.elaps = new PoissonDistribution(inter);
 		this.timer = new Date( System.currentTimeMillis() );
@@ -46,14 +37,9 @@ public class Normal extends RG{
 		this.current = this.gen.sample();
 		this.timer.setTime( System.currentTimeMillis() );
 	}
-	public long waita() {
-		return this.elaps.sample();
-	}
-	
-	public Date getTimer() { return this.timer; }
-	public double getCurrent() { return this.current; }
 	
 	// Define what to do in the thread
+	@Override
 	public void run() {
 		long timeToWait = 0;
 		
@@ -78,11 +64,5 @@ public class Normal extends RG{
 		}
 		closer();
 	}
-	
-	// Return string
-    @Override
-    public String toString() {
-        return "Tick! -> Generator: " + genName + " | Sample: " + current + " | Time: " + timer;
-    }
 	
 }

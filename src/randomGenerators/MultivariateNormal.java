@@ -8,21 +8,14 @@ import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import com.espertech.esper.client.EPServiceProvider;
 
 public class MultivariateNormal extends RG{
-	
-	private Boolean running = true;
 
 	// generate timeToWait according to Poisson distribution
 	private MultivariateNormalDistribution gen;
-	private Date timer;
-	private PoissonDistribution elaps;
-	private double[] current;
-	private static String genName = "Multivariate Normal";
-	private Boolean printOut;
 	
-	// ESPER service provider
-	private EPServiceProvider myService;
+	private double[] currents;
 	
 	public MultivariateNormal( double[] means, double[][] covariances, int inter, EPServiceProvider service, Boolean print ) {
+		genName = "Multivariate Normal";
 		this.gen = new MultivariateNormalDistribution( means, covariances );
 		this.elaps = new PoissonDistribution(inter);
 		this.timer = new Date( System.currentTimeMillis() );
@@ -37,23 +30,18 @@ public class MultivariateNormal extends RG{
 	   this.gen = another.gen;
 	   this.timer = another.timer;
 	   this.elaps = another.elaps;
-	   this.current = another.current;
+	   this.currents = another.currents;
 	   this.myService = another.myService;
 	   this.printOut = another.printOut;
 	}
 	  
 	public void gen() {
-		this.current = this.gen.sample();
+		this.currents = this.gen.sample();
 		this.timer.setTime( System.currentTimeMillis() );
 	}
-	public long waita() {
-		return this.elaps.sample();
-	}
-	
-	public Date getTimer() { return this.timer; }
-	public double[] getCurrent() { return this.current; }
 	
 	// Define what to do in the thread
+	@Override
 	public void run() {
 		long timeToWait = 0;
 		
@@ -79,13 +67,15 @@ public class MultivariateNormal extends RG{
 		closer();
 	}
 	
+	public double[] getCurrents() { return this.currents; }
+	
 	// Return string
     @Override
     public String toString() {
     	String list = "(";
-    	for(int i = 0; i < current.length; i++) {
-            list += current[i];
-            if( i+1 != current.length )
+    	for(int i = 0; i < currents.length; i++) {
+            list += currents[i];
+            if( i+1 != currents.length )
             	list += ", ";
         }
     	list += ")";
