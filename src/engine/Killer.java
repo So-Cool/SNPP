@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import randomGenerators.RG;
+
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
@@ -14,10 +16,12 @@ public class Killer implements Runnable {
 	// close file writing on exit
 	private GeneratorCSV[] writer;
 	private String[] name;
+	private List<RG> threads;
 	
-	public Killer( GeneratorCSV[] wrt, String [] nam ) {
+	public Killer( GeneratorCSV[] wrt, String [] nam, List<RG> ths ) {
 		this.writer = wrt;
 		this.name = nam;
+		this.threads = ths;
 	}
 	
 	public void run() {
@@ -27,6 +31,11 @@ public class Killer implements Runnable {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+			
+			// Stop threads
+			for (RG o : threads) {
+			    o.stop();
 			}
 			
 			System.out.println("Closing file writer.");

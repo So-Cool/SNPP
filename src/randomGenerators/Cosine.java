@@ -9,7 +9,9 @@ import com.espertech.esper.client.EPServiceProvider;
 
 // Math.PI
 
-public class Cosine implements Runnable {
+public class Cosine extends RG implements Runnable{
+	
+	private Boolean running = true;
 
 	private double current = 0;
 	private double x = 1;
@@ -66,7 +68,7 @@ public class Cosine implements Runnable {
 		int timeToWait = this.waita();
 		double degrees = 0;
 		
-		while( true ) {
+		while( running ) {
 		    degrees = this.gen( timeToWait, degrees );
 		    timeToWait = this.waita();
 		    
@@ -80,6 +82,13 @@ public class Cosine implements Runnable {
 			myService.getEPRuntime().sendEvent(this);
 		}			
 	}
+	
+	// Current getter
+	public double getCurrent() { return this.current; }
+	public Date getTimer() { return this.timer; }
+	
+	// Stop the thread
+	public void stop() { this.running = false; }
 	
 	// Return string
     @Override

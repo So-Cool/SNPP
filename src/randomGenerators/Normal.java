@@ -7,7 +7,9 @@ import org.apache.commons.math3.distribution.NormalDistribution;
 
 import com.espertech.esper.client.EPServiceProvider;
 
-public class Normal implements Runnable {
+public class Normal extends RG implements Runnable{
+	
+	private Boolean running = true;
 
 	// generate timeToWait according to Poisson distribution
 	private NormalDistribution gen;
@@ -55,7 +57,7 @@ public class Normal implements Runnable {
 	public void run() {
 		long timeToWait = 0;
 		
-		while(true) {
+		while( running ) {
 			timeToWait = this.waita();
 			this.gen();
 			
@@ -75,6 +77,9 @@ public class Normal implements Runnable {
 			}
 		}
 	}
+	
+	// Stop the thread
+	public void stop() { this.running = false; }
 	
 	// Return string
     @Override

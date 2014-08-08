@@ -2,6 +2,8 @@ package engine;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import randomGenerators.*;
 
@@ -59,16 +61,34 @@ public class DriverExternal {
 		epService.getEPAdministrator().getStatement("Time-frame-fea").addListener( ListFea );
 
 		////////////////////////////////////////////////////////////////////////////////////
-	
+		List<RG> threads = new ArrayList<RG>();
+		RG t;
+		
+//		t = new Normal( mean, variance, time1, epService, printout );
+//		threads.add(t);
+//		( new Thread( (Normal)t ) ).start();
+		
+//		t = new Uniform( lower, upper, time2, epService, printout );
+//		threads.add(t);
+//		( new Thread( (Uniform)t ) ).start();
+		
+//		t = new MultivariateNormal( means, co-variances, time3, epService, printout );
+//		threads.add(t);
+//		( new Thread( (MultivariateNormal)t ) ).start();
+		
+		t = new Sine( xSin, ySin, time4, epService, printout );
+		threads.add(t);
+		( new Thread( (Sine)t ) ).start();
+		
+//		t = new Cosine( xCos, yCos, time5, epService, printout );
+//		threads.add(t);
+//		( new Thread( (Cosine)t ) ).start();
+		
 		GeneratorCSV[] writer = { ListFea.getCsv() };
 		String[] name = { ListFea.getName() };
-		( new Thread( new Killer( writer, name ) ) ).start();
-	
-//		( new Thread( new Normal( mean, variance, time1, epService, printout ) ) ).start();
-//		( new Thread( new Uniform( lower, upper, time2, epService, printout ) ) ).start();	
-//		( new Thread( new MultivariateNormal( means, co-variances, time3, epService, printout ) ) ).start();
-		( new Thread( new Sine( xSin, ySin, time4, epService, printout ) ) ).start();
-//		( new Thread( new Cosine( xCos, yCos, time5, epService, printout ) ) ).start();
+		
+		( new Thread( new Killer( writer, name, threads ) ) ).start();
+		
 	}
 	
 	

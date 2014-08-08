@@ -7,7 +7,9 @@ import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 
 import com.espertech.esper.client.EPServiceProvider;
 
-public class MultivariateNormal implements Runnable {
+public class MultivariateNormal extends RG implements Runnable{
+	
+	private Boolean running = true;
 
 	// generate timeToWait according to Poisson distribution
 	private MultivariateNormalDistribution gen;
@@ -55,7 +57,7 @@ public class MultivariateNormal implements Runnable {
 	public void run() {
 		long timeToWait = 0;
 		
-		while(true) {
+		while( running ) {
 			timeToWait = waita();
 			
 			this.gen();
@@ -75,6 +77,9 @@ public class MultivariateNormal implements Runnable {
 			}
 		}
 	}
+	
+	// Stop the thread
+	public void stop() { this.running = false; }
 	
 	// Return string
     @Override

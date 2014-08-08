@@ -9,8 +9,10 @@ import com.espertech.esper.client.EPServiceProvider;
 
 // Math.PI
 
-public class Sine implements Runnable {
+public class Sine extends RG implements Runnable{
 
+	private Boolean running = true;
+	
 	private double current = 0;
 	private double x = 1;
 	private double y = 1;
@@ -66,7 +68,7 @@ public class Sine implements Runnable {
 		int timeToWait = gen.sample();
 		double degrees = 0;
 		
-		while( true ) {
+		while( running ) {
 			degrees = this.gen( timeToWait, degrees );
 		    timeToWait = this.waita();
 		   
@@ -84,6 +86,9 @@ public class Sine implements Runnable {
 	// Current getter
 	public double getCurrent() { return this.current; }
 	public Date getTimer() { return this.timer; }
+	
+	// Stop the thread
+	public void stop() { this.running = false; }
 	
 	// Return string
     @Override

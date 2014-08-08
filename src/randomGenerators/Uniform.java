@@ -7,7 +7,9 @@ import org.apache.commons.math3.distribution.UniformRealDistribution;
 
 import com.espertech.esper.client.EPServiceProvider;
 
-public class Uniform implements Runnable {
+public class Uniform extends RG implements Runnable{
+	
+	private Boolean running = true;
 
 	// generate timeToWait according to Poisson distribution
 	private UniformRealDistribution gen;
@@ -55,7 +57,7 @@ public class Uniform implements Runnable {
 	public void run() {
 		long timeToWait = 0;
 		
-		while(true) {
+		while( running ) {
 			timeToWait = this.waita();
 			
 			this.gen();
@@ -75,6 +77,9 @@ public class Uniform implements Runnable {
 			}
 		}
 	}
+	
+	// Stop the thread
+	public void stop() { this.running = false; }
 	
 	// Return string
     @Override
