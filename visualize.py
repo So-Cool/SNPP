@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
 		# for each collumn
 		for i, col in enumerate( oneFile[:arguments]):
-			print zip( stamps, col )
+			# print zip( stamps, col )
 			# graph of each feature along time STAMP
 			plt.figure(i)
 			plt.plot(stamps,col)
@@ -87,6 +87,32 @@ if __name__ == '__main__':
 
 			plt.savefig("feature"+str(i+1)+".png", dpi=300, pad_inches=0.2)
 			plt.show()
+
+			# now do the animation
+			plt.ion()
+			# plt.figure(50)
+			# plt.show()
+			# plt.axis([0,1000,0,1])
+			# plt.show()
+			oldTime = stamps[0]
+
+			ex = []
+			ey = []
+			print "Bang1!"
+			for x, y in zip(stamps, col):
+				ex.append(x)
+				ey.append(y)
+
+				# plt.scatter(ex, ey)
+				plt.plot(ex, ey)
+				# plt.draw()
+				print "Bang!"
+
+				time.sleep( x-oldTime )
+				# plt.pause(x-oldTime)
+				oldTime = x
+			plt.ioff()
+
 	
 	# graph of clusters 1x1 for each feature
 	for oneFile in filesCols:

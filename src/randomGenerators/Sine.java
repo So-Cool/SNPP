@@ -48,13 +48,13 @@ public class Sine implements Runnable {
 		for (long stop=System.nanoTime()+TimeUnit.SECONDS.toNanos(timeToWait); stop>System.nanoTime(); degrees++ ) {
 			current = y* Math.sin( x* Math.toRadians(degrees) );
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-	    this.timer.setTime( System.currentTimeMillis()-1000 );
+	    this.timer.setTime( System.currentTimeMillis()-50 );
 		
 	    return degrees;
 	}
@@ -80,6 +80,10 @@ public class Sine implements Runnable {
 			myService.getEPRuntime().sendEvent(this);
 		}			
 	}
+	
+	// Current getter
+	public double getCurrent() { return this.current; }
+	public Date getTimer() { return this.timer; }
 	
 	// Return string
     @Override
