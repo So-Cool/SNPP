@@ -68,7 +68,7 @@ public class Sine extends RG{
 		    if( printOut )
 		    	System.out.println( toString() );
 			// once updated send
-			myService.getEPRuntime().sendEvent(this);
+			myService.getEPRuntime().sendEvent( new Sine(this) );
 		}
 		closer();
 	}

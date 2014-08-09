@@ -52,7 +52,7 @@ public class Uniform extends RG{
 			if( printOut )
 				System.out.println( toString() );
 			// once updated send
-			myService.getEPRuntime().sendEvent(this);
+			myService.getEPRuntime().sendEvent( new Uniform(this) );
 			
 			//Pause for timeToWait seconds
 			try {

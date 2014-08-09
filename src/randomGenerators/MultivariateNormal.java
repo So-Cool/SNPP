@@ -54,7 +54,7 @@ public class MultivariateNormal extends RG{
 			if( printOut )
 				System.out.println( toString() );
 			// once updated send
-			myService.getEPRuntime().sendEvent(this);
+			myService.getEPRuntime().sendEvent( new MultivariateNormal(this) );
 			
 			//Pause for timeToWait seconds
 			try {

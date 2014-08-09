@@ -90,28 +90,27 @@ if __name__ == '__main__':
 
 			# now do the animation
 			plt.ion()
-			# plt.figure(50)
-			# plt.show()
-			# plt.axis([0,1000,0,1])
-			# plt.show()
+			plt.figure(50)
+			plt.axis( [ stamps[0]-dif, stamps[-1]+dif, ax[2], ax[3] ] )
 			oldTime = stamps[0]
-
 			ex = []
 			ey = []
-			print "Bang1!"
 			for x, y in zip(stamps, col):
 				ex.append(x)
 				ey.append(y)
 
-				# plt.scatter(ex, ey)
-				plt.plot(ex, ey)
-				# plt.draw()
-				print "Bang!"
+				plt.plot(ex, ey, "ro")
+				plt.plot(ex, ey, "b-")
+				plt.draw()
+				print "Point! ",
+				sys.stdout.flush()
 
-				time.sleep( x-oldTime )
-				# plt.pause(x-oldTime)
+				# time.sleep( x-oldTime )
+				plt.pause(x-oldTime)
 				oldTime = x
+			print ""
 			plt.ioff()
+			plt.show()
 
 	
 	# graph of clusters 1x1 for each feature

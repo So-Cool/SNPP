@@ -68,7 +68,7 @@ public class Cosine extends RG{
 		    if( printOut )
 		    	System.out.println( toString() );
 			// once updated send
-			myService.getEPRuntime().sendEvent(this);
+			myService.getEPRuntime().sendEvent( new Cosine(this) );
 		}
 		closer();
 	}
