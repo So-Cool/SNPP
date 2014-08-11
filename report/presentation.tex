@@ -1,0 +1,119 @@
+%
+%% Please do not remove author note!
+%%%
+%%%% Created by Kacper B Sokol (k.sokol.2011 [at] my.bristol.ac.uk)
+%%%
+%% Please do not remove author note!
+%
+
+\documentclass{beamer}
+
+
+\usepackage{lipsum}
+
+\usepackage{color}
+\definecolor{CERNish}{RGB}{000,083,161}
+\definecolor{CERNish-sup}{RGB}{192,192,192}
+
+\setbeamercolor{structure}{fg=CERNish, bg=CERNish-sup}
+
+% Slides background
+\usepackage{tikz}								 % opaque logo in the background
+\usebackgroundtemplate{
+	\tikz\node[opacity=0.25]{
+		\noindent \hspace{-12.2mm} \vspace{-0.3mm} \includegraphics*[width=1.2\paperwidth]{./gfx/bg.png}
+		% ,height=\paperheight
+	};
+}
+
+% Title page logo
+\titlegraphic{
+	% \vspace*{1cm}
+	\mbox{ \hspace{0.697916667cm} \includegraphics[height=2cm]{./gfx/LogoOutline-Blue.png} \hspace{0.697916667cm} }
+	% \hspace*{4.75cm}~
+	\hspace*{3.25cm}~
+	% space is 1.697916667 * image height i.e. (1.697916667*2cm -2cm) = (3.395833334cm -2cm)/2 = 0.697916667
+	\includegraphics[height=2cm]{./gfx/openlab-transparent.png}
+	% collaboration logo
+	\vspace*{0.3cm}
+	\includegraphics[height=.7cm]{./gfx/siemens-transparent.png}
+}
+
+\setbeamertemplate{navigation symbols}{}
+\usepackage{beamerthemeshadow}
+
+\expandafter\def\expandafter\insertshorttitle\expandafter{%
+  \insertshorttitle\hfill%
+  \insertframenumber}
+
+% References
+\usepackage{biblatex}
+\addbibresource{bibliography.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\title{Presentation Title}  
+\author{Author's Name}
+\institute{Author's Institute/Section}
+\date{\today}
+
+\begin{frame}[plain]
+	\titlepage
+\end{frame}
+
+\begin{frame}[plain]
+  \frametitle{Table of contents}
+  \tableofcontents
+\end{frame}
+
+%%%% CONTENT %%%%
+
+\section{Section 1} 
+  \subsection{Subsection 1.1}
+  \begin{frame}
+    \frametitle{Title 1} 
+    \lipsum[1]~\cite{articleExample}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{Title 2} 
+    \lipsum[2]
+  \end{frame}
+
+  \subsection{Subsection 1.2}
+  \begin{frame}[plain]
+    \frametitle{Title 3} 
+    \lipsum[3]
+  \end{frame}
+
+\section{Section 2}
+  \subsection{Subsection 2.1}
+  \begin{frame}
+    \frametitle{Title 1} 
+    \lipsum[4]
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{Title 2} 
+    \lipsum[5]
+  \end{frame}
+
+  \subsection{Subsection 2.2}
+  \begin{frame}[plain]
+    \frametitle{Title 3} 
+    \lipsum[6]
+  \end{frame}
+
+  \begin{frame}[t, allowframebreaks, plain]
+    \frametitle{References}
+    \printbibliography[heading=none]
+  \end{frame}
+
+\end{document}
