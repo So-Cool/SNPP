@@ -38,7 +38,7 @@ public class Sine extends RG{
 	}
 	
 	public double gen( int timeToWait, double degrees ) {
-		for (long stop=System.nanoTime()+TimeUnit.MILLISECONDS.toNanos(timeToWait *1000); stop>System.nanoTime(); degrees++ ) {
+		for (long stop=System.nanoTime()+TimeUnit.MILLISECONDS.toNanos(timeToWait *100); stop>System.nanoTime(); degrees++ ) {
 			current = y* Math.sin( x* Math.toRadians(degrees) );
 			try {
 				Thread.sleep(50);
