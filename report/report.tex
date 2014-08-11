@@ -76,7 +76,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[inkscape={inkscap‌​e -z -C}]{svg}
+\usepackage[]{algorithm2e}
+\usepackage{amsmath}
+\usepackage{amsfonts}    % fancy maths font
+\usepackage{mathrsfs}    % fancy maths font
+\usepackage{dsfont}      % indocator finction
+\usepackage{mathtools}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
@@ -117,30 +123,22 @@
 \section{Introduction}
 
 
-Weka classification~\citep{zhang2013data}\\
-Do graph colouring in classification\\
 
-Afinity Propoagation\\
 
 \subsection{What is CEP?}
-\subsection{What is CEP???}
+\subsection{What is Esper}
 \subsection{Why to use it?}
 \subsection{Applications}
 \subsection{Examples}
 \subsubsection{Nuclear plant}
 \subsubsection{CEP at CERN}
 
+
 \section{Model of processing}
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\textwidth]{./gfx/APC.pdf}
-  \caption{APC}
-\end{figure}
-
-\begin{figure}[htbp]
-	\centering
 	\includegraphics[width=\textwidth]{./gfx/model.pdf}
-  \caption{Model}
+  \caption{Data processing model.\label{fig:model}}
 \end{figure}
 
 \subsection{Esper engine}
@@ -148,7 +146,27 @@ Afinity Propoagation\\
 \subsection{Feature extraction}
 \subsection{Listeners for change}
 \subsection{Clustering with Afinity Propagation}
-Do the algorithm!\\
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{./gfx/APC.pdf}
+  \caption{Stream clustering model.\label{fig:APC}}
+\end{figure}
+
+\RestyleAlgo{boxed}
+\SetAlCapSkip{1em}
+\vspace{2cm}
+\begin{algorithm}[h]
+  \KwData{Posterior distributions for each action---$\left\{ 
+p_a(\cdot|\mathscr{L}_t,x_t) : a \in \mathscr{A} \right\}$}
+  \For{$a \in \mathscr{A}$}{
+    \text{sample: }$\mathscr{Q}^\text{Th}_{t,a} \leftarrow 
+p_a(\cdot|\mathscr{L}_t,x_t)$ \;
+  }
+  sample $a_t$ uniformly from $\operatorname{arg\,max}_{a \in \mathscr{A}} 
+\mathscr{Q}^\text{Th}_{t,a}$ \;
+ \caption{Local Thompson Sampling(LTS).\label{al:LTS}}
+\end{algorithm}
+\vspace{2cm}
 
 \subsection{Printing / GUI}
 
@@ -156,17 +174,20 @@ Do the algorithm!\\
 \section{Results and comparison}
 \subsection{why particulat algorithms were chosen}
 \subsection{WEKA algorithms review}
-lol~\citep{articleExample}
 
 \section{Lookahead}
 
 \section{Conclusions}
+Weka classification~\citep{zhang2013data}\\
+Do graph colouring in classificationlol~\citep{articleExample}\\
 
-% \begin{center} \noindent \line(1,0){250} \end{center}	  % Optional ending line
+Afinity Propoagation\\
+
+\begin{center} \noindent \line(1,0){250} \end{center}	    % Optional ending line
 
 
 %% Start References (a.k.a. bibliography)
-% \newpage								 % Optional new page before Bibliography
+\newpage								 								 % Optional new page before Bibliography
 \bibliography{bibliography.bib}{}
 \bibliographystyle{plainnat}
 
