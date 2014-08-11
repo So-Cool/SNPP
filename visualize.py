@@ -14,9 +14,12 @@ import datetime
 # CSV files to visualize
 filesCols = []
 
+# no live visualization
+vis = True
+
 ## open files and extract collumns
 def extractCols( fileArgs ) :
-	for i in range( 1, len(list(fileArgs)) ):
+	for i in range( len(list(fileArgs)) ):
 		filesCols.append( [] )
 		with open(list(fileArgs)[i], 'rb') as csvfile:
 			reader = csv.reader(csvfile, delimiter=',', quotechar='|')
@@ -55,8 +58,12 @@ def scanCols():
 
 
 if __name__ == '__main__':
+	# check visualizations
+	if sys.argv[1].lower() == "novis":
+		vis = False
+
 	# extract the collumns from files
-	extractCols( sys.argv )
+	extractCols( sys.argv[2:] )
 
 	# scan collumns for abnormalities, i.e. '?'
 	scanCols()
@@ -89,28 +96,29 @@ if __name__ == '__main__':
 			plt.show()
 
 			# now do the animation
-			plt.ion()
-			plt.figure(50)
-			plt.axis( [ stamps[0]-dif, stamps[-1]+dif, ax[2], ax[3] ] )
-			oldTime = stamps[0]
-			ex = []
-			ey = []
-			for x, y in zip(stamps, col):
-				ex.append(x)
-				ey.append(y)
+			if vis:
+				plt.ion()
+				plt.figure(50)
+				plt.axis( [ stamps[0]-dif, stamps[-1]+dif, ax[2], ax[3] ] )
+				oldTime = stamps[0]
+				ex = []
+				ey = []
+				for x, y in zip(stamps, col):
+					ex.append(x)
+					ey.append(y)
 
-				plt.plot(ex, ey, "ro")
-				plt.plot(ex, ey, "b-")
-				plt.draw()
-				print "Point! ",
-				sys.stdout.flush()
+					plt.plot(ex, ey, "ro")
+					plt.plot(ex, ey, "b-")
+					plt.draw()
+					print "Point! ",
+					sys.stdout.flush()
 
-				# time.sleep( x-oldTime )
-				plt.pause(x-oldTime)
-				oldTime = x
-			print ""
-			plt.ioff()
-			plt.show()
+					# time.sleep( x-oldTime )
+					plt.pause(x-oldTime)
+					oldTime = x
+				print ""
+				plt.ioff()
+				plt.show()
 
 	
 	# graph of clusters 1x1 for each feature
