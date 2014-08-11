@@ -21,3 +21,13 @@ bin/*
 
 # plots
 *.png
+
+# LaTeX
+*.aux
+*.log
+*.out
+*.pdf
+*.toc
+
+# MS Visio
+*.vsd
