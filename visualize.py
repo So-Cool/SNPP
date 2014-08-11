@@ -110,13 +110,15 @@ if __name__ == '__main__':
 					plt.plot(ex, ey, "ro")
 					plt.plot(ex, ey, "b-")
 					plt.draw()
-					print "Point! ",
+					#print "Point! ",
 					sys.stdout.flush()
 
 					# time.sleep( x-oldTime )
-					plt.pause(x-oldTime)
+					sleep = x-oldTime
+					sleep = 0.01 if (sleep <= 0) else sleep
+					plt.pause(sleep)
 					oldTime = x
-				print ""
+				#print ""
 				plt.ioff()
 				plt.show()
 
