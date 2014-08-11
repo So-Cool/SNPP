@@ -85,7 +85,7 @@ if __name__ == '__main__':
 			dif = stamps[1] - stamps[0]
 			plt.axis( [ stamps[0]-dif, stamps[-1]+dif, ax[2], ax[3] ] )
 
-			plt.savefig("feature"+str(i+1)+".png", dpi=300, pad_inches=0.2)
+			plt.savefig("fig/feature"+str(i+1)+".png", dpi=300, pad_inches=0.2)
 			plt.show()
 
 			# now do the animation
@@ -134,6 +134,6 @@ if __name__ == '__main__':
 				plt.ylabel( "Feature " + str(j+1) )
 				plt.title("Feature " + str(i+1) + " against feature " + str(j+1))
 				# plt.axis([ 0, 1, -0.075, -0.035 ])
-				plt.savefig("f"+str(i+1)+"f"+str(j+1)+".png", dpi=300, pad_inches=0.2)
+				plt.savefig("fig/f"+str(i+1)+"f"+str(j+1)+".png", dpi=300, pad_inches=0.2)
 				plt.show()
 				# !!!!!!!!!!! GIVE COLOURS TO POINTS HERE !!!!!!!!!!!!!!! #
