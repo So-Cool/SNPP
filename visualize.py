@@ -138,7 +138,7 @@ if __name__ == '__main__':
 
 				# print zip( col1, col2 )
 				# graph of each feature along time STAMP
-				plt.figure(7+i)
+				plt.figure(10+i)
 				plt.scatter(col1,col2)
 				plt.xlabel( "Feature " + str(i+1) )
 				plt.ylabel( "Feature " + str(j+1) )

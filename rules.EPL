@@ -47,9 +47,9 @@ timer as TimeCur from NormTick.win:length(10);
 select avg(current) as F1,
 stddev(current) as F2,
 featureExtractors.FeatureExtractor.posNeg( (current - prev(1, current)) ) as F3,
-featureExtractors.FeatureExtractor.posNeg( (current - prev(2, current)) ) as F4,
+featureExtractors.FeatureExtractor.posNeg( (current - prev(5, current)) ) as F4,
 current as F5,
 featureExtractors.FeatureExtractor.threshold(current) as F6,
 6 as FN ,
 timer as TS
-from SinTick.win:time(60 sec);
+from SinTick.win:time(120 sec);

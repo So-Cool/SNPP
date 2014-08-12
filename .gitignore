@@ -30,6 +30,11 @@ bin/*
 *.toc
 *.bbl
 *.blg
+*.bcf
+*.nav
+*.run.xml
+*.snm
+*.toc.old
 
 # MS Visio
 *.vsd
