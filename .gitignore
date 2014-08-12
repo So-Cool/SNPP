@@ -28,6 +28,8 @@ bin/*
 *.out
 *.pdf
 *.toc
+*.bbl
+*.blg
 
 # MS Visio
 *.vsd
