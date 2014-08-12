@@ -180,7 +180,14 @@ In this example we consider signals as all the real time price processes. We fil
 
 \section{Model of processing}
 To begin with, I describe model of processing adapted in the application, presented in the \textit{Figure~\ref{fig:model}}.\\
-We divide model into two branches: \emph{Offline resources} and \emph{Live Data Processing}. The first one consists of EPL file (see \textit{Listing~\ref{lst:EPL}}), that defines the features to be extracted form the given signal; CSV file which serves as a data dump; and finally data reconstruction script, which plots.\\
+We divide model into two branches: \emph{Offline resources} and \emph{Live Data Processing}. The first one consists of \texttt{EPL} file (see \textit{Listing~\ref{lst:EPL}}), that defines the features to be extracted form the given signal; \texttt{CSV} file which serves as a data dump; and finally data reconstruction script written in \texttt{Python}: \texttt{visualize.py}, which plots signal and all extracted features against time as well as features against each other using \texttt{CSV} data repository.\\
+\emph{Live Data Processing} module consists of following components:
+\begin{description}
+	\item[Signals layer] includes signal generators and signal feeds.
+	\item[\texttt{Esper} layer] collects signals, and applies rules taken form \texttt{EPL} file to them. It also saves signals, extracted features, and time stamp to \texttt{CSV} repository. Finally, it performs defined actions, in this particular example supplies them to clustering algorithm.
+	\item[Events layer] transfers data (events) to clustering module.
+	\item[Affinity Propagation Clustering layer] receives events and performs clustering on live data stream. Once a datum point is assigned to cluster, this information is recorded in \texttt{CSV} repository.
+\end{description}
 
 \begin{figure}[htbp]
 	\centering
@@ -188,7 +195,6 @@ We divide model into two branches: \emph{Offline resources} and \emph{Live Data 
   \caption{Data processing model.\label{fig:model}}
 \end{figure}
 
-% \lstinputlisting[language=SQL]{../rules.EPL}
 \lstset{
   captionpos=b,
   frame=single,
@@ -229,11 +235,21 @@ timer as TS
 from SinTick.win:time(60 sec);
 \end{lstlisting}
 
+\subsection{Generators, signals}
+A number of signal generators is implemented to test the framework:
+\begin{itemize}
+	\item \emph{sine} wave with possibility to add normally distributed noise,
+	\item \emph{cosine} wave with possibility to add normally distributed noise,
+	\item \emph{normal} distribution generator,
+	\item \emph{uniform} distribution generator,
+	\item \emph{multivariate normal} distribution generator.
+\end{itemize}
+In generators the time between samples is distributed according to \emph{Poisson} distribution.\\
+
+The package also contains module reading temperature data from the electronic thermometer placed at CERN Prévessin site, and Yahoo! weather forecast feed for the same location. Both of them can be used as signal providers for the application.
+
 \subsection{\texttt{Esper} engine}
 describe the engine\\
-
-\subsection{Generators / signals}
-gens, \\
 
 \subsection{Rules---Feature extraction}
 give file with rules here
