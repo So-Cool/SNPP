@@ -148,25 +148,29 @@ The package also allow joining multiple incoming signals for processing purposes
 The major advantage of \texttt{Esper} is ability of processing millions of events per second, low computational complexity, and no time consuming read-write disk processes.\\
 The data processing can be describe in ``\textbf{4D}'' steps:
 \begin{description}
-\item[\textit{D}etect] is about the raw event, for example a cash deposit event.
-\item [\textit{D}erive] is about the situation, i.e. "did something happen?", for example there is a suspicious account.
-\item [\textit{D}ecide] is about the decision of what to do, for example the decision to determine a risk score or determine another course of action
-\item [\textit{D}o] is the action, for example an action that opens an investigation
+\item[\textit{D}etect] events of interest.
+\item [\textit{D}erive] events complying with specified rules.
+\item [\textit{D}ecide] what to do based on gathered evidences(data).
+\item [\textit{D}o] the action bonded with occurring event.
 \end{description}
 
-\subsection{Applications}
-in gifh throuptut services\\
-possibilities of rules injections
-
-\subsection{Examples}
-some example sot motivate the use
-
-\subsubsection{Nuclear plant}
-give example of nucleat planr and its controls\\
-\subsubsection{Stock market}
-asdf\\
 \subsubsection{CEP at CERN}
-how are we going to use its capabilities at CERN
+I adopt the ``\textbf{4D}'' flow by: \emph{detecting} incoming signals from the sensors(generators); \emph{deriving} the specified features from the signal; \emph{deciding} to send the features to clustering algorithm; and \emph{do}ing the classification.
+
+\subsection{Applications}
+The software is mainly used in high throughput analysis services, where analysis must be easily adaptable (rules injection). The following examples show different aspects of \emph{Complex Event Processing} tools being used.
+\subsubsection{Nuclear Power Plant}
+While managing nuclear plant there is plenty of factors that may lead to disaster:
+\begin{itemize}
+\item core temperature,
+\item cooling pumps status,
+\item seismic movements,
+\item weather forecast,
+\item electricity usage projections.
+\end{itemize}
+Only specific state of each of this factors should raise the alarm.
+\subsubsection{Stock market}
+In this example we consider signals as all the real time price processes. We filter them with EPL statements, and .
 
 
 \section{Model of processing}
