@@ -77,6 +77,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[]{algorithm2e}
+\usepackage{listings}
+\definecolor{navyb}{RGB}{0100,043,054}
+
 \usepackage{amsmath}
 \usepackage{amsfonts}    % fancy maths font
 \usepackage{mathrsfs}    % fancy maths font
@@ -166,21 +169,65 @@ While managing nuclear plant there is plenty of factors that may lead to disaste
 \item cooling pumps status,
 \item seismic movements,
 \item weather forecast,
-\item electricity usage projections.
+\item electricity usage projections, etc.
 \end{itemize}
-Only specific state of each of this factors should raise the alarm.
+Only specific state of each of this factors should raise an alarm. For instance low cooling flow and raising temperature.\\
+Another useful feature of \texttt{Esper} in managing the station are time windows: if the temperature raises slowly the trend will not be visible in last hour but in last week or month. This \emph{long history} property may prevent a disaster.
 \subsubsection{Stock market}
-In this example we consider signals as all the real time price processes. We filter them with EPL statements, and .
+In this example we consider signals as all the real time price processes. We filter them with EPL statements hence receive stocks of interest.\\
+\texttt{Esper} allows us to perform complex analysis of prices therefore automatize trading or provide statistics that help making decisions.
 
 
 \section{Model of processing}
-Describe the overview of model of processing given in below figure\\
+To begin with, I describe model of processing adapted in the application, presented in the \textit{Figure~\ref{fig:model}}.\\
+We divide model into two branches: \emph{Offline resources} and \emph{Live Data Processing}. The first one consists of EPL file (see \textit{Listing~\ref{lst:EPL}}), that defines the features to be extracted form the signal.
+
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{./gfx/model.pdf}
   \caption{Data processing model.\label{fig:model}}
 \end{figure}
-and all the components\\
+
+% \lstinputlisting[language=SQL]{../rules.EPL}
+\lstset{
+  captionpos=b,
+  frame=single,
+	emph={module, import, create, schema, as, @Name, @Description, select, from, win:time},
+	emphstyle={\color{navyb}\bfseries},
+	caption=EPL file example.,
+	label=lst:EPL
+}
+\begin{lstlisting}
+module
+  SpringfieldNuclearPowerPlant.engine.ExternalFeatureExtractor;
+
+import
+  randomGenerators.*;
+import
+  featureExtractors.FeatureExtractor;
+
+create schema SinTick  as Sine;
+create schema CosTick  as Cosine;
+create schema NormTick as Normal;
+create schema UnifTick as Uniform;
+create schema NmvtTick as MultivariateNormal;
+
+@Name('Basic---Statistics')
+@Description('Extract basic signal statistics to features')
+select
+avg(current) as F1,
+stddev(current) as F2,
+featureExtractors.FeatureExtractor.posNeg
+  ( (current - prev(1, current)) ) as F3,
+featureExtractors.FeatureExtractor.posNeg
+  ( (current - prev(2, current)) ) as F4,
+current as F5,
+featureExtractors.FeatureExtractor.threshold
+  (current) as F6,
+6 as FN,
+timer as TS
+from SinTick.win:time(60 sec);
+\end{lstlisting}
 
 \subsection{\texttt{Esper} engine}
 describe the engine\\
