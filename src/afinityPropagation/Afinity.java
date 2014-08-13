@@ -7,14 +7,33 @@ public class Afinity {
 /////////////////////////////////////////////////////////////////////////////////////
 	// class properties //
 	
-	// Expandable array for the POOL --- Java ArryaList
-	private List<Double> pool = new ArrayList<Double>();
+	// Maximal size of reservoir
+	private int resSize;
 	
-	// Boolean flag for initial build
+	// number of data for initialization
+	private int initSize;
+	
+	// Fit threshold epsilon
+	private double epsilon;
+	
+	// Boolean flag for initial build---check whether collecting points for initial build
 	Boolean initialBuild = true;
 	
+	// Incoming points counter
+	private int incomingPoints = 0;
+	
+	// Expandable array for the RESERVOIR
+	private List<double[]> reservoir = new ArrayList<double[]>();
+	
+	// Change point detection of input stream status
+	private Boolean CPD = false;
+	
+	//MODEL
+	
+	
+	
 	// Expandable array for memorized data = i.e. = exemplars
-	private List<Double> classes = new ArrayList<Double>();
+//	private List<Double> classes = new ArrayList<Double>();
 	
 	// Data for printing ??????
 		// Do separate class for printing and sending to esper engine
@@ -22,22 +41,16 @@ public class Afinity {
 		//
 		// #clusters | mean values of each cluster | print to which class each newcomming point belong
 	//
-	private List<Double> printable = new ArrayList<Double>();
+//	private List<Double> printable = new ArrayList<Double>();
 	
 	// Remember the current cluster count
-	private int clusters = 1;
-	
-	// Maximal size of reservoir
-	private int resSize;
-	
-	// number of data for initialization
-	private int initSize;
+//	private int clusters = 1;
 	
 	// number of datapoints reseived
-	private int received = 0;
+//	private int received = 0;
 	
 	// values for statistical tests
-	private double p;
+//	private double p;
 	
 	// FEATURES??????? - feature functions for signal, etc
 	// HOW TO HANDLE??????????????????????
@@ -49,82 +62,79 @@ public class Afinity {
 	// functions //
 	
 	// Initialize
-	public Afinity( int reservoirSize, int initialSize, double pValue ) {
+	public Afinity( int reservoirSize, int initialSize, double eps ) {
 		this.initSize = initialSize;
 		this.resSize = reservoirSize;
-		this.p = pValue;
+		this.epsilon = eps;
 	}
 	
-	// Append new point
-	public void addNewPoint( double point ) {
-		// increment the counter of received points
-		received++;
+	// Receive new datum point
+	public void getPoint(double[] p) {
+		/*for (double element : p) {
+		 *	System.out.println("O: " + element);
+		 *}
+		**/
 		
-		if ( received < initSize && initialBuild ) {
-			// append point for initial build
-			pool.add( point );
+		checkStationarity(p);
+		
+		if(initialBuild){
+			++incomingPoints;
+			reservoir.add(p);
+		} else {
+			processPoint(p);
 			return;
-		} else if ( initialBuild ) {
-			// append point for initial build
-			pool.add( point );
-			// build initial model
-			build();
-			return;
+		}	
+		
+		if(initialBuild && incomingPoints > initSize){
+			initialBuild = false;
+			// build first model
+			initializeModel();
+		}
+	}
+	
+	private void checkStationarity(double[] p){
+		//CHECK WHETHER ARRIVING POINTS ARE STATIONRY
+	}
+	
+	// initialize model
+	private void initializeModel(){
+		// empty the reservoir
+		reservoir.clear();
+		
+		//CREATE MODEL
+	}
+	
+	// update model
+	private void updateModel(){
+		//UPDATE MODEL
+	}
+	
+	// rebuild model
+	private void rebuildModel(){
+		//BUILD MODEL
+	}
+	
+	// process the new arriving point
+	private void processPoint(double[] p) {
+		//COMPUTE E_I
+		double ei = 0;
+		
+		if(ei < epsilon){
+			updateModel();
+		} else {
+			reservoir.add(p);
 		}
 		
-		// check similarity to what we already have
-		Boolean sim = simmilarity( point );
-		
-		// if similar to what we already seen add to clustering
-		if( sim ) {
-			/* FILL WITH CODE */
-		} // else add to reservoir
-		else {
-			/* FILL WITH CODE */
+		// check rebuild criteria
+		if(reservoiFull() || CPD){
+			rebuildModel();
+			reservoir.clear();
 		}
 		
-		// check whether model need a rebuild
-		Boolean rbld = needRebuild();
-		
-		// if rebuild needed: Just do it!
-		if (rbld)
-			rebuild();
+	}
+	
+	private Boolean reservoiFull(){
+		return (reservoir.size() > resSize) ? true : false;
 	}
 
-	// Check similarity to what we already have
-	private Boolean simmilarity( double newPoint ) {
-		/* FILL WITH CODE */
-		return true;
-	}
-	
-	// Check whether to rebuild
-	private Boolean needRebuild() {
-		/* FILL WITH CODE */
-		return true;
-	}
-
-	// Build the model
-	private void build() {
-		/* FILL WITH CODE */
-		initialBuild = false;
-	}
-	
-	// Rebuild the model
-	private void rebuild() {
-		/* FILL WITH CODE */
-	}
-	
-	// Get the number of clusters
-	public int getClusters() { return clusters; }
-	// Get the clustering in readable format
-	public List<Double> getPrintable() { return printable; }
-	
-	
-	
-	public void getPoint(double[] o) {
-		for (double element : o) {
-			System.out.println("O: " + element);
-		}
-		
-	}
 }

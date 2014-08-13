@@ -80,6 +80,8 @@
 \usepackage{listings}
 \definecolor{navyb}{RGB}{0100,043,054}
 
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+
 \usepackage{amsmath}
 \usepackage{amsfonts}    % fancy maths font
 \usepackage{mathrsfs}    % fancy maths font
@@ -270,17 +272,31 @@ Clustering model~\citep{zhang2013data}\\
 \RestyleAlgo{boxed}
 \SetAlCapSkip{1em}
 \LinesNumbered
+\SetCommentSty{mycommfont}
 \vspace{2cm}
 \begin{algorithm}[h]
-  \KwData{Posterior distributions for each action---$\left\{ 
-p_a(\cdot|\mathscr{L}_t,x_t) : a \in \mathscr{A} \right\}$}
-  \For{$a \in \mathscr{A}$}{
-    \text{sample: }$\mathscr{Q}^\text{Th}_{t,a} \leftarrow 
-p_a(\cdot|\mathscr{L}_t,x_t)$ \;
+  \KwData{Data stream $...x_t, x_{t+1}, x_{t+2}, ...$;number of initialization points $T$; reservoir size $r$; fit threshold $\epsilon$.}
+
+  \tcc{Initialization}
+  $m$ \leftarrow APModel($x_1, ..., x_T$)\;
+  $Reservoir$ \leftarrow \{\}\;
+
+  \tcc{Receiving data}
+  \For{$t > T$}{
+  Compute $e_i =$ nearest exemplar to $x_t$ \;
+
+  \uIf{$d\left( x_t, e_i \right) < \epsilon$}{Update model $m$ \;}
+  \Else{$Reservoir$ \leftarrow $x_t$\;}
+
+  Rebuild Trigger \leftarrow ( $\left\vert{Reservoir}\right\vert > r$ || Change Point Detection on input stream )\;
+
+  \If{Rebuild Trigger}{
+    Rebuild model $m$\;
+    $Reservoir$ \leftarrow \{\}\;
   }
-  sample $a_t$ uniformly from $\operatorname{arg\,max}_{a \in \mathscr{A}} 
-\mathscr{Q}^\text{Th}_{t,a}$ \;
- \caption{Affinity Propagation Clustering.\label{alg:APC}}
+
+	\caption{Streaming Affinity Propagation Clustering Algorithm.\label{alg:APC}}
+	}
 \end{algorithm}
 \vspace{2cm}
 
