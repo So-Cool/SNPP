@@ -3,6 +3,8 @@ package afinityPropagation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections4.queue.CircularFifoQueue;
+
 public class Afinity {
 /////////////////////////////////////////////////////////////////////////////////////
 	// class properties //
@@ -28,54 +30,30 @@ public class Afinity {
 	// Change point detection of input stream status
 	private Boolean CPD = false;
 	
-	//MODEL
+	// CPC queue size
+	private int CPCsize;
 	
-	
-	
-	// Expandable array for memorized data = i.e. = exemplars
-//	private List<Double> classes = new ArrayList<Double>();
-	
-	// Data for printing ??????
-		// Do separate class for printing and sending to esper engine
-		//-> which would just copy the necessary elements and send it as "new XYZ(x, y, z)"
-		//
-		// #clusters | mean values of each cluster | print to which class each newcomming point belong
-	//
-//	private List<Double> printable = new ArrayList<Double>();
-	
-	// Remember the current cluster count
-//	private int clusters = 1;
-	
-	// number of datapoints reseived
-//	private int received = 0;
-	
-	// values for statistical tests
-//	private double p;
-	
-	// FEATURES??????? - feature functions for signal, etc
-	// HOW TO HANDLE??????????????????????
-	
-	// Maximum number of points that can be remembered
-	// ????????????????????????
+	//MODEL????
 	
 /////////////////////////////////////////////////////////////////////////////////////
 	// functions //
 	
 	// Initialize
-	public Afinity( int reservoirSize, int initialSize, double eps ) {
+	public Afinity( int reservoirSize, int initialSize, double eps, int cpcs ) {
 		this.initSize = initialSize;
 		this.resSize = reservoirSize;
 		this.epsilon = eps;
+		this.CPCsize = cpcs;
 	}
 	
 	// Receive new datum point
-	public void getPoint(double[] p) {
+	public void getPoint(double[] p, long timestamp) {
 		/*for (double element : p) {
 		 *	System.out.println("O: " + element);
 		 *}
 		**/
 		
-		checkStationarity(p);
+		checkStationarity(p, timestamp);
 		
 		if(initialBuild){
 			++incomingPoints;
@@ -92,7 +70,9 @@ public class Afinity {
 		}
 	}
 	
-	private void checkStationarity(double[] p){
+	private void checkStationarity(double[] p, long ts){
+		CircularFifoQueue<double[]> lol = new CircularFifoQueue<double[]>(CPCsize);
+		lol.add(null);
 		//CHECK WHETHER ARRIVING POINTS ARE STATIONRY
 	}
 	
@@ -111,7 +91,7 @@ public class Afinity {
 	
 	// rebuild model
 	private void rebuildModel(){
-		//BUILD MODEL
+		//REBUILD MODEL
 	}
 	
 	// process the new arriving point

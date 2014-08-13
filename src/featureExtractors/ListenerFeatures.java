@@ -1,5 +1,8 @@
 package featureExtractors;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import afinityPropagation.Afinity;
@@ -13,6 +16,7 @@ public class ListenerFeatures implements com.espertech.esper.client.UpdateListen
 	private String name = "ListenerFeatures";
 	private Afinity clustering;
 	private GeneratorCSV csv;
+	private DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy");
 	
 	public ListenerFeatures( Afinity cls ) {
 		this.clustering = cls;
@@ -84,7 +88,15 @@ public class ListenerFeatures implements com.espertech.esper.client.UpdateListen
 		
 		// Send features to clustering algorithm
 		double[] x = {F1, F2, F3, F4, F5, F6, F7};
-		clustering.getPoint( Arrays.copyOfRange(x, 0, (int)FN) );
+		long ts = -1;
+		try {
+			ts = dateFormat.parse(TS).getTime();
+			System.out.println("O: " + ts);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		clustering.getPoint( Arrays.copyOfRange(x, 0, (int)FN), ts );
 		//	clustering.getPoint( TS );
 		System.out.println( F1 + "," + F2 + "," + F3 + "," + F4 + "," + F5 + "," + F6 + "," + F7 + " | " + FN + "," + TS );
 	}
