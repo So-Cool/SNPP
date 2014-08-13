@@ -180,12 +180,19 @@ from SinTick.win:time(60 sec);
     \end{block}
   \end{frame}
 
-  \begin{frame}[plain]
+  {
+  \setbeamertemplate*{footline}
+  \makeatletter
+    \setbeamertemplate{headline}[default]
+    \def\beamer@entrycode{\vspace*{-\headheight}}
+  \makeatother
+  \begin{frame}
     \frametitle{Algorithm model} 
     \begin{figure}[htbp]
       \includegraphics[width=\textwidth]{./gfx/APC.pdf}
     \end{figure}
   \end{frame}
+  }
 
   \begin{frame}[plain]
     \frametitle{Average vs.\ Current} 
