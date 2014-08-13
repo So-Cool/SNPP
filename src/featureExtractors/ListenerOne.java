@@ -1,5 +1,7 @@
 package featureExtractors;
 
+import java.util.Arrays;
+
 import afinityPropagation.Afinity;
 
 import com.espertech.esper.client.EventBean;
@@ -37,7 +39,7 @@ public class ListenerOne implements com.espertech.esper.client.UpdateListener {
 		double LagICur  = (newEvents[0].get("Lag1Cur") == null ) ? Double.NaN : Double.parseDouble( newEvents[0].get("Lag1Cur").toString() );
 		double LagIICur = (newEvents[0].get("Lag2Cur") == null ) ? Double.NaN : Double.parseDouble( newEvents[0].get("Lag2Cur").toString() );
 		double CurCur   = Double.parseDouble( newEvents[0].get("CurCur").toString() );
-		int    ThrCur   = Integer.parseInt( newEvents[0].get("thrCur").toString() );
+		double ThrCur   = Double.parseDouble( newEvents[0].get("thrCur").toString() );
 		String TimeCur  = newEvents[0].get("TimeCur").toString();
 		
 		// Write features to file
@@ -57,15 +59,10 @@ public class ListenerOne implements com.espertech.esper.client.UpdateListener {
 		csv.newLine();
 		
 		// Send features to clustering algorithm
+		double[] x = {AvgCur, StdCur, LagICur, LagIICur, CurCur, ThrCur};
 		// or better send them to channel
-		clustering.getSome(AvgCur);
-		clustering.getSome(StdCur);
-		clustering.getSome(LagICur);
-		clustering.getSome(LagIICur);
-		clustering.getSome(CurCur);
-		clustering.getSome(ThrCur);
-		clustering.getSome(TimeCur);
-		clustering.getSome(features);
+		clustering.getPoint( Arrays.copyOfRange(x, 0, features) );
+		//	clustering.getPoint(TimeCur);
 		System.out.println( AvgCur + "," + StdCur + "," + LagICur + "," + LagIICur + "," + CurCur + "," + ThrCur + "," + TimeCur );
 	}
 	

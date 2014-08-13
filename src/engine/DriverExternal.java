@@ -55,8 +55,8 @@ public class DriverExternal {
 		// Start all statements, passing a null options object for default options
 		deployAdmin.deploy(moduleDeploymentId, null);
 		
-		// Create a clustering instance
-		Afinity clustering = new Afinity( 1, 1, 1.0, null );
+		// Create a clustering instance ( reservoir size, initial sample size, p-Value )
+		Afinity clustering = new Afinity( 100, 75, 1.0 );
 		
 		// create new listener
 		ListenerFeatures ListFea = new ListenerFeatures( clustering );

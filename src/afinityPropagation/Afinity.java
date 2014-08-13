@@ -3,8 +3,6 @@ package afinityPropagation;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.espertech.esper.client.EPServiceProvider;
-
 public class Afinity {
 /////////////////////////////////////////////////////////////////////////////////////
 	// class properties //
@@ -12,8 +10,11 @@ public class Afinity {
 	// Expandable array for the POOL --- Java ArryaList
 	private List<Double> pool = new ArrayList<Double>();
 	
+	// Boolean flag for initial build
+	Boolean initialBuild = true;
+	
 	// Expandable array for memorized data = i.e. = exemplars
-	private List<Double> exemplars = new ArrayList<Double>();
+	private List<Double> classes = new ArrayList<Double>();
 	
 	// Data for printing ??????
 		// Do separate class for printing and sending to esper engine
@@ -38,12 +39,6 @@ public class Afinity {
 	// values for statistical tests
 	private double p;
 	
-	// Boolean flag for initial build
-	Boolean initialBuild = true;
-	
-	// ESPER engine
-	private EPServiceProvider EsperService;
-	
 	// FEATURES??????? - feature functions for signal, etc
 	// HOW TO HANDLE??????????????????????
 	
@@ -54,10 +49,9 @@ public class Afinity {
 	// functions //
 	
 	// Initialize
-	public Afinity( int reservoirSize, int initialSize, double pValue, EPServiceProvider EPSP ) {
+	public Afinity( int reservoirSize, int initialSize, double pValue ) {
 		this.initSize = initialSize;
 		this.resSize = reservoirSize;
-		this.EsperService = EPSP;
 		this.p = pValue;
 	}
 	
@@ -127,10 +121,10 @@ public class Afinity {
 	
 	
 	
-	public void getSome(Object o) {
-		if( o instanceof double[] ) {}
-//			System.out.println( "Data received!" );
-		if( o instanceof String ) {}
-//			System.out.println( "TimeStamp received!" );
+	public void getPoint(double[] o) {
+		for (double element : o) {
+			System.out.println("O: " + element);
+		}
+		
 	}
 }

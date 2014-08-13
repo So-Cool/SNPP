@@ -1,5 +1,7 @@
 package featureExtractors;
 
+import java.util.Arrays;
+
 import afinityPropagation.Afinity;
 
 import com.espertech.esper.client.EventBean;
@@ -82,9 +84,8 @@ public class ListenerFeatures implements com.espertech.esper.client.UpdateListen
 		
 		// Send features to clustering algorithm
 		double[] x = {F1, F2, F3, F4, F5, F6, F7};
-		clustering.getSome( x );
-		clustering.getSome( FN );
-		clustering.getSome( TS );
+		clustering.getPoint( Arrays.copyOfRange(x, 0, (int)FN) );
+		//	clustering.getPoint( TS );
 		System.out.println( F1 + "," + F2 + "," + F3 + "," + F4 + "," + F5 + "," + F6 + "," + F7 + " | " + FN + "," + TS );
 	}
 	

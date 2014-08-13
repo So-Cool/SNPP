@@ -80,8 +80,8 @@ public class Driver {
 		EPServiceProvider epService = EPServiceProviderManager.getProvider("myCEPEngine", cepConfig); //.getDefaultProvider();
 		
 		
-		// Create a clustering instance
-		Afinity clustering = new Afinity( 1, 1, 1.0, null );
+		// Create a clustering instance ( reservir size, initial sample size, p-Value )
+		Afinity clustering = new Afinity( 100, 75, 1.0 );
 		
 		// create new listener
 		ListenerOne List = new ListenerOne( clustering, 7 );
