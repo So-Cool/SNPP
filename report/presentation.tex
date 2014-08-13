@@ -47,8 +47,8 @@
   \insertframenumber}
 
 % References
-\usepackage{biblatex}
-\addbibresource{bibliography.bib}
+% \usepackage{biblatex}
+% \addbibresource{bibliography.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,10 +56,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+\definecolor{navyb}{RGB}{0100,043,054}
+\lstset{
+  captionpos=b,
+  frame=single,
+  emph={module, import, create, schema, as, @Name, @Description, select, from, win:time},
+  emphstyle={\color{navyb}\bfseries},
+}
 
 \begin{document}
 
-\title{Making sense of data streams: Complex Event Processing for Controls Applications}  
+\title{Making sense of data streams}
+\subtitle{Complex Event Processing for Controls Applications}
 \author{Kacper B. sokol}
 \institute{CERN, EN/ICE}
 \date{\today}
@@ -77,43 +86,115 @@
 
 \section{Background} 
   \subsection{Signals}
-  \begin{frame}
-    \frametitle{Data Points} 
-    \lipsum[1]~\cite{articleExample}
+  \begin{frame}[plain]
+    \frametitle{Data Points}
+    \begin{figure}
+      \includegraphics[scale=.42]{./gfx/f5f6.png}
+    \end{figure}
   \end{frame}
 
-  \begin{frame}
+  \begin{frame}[plain]
     \frametitle{Data Points in time}
-    \lipsum[2]
+    \begin{figure}
+      \includegraphics[scale=.5]{./gfx/feature5.png}
+    \end{figure}
   \end{frame}
 
-  \subsection{Subsection 1.2}
-  \begin{frame}[plain]
-    \frametitle{Title 3} 
-    \lipsum[3]
-  \end{frame}
-
-\section{Section 2}
-  \subsection{Subsection 2.1}
+  \subsection{Signals Statistics}
   \begin{frame}
-    \frametitle{Title 1} 
-    \lipsum[4]
+    \frametitle{Basic measures}
+    \begin{block}{Time Windowing}
+      \begin{itemize}
+        \item Length;
+        \item Time Window;
+        \item Time Batch.
+      \end{itemize}
+    \end{block}
+    \begin{block}{Measures}
+      \begin{itemize}
+        \item Average;
+        \item Standard Deviation;
+        \item $k$-Lag;
+        \item etc.\
+      \end{itemize}
+    \end{block}
   \end{frame}
 
-  \begin{frame}
-    \frametitle{Title 2} 
-    \lipsum[5]
-  \end{frame}
-
-  \subsection{Subsection 2.2}
   \begin{frame}[plain]
-    \frametitle{Title 3} 
-    \lipsum[6]
+    \frametitle{avg}
+    \begin{figure}
+      \includegraphics[scale=.5]{./gfx/feature1.png}
+    \end{figure}
   \end{frame}
 
-  \begin{frame}[t, allowframebreaks, plain]
-    \frametitle{References}
-    \printbibliography[heading=none]
+  \begin{frame}[plain]
+    \frametitle{std}
+    \begin{figure}
+      \includegraphics[scale=.5]{./gfx/feature2.png}
+    \end{figure}
   \end{frame}
+
+    \begin{frame}[plain]
+    \frametitle{$1$-lag}
+    \begin{figure}
+      \includegraphics[scale=.5]{./gfx/feature3.png}
+    \end{figure}
+  \end{frame}
+
+\section{Processing Live Feed}
+  \begin{frame}
+    \frametitle{Model of Processing} 
+    \begin{figure}[htbp]
+      \includegraphics[scale=.27]{./gfx/model.pdf}
+    \end{figure}
+  \end{frame}
+
+  \begin{frame}[containsverbatim]
+    \frametitle{Extracting Features}
+    \begin{lstlisting}
+select
+avg(current) as F1,
+stddev(current) as F2,
+featureExtractors.FeatureExtractor.posNeg
+  ( (current - prev(1, current)) ) as F3,
+featureExtractors.FeatureExtractor.posNeg
+  ( (current - prev(2, current)) ) as F4,
+current as F5,
+featureExtractors.FeatureExtractor.threshold
+  (current) as F6,
+6 as FN,
+timer as TS
+from SinTick.win:time(60 sec);
+    \end{lstlisting}
+  \end{frame}
+
+  \section{Clustering}
+  \begin{frame}
+    \frametitle{Clustering with \textbf{Affinity Propagation}} 
+  \end{frame}
+
+  \begin{frame}[plain]
+    \frametitle{Clustering with \textbf{Affinity Propagation}} 
+    \begin{figure}[htbp]
+      \includegraphics[width=\textwidth]{./gfx/APC.pdf}
+    \end{figure}
+  \end{frame}
+
+  \begin{frame}[plain]
+    \frametitle{Average vs.\ Current} 
+    \begin{figure}
+      \includegraphics[scale=.5]{./gfx/f1f5.png}
+    \end{figure}
+  \end{frame}
+
+  \begin{frame}[plain]
+    \frametitle{Q\&A}
+  \end{frame}
+
+% ~\cite{articleExample}
+  % \begin{frame}[t, allowframebreaks, plain]
+  %   \frametitle{References}
+  %   \printbibliography[heading=none]
+  % \end{frame}
 
 \end{document}

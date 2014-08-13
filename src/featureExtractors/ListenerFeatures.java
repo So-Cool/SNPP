@@ -91,7 +91,6 @@ public class ListenerFeatures implements com.espertech.esper.client.UpdateListen
 		long ts = -1;
 		try {
 			ts = dateFormat.parse(TS).getTime();
-			System.out.println("O: " + ts);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
