@@ -171,10 +171,17 @@ from SinTick.win:time(60 sec);
   \section{Clustering}
   \begin{frame}
     \frametitle{Clustering with \textbf{Affinity Propagation}} 
+    \begin{block}{Clustering}
+    ``\\...task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters)...\\''
+    \end{block}
+    \pause
+    \begin{block}{Affinity Propagation}
+    ``\\...state-of-the-art clustering method recently proposed by Frey and Dueck...based on the concept of "message passing" between data points...unlike (other) clustering algorithms, AP does not require the number of clusters to be determined before running the algorithm...AP finds "exemplars"...\\''
+    \end{block}
   \end{frame}
 
   \begin{frame}[plain]
-    \frametitle{Clustering with \textbf{Affinity Propagation}} 
+    \frametitle{Algorithm model} 
     \begin{figure}[htbp]
       \includegraphics[width=\textwidth]{./gfx/APC.pdf}
     \end{figure}
