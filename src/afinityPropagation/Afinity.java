@@ -41,6 +41,9 @@ public class Afinity {
 	// PH test threshold
 	private double lambda = 0;
 	
+	// Lambda factor
+	private double lFactor;
+	
 	// CPC queue size
 	private int CPCsize;
 	
@@ -50,11 +53,12 @@ public class Afinity {
 	// functions //
 	
 	// Initialize
-	public Afinity( int reservoirSize, int initialSize, double eps, int cpcs ) {
+	public Afinity( int reservoirSize, int initialSize, double eps, double f, int cpcs ) {
 		this.initSize = initialSize;
 		this.resSize = reservoirSize;
 		this.epsilon = eps;
 		this.CPCsize = cpcs;
+		this.lFactor = f;
 		this.CPDqu = new CircularFifoQueue<Double>(CPCsize);
 		this.CPDqt = new CircularFifoQueue<Long>(CPCsize);
 		this.CPDqp = new CircularFifoQueue<Double>(CPCsize);
@@ -145,25 +149,30 @@ public class Afinity {
 		double p = Math.sqrt(sum / (l-1));
 		CPDqp.add(p); System.out.println("p-value: " + p);
 		
-		PHtest();
-	}
-	
-	// Page-Hinkley test
-	private void PHtest(){
-		// Get the sum
+		
+		// Get statistics
 		double pBar = 0;
-		for (double p : CPDqp) {
-			pBar += p;
+		for (double pp : CPDqp) {
+			pBar += pp;
 		}
 		pBar /= CPDqp.size();
 		
 		double m = 0;
-		for (double p : CPDqp) {
-			m += (p - pBar);
+		for (double pp : CPDqp) {
+			m += (pp - pBar);
 		}
 		Mt = Math.max(Mt, m);
 		
-		if( Mt - m > lambda )
+		// PHt value
+		double PHt = Mt - m;
+		
+		
+		// Calibrate lambda
+		lambda = (PHt == 0) ? 0.0 : lFactor * pBar;
+		
+		
+		// Page-Hinkley test		
+		if( PHt > lambda )
 			CPD = true;
 	}
 	
