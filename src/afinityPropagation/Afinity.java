@@ -30,6 +30,17 @@ public class Afinity {
 	// Change point detection of input stream status
 	private Boolean CPD = false;
 	
+	// CPD queue
+	CircularFifoQueue<Double> CPDqu;
+	CircularFifoQueue<Long> CPDqt;
+	CircularFifoQueue<Double> CPDqp;
+	
+	// PH test maximum
+	private double Mt = 0;
+	
+	// PH test threshold
+	private double lambda = 0;
+	
 	// CPC queue size
 	private int CPCsize;
 	
@@ -44,6 +55,9 @@ public class Afinity {
 		this.resSize = reservoirSize;
 		this.epsilon = eps;
 		this.CPCsize = cpcs;
+		this.CPDqu = new CircularFifoQueue<Double>(CPCsize);
+		this.CPDqt = new CircularFifoQueue<Long>(CPCsize);
+		this.CPDqp = new CircularFifoQueue<Double>(CPCsize);
 	}
 	
 	// Receive new datum point
@@ -53,13 +67,11 @@ public class Afinity {
 		 *}
 		**/
 		
-		checkStationarity(p, timestamp);
-		
 		if(initialBuild){
 			++incomingPoints;
 			reservoir.add(p);
 		} else {
-			processPoint(p);
+			processPoint(p, timestamp);
 			return;
 		}	
 		
@@ -68,12 +80,6 @@ public class Afinity {
 			// build first model
 			initializeModel();
 		}
-	}
-	
-	private void checkStationarity(double[] p, long ts){
-		CircularFifoQueue<double[]> lol = new CircularFifoQueue<double[]>(CPCsize);
-		lol.add(null);
-		//CHECK WHETHER ARRIVING POINTS ARE STATIONRY
 	}
 	
 	// initialize model
@@ -95,13 +101,16 @@ public class Afinity {
 	}
 	
 	// process the new arriving point
-	private void processPoint(double[] p) {
+	private void processPoint(double[] p, long ts) {
 		//COMPUTE E_I
 		double ei = 0;
+		// get matrix distance
+		double d = 0 * ei;// d( p, e_i )
 		
-		if(ei < epsilon){
+		if(d < epsilon){
 			updateModel();
 		} else {
+			checkStationarity(d, ts);
 			reservoir.add(p);
 		}
 		
@@ -109,8 +118,53 @@ public class Afinity {
 		if(reservoiFull() || CPD){
 			rebuildModel();
 			reservoir.clear();
+			CPD = false;
 		}
 		
+	}
+	
+	private void checkStationarity(double pt, long ts){
+		
+		CPDqu.add(pt);
+		CPDqt.add(ts);
+		//CHECK WHETHER ARRIVING POINTS ARE STATIONRY
+		int l = CPDqu.size(); System.out.println("Side: " + l);
+		double sum = 0;
+		
+		double c2 = 0;
+		for(int j = 1; j < l; ++j) {
+			c2 += CPDqu.get(j);
+		}
+		
+		for (int i = 1; i < l; ++i){
+			double c1 = 1 + Math.log( CPDqt.get(i) - CPDqt.get(i-1) );
+			double c3 = CPDqu.get(i) - Math.pow( ( c2 / (l-1) ), 2 );
+			sum += c1*c3;
+		}
+		
+		double p = Math.sqrt(sum / (l-1));
+		CPDqp.add(p); System.out.println("p-value: " + p);
+		
+		PHtest();
+	}
+	
+	// Page-Hinkley test
+	private void PHtest(){
+		// Get the sum
+		double pBar = 0;
+		for (double p : CPDqp) {
+			pBar += p;
+		}
+		pBar /= CPDqp.size();
+		
+		double m = 0;
+		for (double p : CPDqp) {
+			m += (p - pBar);
+		}
+		Mt = Math.max(Mt, m);
+		
+		if( Mt - m > lambda )
+			CPD = true;
 	}
 	
 	private Boolean reservoiFull(){
