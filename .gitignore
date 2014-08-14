@@ -21,6 +21,7 @@ bin/*
 
 # plots
 *.png
+*.jpg
 
 # LaTeX
 *.aux

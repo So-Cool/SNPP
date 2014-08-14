@@ -142,12 +142,19 @@
   \end{frame}
 
 \section{Processing Live Feed}
+  {
+  \setbeamertemplate*{footline}
+  \makeatletter
+    \setbeamertemplate{headline}[default]
+    \def\beamer@entrycode{\vspace*{-\headheight}}
+  \makeatother
   \begin{frame}
     \frametitle{Model of Processing} 
     \begin{figure}[htbp]
-      \includegraphics[scale=.27]{./gfx/model.pdf}
+      \includegraphics[scale=.31]{./gfx/model.pdf}
     \end{figure}
   \end{frame}
+  }
 
   \begin{frame}[containsverbatim]
     \frametitle{Extracting Features}
@@ -194,16 +201,33 @@ from SinTick.win:time(60 sec);
   \end{frame}
   }
 
-  \begin{frame}[plain]
+  {
+  \setbeamertemplate*{footline}
+  \makeatletter
+    \setbeamertemplate{headline}[default]
+    \def\beamer@entrycode{\vspace*{-\headheight}}
+  \makeatother
+  \begin{frame}
     \frametitle{Average vs.\ Current} 
     \begin{figure}
       \includegraphics[scale=.5]{./gfx/f1f5.png}
     \end{figure}
   \end{frame}
+  }
 
-  \begin{frame}[plain]
+  {
+  \setbeamertemplate*{footline}
+  \makeatletter
+    \setbeamertemplate{headline}[default]
+    \def\beamer@entrycode{\vspace*{-\headheight}}
+  \makeatother
+  \begin{frame}
     \frametitle{Q\&A}
+    \begin{figure}
+      \includegraphics[scale=.5]{./gfx/futurama-fry-meme-00020.jpg}
+    \end{figure}
   \end{frame}
+  }
 
 % ~\cite{articleExample}
   % \begin{frame}[t, allowframebreaks, plain]
