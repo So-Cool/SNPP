@@ -106,10 +106,8 @@ public class Afinity {
 	
 	// process the new arriving point
 	private void processPoint(double[] p, long ts) {
-		//COMPUTE E_I
-		double ei = 0;
-		// get matrix distance
-		double d = 0 * ei;// d( p, e_i )
+		// get matrix distance of current point with the closest exemplar E_I i.e. d( p, e_i )
+		double d = 0 ;
 		
 		if(d < epsilon){
 			updateModel();
@@ -131,7 +129,7 @@ public class Afinity {
 		
 		CPDqu.add(pt);
 		CPDqt.add(ts);
-		//CHECK WHETHER ARRIVING POINTS ARE STATIONRY
+		// check whether arriving points are stationary
 		int l = CPDqu.size(); System.out.println("Side: " + l);
 		double sum = 0;
 		
