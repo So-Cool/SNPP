@@ -82,10 +82,12 @@ if __name__ == '__main__':
 			# graph of each feature along time STAMP
 			plt.figure(i)
 			plt.plot(stamps,col)
-			plt.scatter(stamps,col)
+			f=plt.scatter(stamps,col)
 			plt.xlabel("time stamp")
 			plt.ylabel("value")
 			plt.title("Feature " + str(i+1) + " in time")
+			# f.axes.get_xaxis().set_visible(False)
+			# f.axes.get_yaxis().set_visible(False)
 			
 			# set constant time axes
 			ax = plt.axis()
@@ -139,10 +141,12 @@ if __name__ == '__main__':
 				# print zip( col1, col2 )
 				# graph of each feature along time STAMP
 				plt.figure(10+i)
-				plt.scatter(col1,col2)
+				f=plt.scatter(col1,col2)
 				plt.xlabel( "Feature " + str(i+1) )
 				plt.ylabel( "Feature " + str(j+1) )
 				plt.title("Feature " + str(i+1) + " against feature " + str(j+1))
+				# f.axes.get_xaxis().set_visible(False)
+				# f.axes.get_yaxis().set_visible(False)
 				# plt.axis([ 0, 1, -0.075, -0.035 ])
 				plt.savefig("fig/f"+str(i+1)+"f"+str(j+1)+".png", dpi=300, pad_inches=0.2)
 				plt.show()

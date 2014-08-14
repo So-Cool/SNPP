@@ -65,11 +65,27 @@
   emphstyle={\color{navyb}\bfseries},
 }
 
+\makeatletter
+\define@key{beamerframe}{foot}[true]{
+  \setbeamertemplate*{footline}
+  \setbeamertemplate{headline}[default]
+  \def\beamer@entrycode{\vspace*{-\headheight}}
+}
+\makeatother
+
+\newenvironment{foot}{
+  \setbeamertemplate*{footline}
+  \makeatletter
+    \setbeamertemplate{headline}[default]
+    \def\beamer@entrycode{\vspace*{-\headheight}}
+  \makeatother
+}
+
 \begin{document}
 
 \title{Making sense of data streams}
 \subtitle{Complex Event Processing for Controls Applications}
-\author{Kacper B. sokol}
+\author{Kacper B. Sokol}
 \institute{CERN, EN/ICE}
 \date{\today}
 
@@ -77,7 +93,7 @@
 	\titlepage
 \end{frame}
 
-\begin{frame}[plain]
+\begin{frame}[foot]
   \frametitle{Table of contents}
   \tableofcontents
 \end{frame}
@@ -86,14 +102,21 @@
 
 \section{Background} 
   \subsection{Signals}
-  \begin{frame}[plain]
+  \begin{frame}[foot]
+    \frametitle{Dynamic $\rightarrow$ Static}
+    \begin{figure}
+      \includegraphics[scale=.7]{./gfx/CMS.png}
+    \end{figure}
+  \end{frame}
+
+  \begin{frame}[foot]
     \frametitle{Data Points}
     \begin{figure}
       \includegraphics[scale=.42]{./gfx/f5f6.png}
     \end{figure}
   \end{frame}
 
-  \begin{frame}[plain]
+  \begin{frame}[foot]
     \frametitle{Data Points in time}
     \begin{figure}
       \includegraphics[scale=.5]{./gfx/feature5.png}
@@ -101,7 +124,7 @@
   \end{frame}
 
   \subsection{Signals Statistics}
-  \begin{frame}
+  \begin{frame}[foot]
     \frametitle{Basic measures}
     \begin{block}{Time Windowing}
       \begin{itemize}
@@ -120,21 +143,21 @@
     \end{block}
   \end{frame}
 
-  \begin{frame}[plain]
+  \begin{frame}[foot]
     \frametitle{avg}
     \begin{figure}
       \includegraphics[scale=.5]{./gfx/feature1.png}
     \end{figure}
   \end{frame}
 
-  \begin{frame}[plain]
+  \begin{frame}[foot]
     \frametitle{std}
     \begin{figure}
       \includegraphics[scale=.5]{./gfx/feature2.png}
     \end{figure}
   \end{frame}
 
-    \begin{frame}[plain]
+    \begin{frame}[foot]
     \frametitle{$1$-lag}
     \begin{figure}
       \includegraphics[scale=.5]{./gfx/feature3.png}
@@ -142,21 +165,15 @@
   \end{frame}
 
 \section{Processing Live Feed}
-  {
-  \setbeamertemplate*{footline}
-  \makeatletter
-    \setbeamertemplate{headline}[default]
-    \def\beamer@entrycode{\vspace*{-\headheight}}
-  \makeatother
-  \begin{frame}
+  \begin{frame}[foot]
     \frametitle{Model of Processing} 
+    \vspace*{-1.5em}
     \begin{figure}[htbp]
-      \includegraphics[scale=.31]{./gfx/model.pdf}
+      \includegraphics[scale=.4, angle=270]{./gfx/model.pdf}
     \end{figure}
   \end{frame}
-  }
 
-  \begin{frame}[containsverbatim]
+  \begin{frame}[containsverbatim, foot]
     \frametitle{Extracting Features}
     \begin{lstlisting}
 select
@@ -176,7 +193,7 @@ from SinTick.win:time(60 sec);
   \end{frame}
 
   \section{Clustering}
-  \begin{frame}
+  \begin{frame}[foot]
     \frametitle{Clustering with \textbf{Affinity Propagation}} 
     \begin{block}{Clustering}
     ``\\...task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters)...\\''
@@ -187,47 +204,27 @@ from SinTick.win:time(60 sec);
     \end{block}
   \end{frame}
 
-  {
-  \setbeamertemplate*{footline}
-  \makeatletter
-    \setbeamertemplate{headline}[default]
-    \def\beamer@entrycode{\vspace*{-\headheight}}
-  \makeatother
-  \begin{frame}
+  \begin{frame}[foot]
     \frametitle{Algorithm model} 
     \begin{figure}[htbp]
       \includegraphics[width=\textwidth]{./gfx/APC.pdf}
     \end{figure}
   \end{frame}
-  }
 
-  {
-  \setbeamertemplate*{footline}
-  \makeatletter
-    \setbeamertemplate{headline}[default]
-    \def\beamer@entrycode{\vspace*{-\headheight}}
-  \makeatother
-  \begin{frame}
+  \begin{frame}[foot]
     \frametitle{Average vs.\ Current} 
     \begin{figure}
       \includegraphics[scale=.5]{./gfx/f1f5.png}
     \end{figure}
   \end{frame}
-  }
 
-  {
-  \setbeamertemplate*{footline}
-  \makeatletter
-    \setbeamertemplate{headline}[default]
-    \def\beamer@entrycode{\vspace*{-\headheight}}
-  \makeatother
-  \begin{frame}
+  \begin{frame}[foot]
     \frametitle{Q\&A}
     \begin{figure}
       \includegraphics[scale=.5]{./gfx/futurama-fry-meme-00020.jpg}
     \end{figure}
   \end{frame}
-  }
+
 
 % ~\cite{articleExample}
   % \begin{frame}[t, allowframebreaks, plain]
