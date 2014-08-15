@@ -93,17 +93,17 @@
 	\titlepage
 \end{frame}
 
-\begin{frame}[foot]
-  \frametitle{Table of contents}
-  \tableofcontents
-\end{frame}
+% \begin{frame}[foot]
+%   \frametitle{Table of contents}
+%   \tableofcontents
+% \end{frame}
 
 %%%% CONTENT %%%%
 
 \section{Background} 
   \subsection{Signals}
   \begin{frame}[foot]
-    \frametitle{Dynamic $\rightarrow$ Static}
+    \frametitle{Dynamic vs.\ Static}
     \begin{figure}
       \includegraphics[scale=.7]{./gfx/CMS.png}
     \end{figure}
@@ -144,37 +144,33 @@
   \end{frame}
 
   \begin{frame}[foot]
-    \frametitle{avg}
+    \frametitle{avg | std | $1$-lag}
     \begin{figure}
-      \includegraphics[scale=.5]{./gfx/feature1.png}
-    \end{figure}
-  \end{frame}
-
-  \begin{frame}[foot]
-    \frametitle{std}
-    \begin{figure}
-      \includegraphics[scale=.5]{./gfx/feature2.png}
-    \end{figure}
-  \end{frame}
-
-    \begin{frame}[foot]
-    \frametitle{$1$-lag}
-    \begin{figure}
-      \includegraphics[scale=.5]{./gfx/feature3.png}
+      \vspace*{-2em}
+      {
+      \hspace*{-2em}
+      {{
+      \includegraphics[scale=.28]{./gfx/feature1.png}
+      \hspace*{0.1em}
+      \includegraphics[scale=.28]{./gfx/feature2.png}
+      }
+      \vspace*{-1em}
+      \includegraphics[scale=.28]{./gfx/feature3.png}
+      }}
     \end{figure}
   \end{frame}
 
 \section{Processing Live Feed}
-  \begin{frame}[foot]
-    \frametitle{Model of Processing} 
-    \vspace*{-1.5em}
-    \begin{figure}[htbp]
-      \includegraphics[scale=.4, angle=270]{./gfx/model.pdf}
-    \end{figure}
-  \end{frame}
+  % \begin{frame}[foot]
+  %   \frametitle{Model of Processing} 
+  %   \vspace*{-1.5em}
+  %   \begin{figure}[htbp]
+  %     \includegraphics[scale=.4, angle=270]{./gfx/model.pdf}
+  %   \end{figure}
+  % \end{frame}
 
   \begin{frame}[containsverbatim, foot]
-    \frametitle{Extracting Features}
+    \frametitle{Feature Extracting Module}
     \begin{lstlisting}
 select
 avg(current) as F1,
@@ -192,17 +188,17 @@ from SinTick.win:time(60 sec);
     \end{lstlisting}
   \end{frame}
 
-  \section{Clustering}
-  \begin{frame}[foot]
-    \frametitle{Clustering with \textbf{Affinity Propagation}} 
-    \begin{block}{Clustering}
-    ``\\...task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters)...\\''
-    \end{block}
-    \pause
-    \begin{block}{Affinity Propagation}
-    ``\\...state-of-the-art clustering method recently proposed by Frey and Dueck...based on the concept of "message passing" between data points...unlike (other) clustering algorithms, AP does not require the number of clusters to be determined before running the algorithm...AP finds "exemplars"...\\''
-    \end{block}
-  \end{frame}
+  % \section{Clustering}
+  % \begin{frame}[foot]
+  %   \frametitle{Clustering with \textbf{Affinity Propagation}} 
+  %   \begin{block}{Clustering}
+  %   ``\\...task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters)...\\''
+  %   \end{block}
+  %   \pause
+  %   \begin{block}{Affinity Propagation}
+  %   ``\\...state-of-the-art clustering method recently proposed by Frey and Dueck...based on the concept of "message passing" between data points...unlike (other) clustering algorithms, AP does not require the number of clusters to be determined before running the algorithm...AP finds "exemplars"...\\''
+  %   \end{block}
+  % \end{frame}
 
   \begin{frame}[foot]
     \frametitle{Algorithm model} 
