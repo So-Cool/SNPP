@@ -201,7 +201,7 @@ We divide model into two branches: \emph{Offline resources} and \emph{Live Data 
   \caption{Data processing model.\label{fig:model}}
 \end{figure}
 
-\subsection{Generators, signals}
+\subsection{Generators, signals\label{sec:generators}}
 A number of signal generators is implemented to test the framework:
 \begin{itemize}
     \item \emph{sine} wave with possibility to add normally distributed noise,
@@ -295,8 +295,10 @@ A listener is a thread running in the background and acting upon new event (sign
 I use this module to pass features extracted from signal to clustering framework (see §\ref{sec:sclustering}).
 
 \subsection{Clustering with Affinity Propagation\label{sec:sclustering}}
-The heart of application is \emph{Affinity Propagation}, unsupervised clustering algorithm.\\
-Affinity Propagation .\\
+The predominant part of application is \emph{Affinity Propagation}, unsupervised clustering algorithm adapted to data streams.\\
+Affinity Propagation is state-of-the-art clustering solution based on message passing between points. The algorithm finds centroids i.e.\ the heart of .\\
+
+Its use is mainly motivated by no need of specifying number of centroids prior to classification.
 
 Clustering model~\citep{zhang2013data}\\
 \begin{figure}[htbp]
@@ -343,7 +345,8 @@ To visualize gathered data, separate \texttt{Python} script is written. It uses 
 It can be also used to scatter a plot of selected features against each other.\\
 
 
-\section{Results and comparison}
+\section{Results}
+The application is evaluated on signals produced by described above generators (see §\ref{sec:generators}).\\
 Describe results of AP clustering --- not given.
 \subsection{why particulat algorithms were chosen}
 \subsection{WEKA algorithms review}
@@ -356,7 +359,7 @@ The major lacking features of the application are: graphic interface which shows
 Furthermore, \texttt{Esper} facilitates new rules deployment on running application. Such possibility allows changing features of interest without stopping signal processing.\\
 
 \section{Conclusions}
-This paper proposes application of \emph{Complex Event Processing} tool \texttt{Esper} to \underline{make sense of data streams}. It covers all the processing steps from \emph{signal generation} through \emph{feature extraction} to \emph{data clustering}. Use of \texttt{Esper} brings all the advantages of efficient, multi-platform, and simple to us framework, which can process thousands of events per second.\\
+This paper proposes application of \emph{Complex Event Processing} tool \texttt{Esper} to \underline{make sense of data streams}. It covers all the processing steps from \emph{signal generation} through \emph{feature extraction} to \emph{data clustering}. Use of \texttt{Esper} brings all the advantages of efficient, multi-platform, and simple to us framework, which can process thousands of events produced by multiple signals per second.\\
 
 Designed approach allows to analyze the live stream of data and automatically raise an alarm based on specified conditions. It can be used to monitor systems that demand more than simple signal thresholding.\\
 
