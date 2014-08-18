@@ -3,6 +3,7 @@ package randomGenerators;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.PoissonDistribution;
 
 import com.espertech.esper.client.EPServiceProvider;
@@ -13,13 +14,15 @@ public class Cosine extends RG{
 
 	private double x = 1;
 	private double y = 1;
+	private double noise = 0;
 	
-	public Cosine( double xScale, double yScale, int jump, EPServiceProvider service, Boolean print ) {
+	public Cosine( double xScale, double yScale, int jump, double noise, EPServiceProvider service, Boolean print ) {
 		genName = "Cosine";
 		this.timer = new Date( System.currentTimeMillis() );
 		this.elaps = new PoissonDistribution( jump );
 		this.x = xScale;
 		this.y = yScale;
+		this.noise = noise;
 		this.printOut = print;
 		
 		// Initialize my service provider
@@ -40,6 +43,8 @@ public class Cosine extends RG{
 	public double gen( int timeToWait, double degrees ) {
 		for (long stop=System.nanoTime()+TimeUnit.SECONDS.toNanos(timeToWait); stop>System.nanoTime(); degrees++ ) {
 			current = y* Math.cos( x* Math.toRadians(degrees) );
+			if( noise != 0 )
+				current += new NormalDistribution( current, noise ).sample();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

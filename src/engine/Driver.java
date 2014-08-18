@@ -39,6 +39,9 @@ public class Driver {
 //											  {1.33, 17}
 //											};
 	
+	private static double noise1 = 0;
+//	private static double noise2 = 0;
+	
 	private static double xSin = 1;
 	private static double ySin = 1;
 
@@ -106,11 +109,11 @@ public class Driver {
 //		threads.add(t);
 //		( new Thread( (MultivariateNormal)t ) ).start();
 		
-		t = new Sine( xSin, ySin, time4, epService, printout );
+		t = new Sine( xSin, ySin, time4, noise1, epService, printout );
 		threads.add(t);
 		( new Thread( (Sine)t ) ).start();
 		
-//		t = new Cosine( xCos, yCos, time5, epService, printout );
+//		t = new Cosine( xCos, yCos, time5, noise2, epService, printout );
 //		threads.add(t);
 //		( new Thread( (Cosine)t ) ).start();
 		

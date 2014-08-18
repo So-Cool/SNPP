@@ -3,6 +3,7 @@ package randomGenerators;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.PoissonDistribution;
 
 import com.espertech.esper.client.EPServiceProvider;
@@ -13,13 +14,15 @@ public class Sine extends RG{
 
 	private double x = 1;
 	private double y = 1;
+	private double noise = 0;
 	
-	public Sine( double xScale, double yScale, int jump, EPServiceProvider service, Boolean print ) {
+	public Sine( double xScale, double yScale, int jump, double noise, EPServiceProvider service, Boolean print ) {
 		genName = "Sine";
 		this.timer = new Date( System.currentTimeMillis() );
 		this.elaps = new PoissonDistribution( jump );
 		this.x = xScale;
 		this.y = yScale;
+		this.noise = noise;
 		this.printOut = print;
 		
 		// Initialize my service provider
@@ -40,6 +43,8 @@ public class Sine extends RG{
 	public double gen( int timeToWait, double degrees ) {
 		for (long stop=System.nanoTime()+TimeUnit.MILLISECONDS.toNanos(timeToWait *100); stop>System.nanoTime(); degrees++ ) {
 			current = y* Math.sin( x* Math.toRadians(degrees) );
+			if( noise != 0 )
+				current += new NormalDistribution( current, noise ).sample();
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
@@ -51,7 +56,7 @@ public class Sine extends RG{
 		
 	    return degrees;
 	}
-	
+
 	@Override
 	public void run() {
 		int timeToWait = elaps.sample();
