@@ -295,12 +295,17 @@ A listener is a thread running in the background and acting upon new event (sign
 I use this module to pass features extracted from signal to clustering framework (see §\ref{sec:sclustering}).
 
 \subsection{Clustering with Affinity Propagation\label{sec:sclustering}}
+\subsubsection{Affinity Propagation}
 The predominant part of application is \emph{Affinity Propagation}, unsupervised clustering algorithm adapted to data streams.\\
 Affinity Propagation is state-of-the-art clustering solution based on message passing between points. The algorithm finds centroids i.e.\ the heart of .\\
 
 Its use is mainly motivated by no need of specifying number of centroids prior to classification.
 
-Clustering model~\citep{zhang2013data}\\
+\subsubsection{Live stream adaptation of Affinity Propagation}
+
+Clustering model~\citep{zhang2013data} \emph{Figure}~\ref{fig:APC}\\
+Clustering algo \emph{Algorithm}~\ref{alg:APC}.\\
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{./gfx/APC.pdf}
