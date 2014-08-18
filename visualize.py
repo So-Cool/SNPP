@@ -3,6 +3,7 @@
 import numpy as np
 from numpy.random import randn
 import matplotlib.pyplot as plt
+import matplotlib
 
 import sys
 import csv
@@ -10,6 +11,12 @@ from pprint import pprint
 
 import time
 import datetime
+
+# font = {'family' : 'normal',
+        # 'weight' : 'bold',
+        # 'size'   : 22}
+
+# matplotlib.rc('font', **font)
 
 # CSV files to visualize
 filesCols = []
@@ -81,13 +88,20 @@ if __name__ == '__main__':
 			# print zip( stamps, col )
 			# graph of each feature along time STAMP
 			plt.figure(i)
+			# stamps = [0]* len(col)
 			plt.plot(stamps,col)
 			f=plt.scatter(stamps,col)
 			plt.xlabel("time stamp")
 			plt.ylabel("value")
 			plt.title("Feature " + str(i+1) + " in time")
+
 			# f.axes.get_xaxis().set_visible(False)
 			# f.axes.get_yaxis().set_visible(False)
+			
+			# plt.xlabel("Time")
+			# plt.ylabel("Signal Value")
+			# f.axes.get_xaxis().set_ticks([])
+			# f.axes.get_yaxis().set_ticks([])
 			
 			# set constant time axes
 			ax = plt.axis()
@@ -145,9 +159,16 @@ if __name__ == '__main__':
 				plt.xlabel( "Feature " + str(i+1) )
 				plt.ylabel( "Feature " + str(j+1) )
 				plt.title("Feature " + str(i+1) + " against feature " + str(j+1))
+				
 				# f.axes.get_xaxis().set_visible(False)
 				# f.axes.get_yaxis().set_visible(False)
 				# plt.axis([ 0, 1, -0.075, -0.035 ])
+
+				# plt.xlabel("Standard Deviation")
+				# plt.ylabel("Signal Value")
+				# f.axes.get_xaxis().set_ticks([])
+				# f.axes.get_yaxis().set_ticks([])
+
 				plt.savefig("fig/f"+str(i+1)+"f"+str(j+1)+".png", dpi=300, pad_inches=0.2)
 				plt.show()
 				# !!!!!!!!!!! GIVE COLOURS TO POINTS HERE !!!!!!!!!!!!!!! #

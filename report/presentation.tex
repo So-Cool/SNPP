@@ -60,11 +60,16 @@
 \usepackage{listings}
 \definecolor{navyb}{RGB}{0100,043,054}
 \lstset{
-  captionpos=b,
-  frame=single,
+  % captionpos=b,
+  % frame=single,
   emph={module, import, create, schema, as, @Name, @Description, select, from, win:time},
   emphstyle={\color{navyb}\bfseries},
+  % escapeinside={(*}{*)},
+  escapechar= \!
 }
+\definecolor{lightred}{rgb}{.8,.4,.4}
+\definecolor{lightgreen}{rgb}{.4,.8,.4}
+\definecolor{lightblue}{rgb}{.4,.4,.8}
 
 \makeatletter
 \define@key{beamerframe}{foot}[true]{
@@ -80,6 +85,18 @@
     \setbeamertemplate{headline}[default]
     \def\beamer@entrycode{\vspace*{-\headheight}}
   \makeatother
+}
+
+\newcommand{\cfbox}[2]{%
+    \colorlet{currentcolor}{.}
+    {
+      \color{#1}%
+      \noindent
+      \fbox{
+        \color{currentcolor}
+        #2
+      }
+    }
 }
 
 \begin{document}
@@ -113,7 +130,7 @@
   \begin{frame}[foot]
     \frametitle{Data Points}
     \begin{figure}
-      \includegraphics[scale=.42]{./gfx/f5f6.png}
+      \includegraphics[scale=.5]{./gfx/feature0.png}
     \end{figure}
   \end{frame}
 
@@ -126,11 +143,11 @@
 
   \subsection{Signals Statistics}
   \begin{frame}[foot]
-    \frametitle{Basic measures}
+    \frametitle{\texttt{Esper} Complex Event Processing}
     \begin{block}{Time Windowing}
       \begin{itemize}
         \item Length;
-        \item Time Window;
+        \item Sliding Time Window;
         \item Time Batch.
       \end{itemize}
     \end{block}
@@ -145,23 +162,24 @@
   \end{frame}
 
   \begin{frame}[foot]
-    \frametitle{\texttt{avg}}
+    \frametitle{\texttt{avg | std | \texttt{$1$-lag} $\rightarrow$ in time}}
     \begin{figure}
-      \includegraphics[scale=.5]{./gfx/feature1.png}
-    \end{figure}
-  \end{frame}
+       \vspace*{-2em}
+       {
+       \hspace*{-2.5em}
+       {{
 
-  \begin{frame}[foot]
-    \frametitle{\texttt{std}}
-    \begin{figure}
-      \includegraphics[scale=.5]{./gfx/feature2.png}
-    \end{figure}
-  \end{frame}
+       \colorbox{lightred}{ \includegraphics[scale=.22]{./gfx/feature1.png} }
 
-  \begin{frame}[foot]
-    \frametitle{\texttt{$1$-lag}}
-    \begin{figure}
-      \includegraphics[scale=.5]{./gfx/feature3.png}
+
+       \hspace*{0.1em}
+       
+       \colorbox{lightgreen}{ \includegraphics[scale=.22]{./gfx/feature2.png} }
+       }
+       \vspace*{-1em}
+       \colorbox{lightblue}{ \includegraphics[scale=.22]{./gfx/feature3.png} }
+     }}
+
     \end{figure}
   \end{frame}
 
@@ -178,16 +196,26 @@
     \frametitle{Feature Extracting Module}
     \begin{lstlisting}
 select
+    \end{lstlisting}
+    \lstset{basicstyle=\ttfamily\color{lightred}}
+    \begin{lstlisting}
 avg(current) as F1,
+  \end{lstlisting}
+    \lstset{basicstyle=\ttfamily\color{lightgreen}}
+    \begin{lstlisting}
 stddev(current) as F2,
+    \end{lstlisting}
+    \lstset{basicstyle=\ttfamily\color{lightblue}}
+    \begin{lstlisting}
 featureExtractors.FeatureExtractor.posNeg
-  ( (current - prev(1, current)) ) as F3,
-featureExtractors.FeatureExtractor.posNeg
-  ( (current - prev(2, current)) ) as F4,
-current as F5,
+  ( (current - prev(3, current)) ) as F3,
+    \end{lstlisting}
+    \lstset{basicstyle=\ttfamily\color{black}}
+    \begin{lstlisting}
+current as F4,
 featureExtractors.FeatureExtractor.threshold
-  (current) as F6,
-6 as FN,
+  (current) as F5,
+5 as FN,
 timer as TS
 from SinTick.win:time(60 sec);
     \end{lstlisting}
@@ -208,14 +236,14 @@ from SinTick.win:time(60 sec);
   \begin{frame}[foot]
     \frametitle{Algorithm model} 
     \begin{figure}[htbp]
-      \includegraphics[width=\textwidth]{./gfx/APC.pdf}
+      \includegraphics[width=\textwidth]{./gfx/APC_Presentation.pdf}
     \end{figure}
   \end{frame}
 
   \begin{frame}[foot]
-    \frametitle{Average vs.\ Current} 
+    \frametitle{\texttt{std} vs.\ Current} 
     \begin{figure}
-      \includegraphics[scale=.5]{./gfx/f1f5.png}
+      \includegraphics[scale=.5]{./gfx/f2f5.png}
     \end{figure}
   \end{frame}
 
