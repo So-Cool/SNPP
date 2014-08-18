@@ -16,7 +16,7 @@
 \usepackage{graphicx}                                                 % graphics
 \usepackage{color}                                              % custom colours
 \usepackage{lipsum}                                        % just a space filler
-\usepackage{soul}												% letter spacing
+\usepackage{soul}                                               % letter spacing
 \definecolor{natc}    {RGB}{021,055,090}
 \definecolor{subc}    {RGB}{121,121,121}
 \definecolor{headc}   {RGB}{034,065,094}
@@ -26,7 +26,7 @@
 \definecolor{linec}   {RGB}{237,237,237}
 \usepackage[absolute]{textpos}      % absolute positioning of images | showboxes
 \usepackage{cite}                                                        % BiTeX
-\usepackage[square]{natbib}									  % Harvard citation
+\usepackage[square]{natbib}                                   % Harvard citation
 
 \usepackage{datetime}                                              % custom date
 \newdateformat{motd}{\monthname[\THEMONTH] \THEYEAR}               % custom date
@@ -44,11 +44,11 @@
 \newfontfamily\footerfont[Ligatures=TeX]{Times New Roman}
 
 
-\usepackage[linktocpage=true]{hyperref}						    % click-able ToC
+\usepackage[linktocpage=true]{hyperref}                         % click-able ToC
 \usepackage{tocloft}
-\renewcommand{\contentsname}							   % ...
-	{\fontsize{16}{18}\color{headc}\bfseries\sffamily	   % ...
-	Table of Contents}									   % change name for ToC
+\renewcommand{\contentsname}                               % ...
+    {\fontsize{16}{18}\color{headc}\bfseries\sffamily      % ...
+    Table of Contents}                                     % change name for ToC
 
 \setcounter{tocdepth}{3}
 \cftsetindents{section}{0.0em}{1.0em}
@@ -146,9 +146,9 @@ The concept behind it is similar to database querying, but doing it on live data
 \subsection{What is \texttt{Esper}}
 \texttt{Esper} tool used to handle incoming data streams and to extract chosen features belongs to family of \emph{Complex Event Processing} tools. These software analyses multiple live data streams. Its main advantage is \emph{time windowing}, which allows to focus on a specific time period. Aforementioned feature can work in multiple modes:
 \begin{description}
-	\item[Time] incoming data from last $t$ milliseconds/seconds/minutes/etc.\ are processed.
-	\item[Time batch] data are processed in $t$ milliseconds/seconds/minutes/etc.\ batches i.e.\ algorithm collects data for $t$ units of time, then process them and repeat this cycle.
-	\item[Length] $n$ latest events are processed.
+    \item[Time] incoming data from last $t$ milliseconds/seconds/minutes/etc.\ are processed.
+    \item[Time batch] data are processed in $t$ milliseconds/seconds/minutes/etc.\ batches i.e.\ algorithm collects data for $t$ units of time, then process them and repeat this cycle.
+    \item[Length] $n$ latest events are processed.
 \end{description}
 The package also allow joining multiple incoming signals for processing purposes. With proprietary \texttt{EPL} querying language the analysis boils down to simple statements. One approach is to hard-code the EPL queries but it is also possible to provide them as module(text file) what gives flexibility of new extracting features without need of stopping the analysis.\\
 \texttt{Esper} is available as \texttt{Java} and \texttt{.NET} framework hence is multi-platform and easy to incorporate. It can also work as server with possibility of introducing on-the-go changes via AIP like rules can injection on the fly.\\
@@ -189,26 +189,26 @@ To begin with, I describe model of processing adapted in the application, presen
 We divide model into two branches: \emph{Offline resources} and \emph{Live Data Processing}. The first one consists of \texttt{EPL} file (see \textit{Listing~\ref{lst:EPL}}), that defines the features to be extracted form the given signal; \texttt{CSV} file which serves as a data dump; and finally data reconstruction script written in \texttt{Python}: \texttt{visualize.py}, which plots signal and all extracted features against time as well as features against each other using \texttt{CSV} data repository.\\
 \emph{Live Data Processing} module consists of following components:
 \begin{description}
-	\item[Signals layer] includes signal generators and signal feeds.
-	\item[\texttt{Esper} layer] collects signals, and applies rules taken form \texttt{EPL} file to them. It also saves signals, extracted features, and time stamp to \texttt{CSV} repository. Finally, it performs defined actions, in this particular example supplies them to clustering algorithm.
-	\item[Events layer] transfers data (events) to clustering module.
-	\item[Affinity Propagation Clustering layer] receives events and performs clustering on live data stream. Once a datum point is assigned to cluster, this information is recorded in \texttt{CSV} repository.
+    \item[Signals layer] includes signal generators and signal feeds.
+    \item[\texttt{Esper} layer] collects signals, and applies rules taken form \texttt{EPL} file to them. It also saves signals, extracted features, and time stamp to \texttt{CSV} repository. Finally, it performs defined actions, in this particular example supplies them to clustering algorithm.
+    \item[Events layer] transfers data (events) to clustering module.
+    \item[Affinity Propagation Clustering layer] receives events and performs clustering on live data stream. Once a datum point is assigned to cluster, this information is recorded in \texttt{CSV} repository.
 \end{description}
 
 \begin{figure}[htbp]
-	\centering
-	\includegraphics[width=\textwidth]{./gfx/model.pdf}
+    \centering
+    \includegraphics[width=\textwidth]{./gfx/model.pdf}
   \caption{Data processing model.\label{fig:model}}
 \end{figure}
 
 \subsection{Generators, signals}
 A number of signal generators is implemented to test the framework:
 \begin{itemize}
-	\item \emph{sine} wave with possibility to add normally distributed noise,
-	\item \emph{cosine} wave with possibility to add normally distributed noise,
-	\item \emph{normal} distribution generator,
-	\item \emph{uniform} distribution generator,
-	\item \emph{multivariate normal} distribution generator.
+    \item \emph{sine} wave with possibility to add normally distributed noise,
+    \item \emph{cosine} wave with possibility to add normally distributed noise,
+    \item \emph{normal} distribution generator,
+    \item \emph{uniform} distribution generator,
+    \item \emph{multivariate normal} distribution generator.
 \end{itemize}
 In generators the time between samples is distributed according to \emph{Poisson} distribution to simulate pseudo-random signal occurrence.\\
 
@@ -224,41 +224,45 @@ In presented model \emph{rules} decide what measures of data feed the user is in
 
 In my application I use rules as \emph{feature extractors}. In particular I am interested in:
 \begin{description}
-\item[mean] signal average in given time period $\bar{v}$,
-\item[standard deviation] standard deviation in given time period $v_\sigma$,
-\item[lag-$n$] is a difference between current value of signal and n\ts{th} previous value i.e.\ $v_t - v_{t-n}$,
-\item[threshold] is user-defined function which thresholds the signal based on single value $\mathscr{V}$,
-\item[current value] represents current value of a signal $v_t$,
-\item[\texttt{FN}] represents number of defined features,
-\item[\texttt{TS}] assigns time-stamp $t$ to received signal.
+  \item[mean] signal average in given time period $\bar{v}$,
+  \item[standard deviation] standard deviation in given time period $v_\sigma$,
+  \item[lag-$n$] is a difference between current value of signal and n\ts{th} previous value i.e.\ $v_t - v_{t-n}$,
+  \item[threshold] is user-defined function which thresholds the signal based on single value $\mathscr{V}$,
+  \item[current value] represents current value of a signal $v_t$,
+  \item[\texttt{FN}] represents number of defined features,
+  \item[\texttt{TS}] assigns time-stamp $t$ to received signal.
 \end{description}
 
-\noindent The example of rules contained in \texttt{EPL} file are shown in \emph{Listing}~\ref{lst:EPL}.\\
-The \texttt{EPL} file consists of.
+The example of rules contained in \texttt{EPL} file are shown in \emph{Listing}~\ref{lst:EPL}.\\
+The \texttt{EPL} file consists of (order preserved):
+\begin{itemize}
+  \item module name,
+  \item dependencies that need to be imported,
+  \item alias definitions i.e.\ short names for signals,
+  \item rule name,
+  \item rule description,
+  \item the rule body.
+\end{itemize}
+sdfsdf\\
+For convenience each file can contain multiple rules.
 
 \vspace{1em}
 \lstset{
   captionpos=b,
   frame=single,
-	emph={module, import, create, schema, as, @Name, @Description, select, from, win:time},
-	emphstyle={\color{navyb}\bfseries},
-	caption=EPL file example.,
-	label=lst:EPL
+    emph={module, import, create, schema, as, @Name, @Description, select, from, win:time},
+    emphstyle={\color{navyb}\bfseries},
+    caption=EPL file example.,
+    label=lst:EPL
 }
 \begin{lstlisting}
 module
   SpringfieldNuclearPowerPlant.engine.ExternalFeatureExtractor;
 
 import
-  randomGenerators.*;
-import
   featureExtractors.FeatureExtractor;
 
-create schema SinTick  as Sine;
-create schema CosTick  as Cosine;
-create schema NormTick as Normal;
-create schema UnifTick as Uniform;
-create schema NmvtTick as MultivariateNormal;
+create schema SinTick  as randomGenerators.Sine;
 
 @Name('Basic---Statistics')
 @Description('Extract basic signal statistics to features')
@@ -284,8 +288,8 @@ Engine Listeners\\
 \subsection{Clustering with Affinity Propagation}
 Clustering model~\citep{zhang2013data}\\
 \begin{figure}[htbp]
-	\centering
-	\includegraphics[width=\textwidth]{./gfx/APC.pdf}
+    \centering
+    \includegraphics[width=\textwidth]{./gfx/APC.pdf}
   \caption{Stream clustering model.\label{fig:APC}}
 \end{figure}
 
@@ -315,8 +319,8 @@ Clustering model~\citep{zhang2013data}\\
     $Reservoir$ \leftarrow \{\}\;
   }
 
-	\caption{Streaming Affinity Propagation Clustering Algorithm.\label{alg:APC}}
-	}
+    \caption{Streaming Affinity Propagation Clustering Algorithm.\label{alg:APC}}
+    }
 \end{algorithm}
 \vspace{2cm}
 
@@ -339,11 +343,11 @@ how is it helpful
 
 
 
-\begin{center} \noindent \line(1,0){250} \end{center}	    % Optional ending line
+\begin{center} \noindent \line(1,0){250} \end{center}       % Optional ending line
 
 
 %% Start References (a.k.a. bibliography)
-\newpage								 								 % Optional new page before Bibliography
+\newpage                                                                 % Optional new page before Bibliography
 \bibliography{bibliography.bib}{}
 \bibliographystyle{plainnat}
 
