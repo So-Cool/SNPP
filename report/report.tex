@@ -132,16 +132,16 @@ Our approach is then compared on against static clustering algorithm, and in-dep
 Physicists at CERN are mainly concerned with event reconstruction. This implies collecting data first and then processing them. It is not possible with sensors data like pressure, or temperature as in case of abnormal behavior, e.g.\ overheating, the action need to be taken instantly.\\
 This study presents an approach to handling live data streams and analyzing them ``on the fly'' to produce human readable data inferences.\\
 
-In machine learning, unsupervised clustering aims at discovering cluster structure underpinning the data. There are many state-of-the-art algorithms designed to solve this problem performing well on the data. All major algorithms deal with static data, forcing user to define many parameter prior to classification. The example of this might be predefined number of clusters. Also, many of this algorithm need static distribution of data, and what is more static data.\\
+In machine learning, unsupervised clustering aims at discovering cluster structure underpinning the data (\citep{Flach:2012:MLA:2490546} extensively describes main concepts of machine learning). There are many state-of-the-art algorithms designed to solve this problem performing well on the data. All major algorithms deal with static data, forcing user to define many parameter prior to classification. The example of this might be predefined number of clusters. Also, many of this algorithm need static distribution of data, and what is more static data.\\
 The major trial to address this issue was presented by~\citep{zhang2013data} with clustering algorithm based on affinity propagation that adressess all of the above concerns: adapts the number of clusters to the data therefere handles unstationary data distribution, and what is more works on a data stream.\\
-I aim at extending presented above approach with \texttt{Esper} framework. I add possibility of modular feature extractors with all advantages of time windowing the signal stream.\\
+I aim at extending presented above approach with \texttt{Esper} framework, briefly introduced by~\citep{Marinescu2006}. I add possibility of modular feature extractors with all advantages of time windowing the signal stream.\\
 I provide complete feature extraction system based on \texttt{EPL} statement and clustering solution, capable of clustering live stream of data whit chosen by user complex features.\\
 
 
 
 \subsection{What is \emph{Complex Event Processing}}
 \emph{Complex Event Processing} is a software family facilitating high throughput, complex analysis of live data feeds.\\
-The concept behind it is similar to database querying, but doing it on live data. It gives possibility of applying filters, functions, and statistical analysis to chosen part of signal by \emph{querying} the signal.
+The concept behind it is similar to database querying, but doing it on live data. It gives possibility of applying filters, functions, and statistical analysis to chosen part of signal by \emph{querying} the signal. \citep{Etzion:2010:EPA:1894960} presents comprehensive introduction to the topic.
 
 \subsection{What is \texttt{Esper}}
 \texttt{Esper} tool used to handle incoming data streams and to extract chosen features belongs to family of \emph{Complex Event Processing} tools. These software analyses multiple live data streams. Its main advantage is \emph{time windowing}, which allows to focus on a specific time period. Aforementioned feature can work in multiple modes:
@@ -227,7 +227,7 @@ In my application I use rules as \emph{feature extractors}. In particular I am i
 \begin{description}
   \item[mean] signal average in given time period $\bar{v}$,
   \item[standard deviation] standard deviation in given time period $v_\sigma$,
-  \item[lag-$n$] is a difference between current value of signal and n\ts{th} previous value i.e.\ $v_t - v_{t-n}$,
+  \item[$n$-lag] is a difference between current value of signal and n\ts{th} previous value i.e.\ $v_t - v_{t-n}$,
   \item[threshold] is user-defined function which thresholds the signal based on single value $\mathscr{V}$,
   \item[current value] represents current value of a signal $v_t$,
   \item[\texttt{FN}] represents number of defined features,
@@ -297,12 +297,12 @@ I use this module to pass features extracted from signal to clustering framework
 \subsection{Clustering with Affinity Propagation\label{sec:sclustering}}
 \subsubsection{Affinity Propagation}
 The predominant part of application is \emph{Affinity Propagation}, unsupervised clustering algorithm adapted to data streams.\\
-Affinity Propagation is state-of-the-art clustering solution based on message passing between points. The algorithm finds centroids i.e.\ the heart of .\\
+Affinity Propagation is state-of-the-art clustering solution based on message passing between points extensively described by~\citep{frey07affinitypropagation}. The algorithm finds centroids i.e.\ the heart of .\\
 
 Its use is mainly motivated by no need of specifying number of centroids prior to classification.
 
 \subsubsection{Live stream adaptation of Affinity Propagation}
-\citep{zhang2013data} introduced adaptation of Affinity Propagation algorithm to streams of data. The overview of the approach is presented in \emph{Figure}~\ref{fig:APC}.\\
+\citep{zhang2013data} introduced adaptation of Affinity Propagation algorithm for data streams. The overview of the approach is presented in \emph{Figure}~\ref{fig:APC}.\\
 
 \begin{figure}[htbp]
     \centering
