@@ -14,7 +14,7 @@ public class Sine extends RG{
 
 	private double x = 1;
 	private double y = 1;
-	private double noise = 0;
+	private NormalDistribution noise;
 	
 	public Sine( double xScale, double yScale, int jump, double noise, EPServiceProvider service, Boolean print ) {
 		genName = "Sine";
@@ -22,7 +22,7 @@ public class Sine extends RG{
 		this.elaps = new PoissonDistribution( jump );
 		this.x = xScale;
 		this.y = yScale;
-		this.noise = noise;
+		this.noise =  new NormalDistribution( 0, noise );
 		this.printOut = print;
 		
 		// Initialize my service provider
@@ -43,8 +43,8 @@ public class Sine extends RG{
 	public double gen( int timeToWait, double degrees ) {
 		for (long stop=System.nanoTime()+TimeUnit.MILLISECONDS.toNanos(timeToWait *100); stop>System.nanoTime(); degrees++ ) {
 			current = y* Math.sin( x* Math.toRadians(degrees) );
-			if( noise != 0 )
-				current += new NormalDistribution( current, noise ).sample();
+			if( noise.getStandardDeviation() != 0 )
+				current += noise.sample();
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {

@@ -14,7 +14,7 @@ public class Cosine extends RG{
 
 	private double x = 1;
 	private double y = 1;
-	private double noise = 0;
+	private NormalDistribution noise;
 	
 	public Cosine( double xScale, double yScale, int jump, double noise, EPServiceProvider service, Boolean print ) {
 		genName = "Cosine";
@@ -22,7 +22,7 @@ public class Cosine extends RG{
 		this.elaps = new PoissonDistribution( jump );
 		this.x = xScale;
 		this.y = yScale;
-		this.noise = noise;
+		this.noise = new NormalDistribution( 0, noise );
 		this.printOut = print;
 		
 		// Initialize my service provider
@@ -43,8 +43,8 @@ public class Cosine extends RG{
 	public double gen( int timeToWait, double degrees ) {
 		for (long stop=System.nanoTime()+TimeUnit.SECONDS.toNanos(timeToWait); stop>System.nanoTime(); degrees++ ) {
 			current = y* Math.cos( x* Math.toRadians(degrees) );
-			if( noise != 0 )
-				current += new NormalDistribution( current, noise ).sample();
+			if( noise.getStandardDeviation() != 0 )
+				current += noise.sample();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
