@@ -37,7 +37,7 @@ public class DriverExternal {
 //											  {1.33, 17}
 //											};
 	
-	private static double noise1 = 0;
+	private static double noise1 = 0.13;
 //	private static double noise2 = 0;
 	
 	private static double xSin = 1;
