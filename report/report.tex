@@ -302,9 +302,7 @@ Affinity Propagation is state-of-the-art clustering solution based on message pa
 Its use is mainly motivated by no need of specifying number of centroids prior to classification.
 
 \subsubsection{Live stream adaptation of Affinity Propagation}
-
-Clustering model~\citep{zhang2013data} \emph{Figure}~\ref{fig:APC}\\
-Clustering algo \emph{Algorithm}~\ref{alg:APC}.\\
+\citep{zhang2013data} introduced adaptation of Affinity Propagation algorithm to streams of data. The overview of the approach is presented in \emph{Figure}~\ref{fig:APC}.\\
 
 \begin{figure}[htbp]
     \centering
@@ -312,7 +310,10 @@ Clustering algo \emph{Algorithm}~\ref{alg:APC}.\\
   \caption{Stream clustering model.\label{fig:APC}}
 \end{figure}
 
+First of all, specified number of samples is gathered to build initial model. Once it is ready, the incoming data is tested for being outliers: if a datum fits the model it is appended to it, if not it goes to reservoir.\\
 
+
+The detailed description of  \emph{Algorithm}~\ref{alg:APC}.\\
 
 \RestyleAlgo{boxed}
 \SetAlCapSkip{1em}
