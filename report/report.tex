@@ -81,6 +81,7 @@
 \definecolor{navyb}{RGB}{0100,043,054}
 
 \newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\newcommand{\ts}{\textsuperscript}
 
 \usepackage{amsmath}
 \usepackage{amsfonts}    % fancy maths font
@@ -200,6 +201,41 @@ We divide model into two branches: \emph{Offline resources} and \emph{Live Data 
   \caption{Data processing model.\label{fig:model}}
 \end{figure}
 
+\subsection{Generators, signals}
+A number of signal generators is implemented to test the framework:
+\begin{itemize}
+	\item \emph{sine} wave with possibility to add normally distributed noise,
+	\item \emph{cosine} wave with possibility to add normally distributed noise,
+	\item \emph{normal} distribution generator,
+	\item \emph{uniform} distribution generator,
+	\item \emph{multivariate normal} distribution generator.
+\end{itemize}
+In generators the time between samples is distributed according to \emph{Poisson} distribution to simulate pseudo-random signal occurrence.\\
+
+The package also contains module, reading temperature data from the electronic thermometer placed at CERN Prévessin site, and Yahoo! weather forecast feed for the same location. Both of them can be used as signal providers for the application.
+
+\subsection{\texttt{Esper} engine}
+The \texttt{Esper} engine runs in the background gathering signals from all indicated by user (see §\ref{sec:rules}) sources. It filters all this incoming data with \texttt{EPL} rules and delivers them to corresponding listener (see §\ref{sec:listeners}).\\
+The \texttt{Esper} framework is capable of running multiple servers simultaneously. It also allows to make changes to model of processing \textbf{lively} i.e.\ connect to it once running and introduce all changes without switching it off. This feature significantly increases usability of \texttt{Esper} as it prevents from data and analysis loses.\\
+
+\subsection{Rules---Feature extraction\label{sec:rules}}
+In presented model \emph{rules} decide what measures of data feed the user is interested in. They allow to get the value of signal and on-the-run apply built-in or \textbf{user-defined} filters.\\
+\texttt{Esper} allows to either \emph{hard-code} the rules in written program or create and external \texttt{EPL} file which can be either specified in the code or deployed while engine is running.\\
+
+In my application I use rules as \emph{feature extractors}. In particular I am interested in:
+\begin{description}
+\item[mean] signal average in given time period $\bar{v}$,
+\item[standard deviation] standard deviation in given time period $v_\sigma$,
+\item[lag-$n$] is a difference between current value of signal and n\ts{th} previous value i.e.\ $v_t - v_{t-n}$,
+\item[threshold] is user-defined function which thresholds the signal based on single value $\mathscr{V}$,
+\item[current value] represents current value of a signal $v_t$,
+\item[\texttt{FN}] represents number of defined features,
+\item[\texttt{TS}] assigns time-stamp $t$ to received signal.
+\end{description}
+
+\noindent The example of rules contained in \texttt{EPL} file are shown in \emph{Listing}~\ref{lst:EPL}.\\
+The \texttt{EPL} file consists of.
+
 \vspace{1em}
 \lstset{
   captionpos=b,
@@ -241,27 +277,8 @@ timer as TS
 from SinTick.win:time(60 sec);
 \end{lstlisting}
 
-\subsection{Generators, signals}
-A number of signal generators is implemented to test the framework:
-\begin{itemize}
-	\item \emph{sine} wave with possibility to add normally distributed noise,
-	\item \emph{cosine} wave with possibility to add normally distributed noise,
-	\item \emph{normal} distribution generator,
-	\item \emph{uniform} distribution generator,
-	\item \emph{multivariate normal} distribution generator.
-\end{itemize}
-In generators the time between samples is distributed according to \emph{Poisson} distribution to simulate pseudo-random signal occurrence.\\
 
-The package also contains module, reading temperature data from the electronic thermometer placed at CERN Prévessin site, and Yahoo! weather forecast feed for the same location. Both of them can be used as signal providers for the application.
-
-\subsection{\texttt{Esper} engine}
-The \texttt{Esper} engine runs in the background gathering signals from all indicated by user sources. It filters all this incoming data with \texttt{EPL} rules.
-
-\subsection{Rules---Feature extraction}
-give file with rules here
-Rules -> feature extractors\\
-
-\subsection{Listeners for change}
+\subsection{Listeners for change\label{sec:listeners}}
 Engine Listeners\\
 
 \subsection{Clustering with Affinity Propagation}
