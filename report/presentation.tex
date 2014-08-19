@@ -7,7 +7,8 @@
 %
 
 \pdfminorversion=4
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
+% \documentclass{beamer}
 
 
 \usepackage{lipsum}
@@ -37,7 +38,10 @@
 	\includegraphics[height=2cm]{./gfx/openlab-transparent.png}
 	% collaboration logo
 	\vspace*{0.3cm}
+  {
+  \centering
 	\includegraphics[height=.7cm]{./gfx/siemens-transparent.png}
+  }
 }
 
 \setbeamertemplate{navigation symbols}{}
@@ -123,21 +127,21 @@
   \begin{frame}[foot]
     \frametitle{Dynamic vs.\ Static}
     \begin{figure}
-      \includegraphics[scale=.7]{./gfx/CMS.png}
+      \includegraphics[height=.95\textheight, width=.95\textwidth, keepaspectratio]{./gfx/CMS.png}
     \end{figure}
   \end{frame}
 
   \begin{frame}[foot]
     \frametitle{Data Points}
     \begin{figure}
-      \includegraphics[scale=.5]{./gfx/feature0.png}
+      \includegraphics[height=.95\textheight]{./gfx/feature0.png}
     \end{figure}
   \end{frame}
 
   \begin{frame}[foot]
     \frametitle{Data Points in time}
     \begin{figure}
-      \includegraphics[scale=.5]{./gfx/feature5.png}
+      \includegraphics[height=.95\textheight]{./gfx/feature5.png}
     \end{figure}
   \end{frame}
 
@@ -169,15 +173,15 @@
        \hspace*{-2.5em}
        {{
 
-       \colorbox{lightred}{ \includegraphics[scale=.22]{./gfx/feature1.png} }
+       \colorbox{lightred}{ \includegraphics[height=.41\textheight]{./gfx/feature1.png} }
 
 
        \hspace*{0.1em}
        
-       \colorbox{lightgreen}{ \includegraphics[scale=.22]{./gfx/feature2.png} }
+       \colorbox{lightgreen}{ \includegraphics[height=.41\textheight]{./gfx/feature2.png} }
        }
        \vspace*{-1em}
-       \colorbox{lightblue}{ \includegraphics[scale=.22]{./gfx/feature3.png} }
+       \colorbox{lightblue}{ \includegraphics[height=.41\textheight]{./gfx/feature3.png} }
      }}
 
     \end{figure}
@@ -236,7 +240,7 @@ from SinTick.win:time(60 sec);
   \begin{frame}[foot]
     \frametitle{Algorithm model} 
     \begin{figure}[htbp]
-      \includegraphics[width=\textwidth]{./gfx/APC_Presentation.pdf}
+      \includegraphics[height=.95\textheight]{./gfx/APC_Presentation.pdf}
     \end{figure}
   \end{frame}
 
@@ -244,7 +248,7 @@ from SinTick.win:time(60 sec);
     \frametitle{\texttt{std} vs.\ Current} 
     \vspace*{-2em}
     \begin{figure}
-      \includegraphics[scale=.4]{./gfx/f2f5.png}
+      \includegraphics[height=.7\textheight]{./gfx/f2f5.png}
     \end{figure}
     \vspace*{-2em}
     \begin{block}{Legend}
@@ -258,7 +262,7 @@ from SinTick.win:time(60 sec);
   \begin{frame}[foot]
     \frametitle{Q\&A}
     \begin{figure}
-      \includegraphics[scale=.5]{./gfx/futurama-fry-meme-00020.jpg}
+      \includegraphics[height=.95\textheight]{./gfx/futurama-fry-meme-00020.jpg}
     \end{figure}
   \end{frame}
 
