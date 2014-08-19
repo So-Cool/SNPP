@@ -83,6 +83,9 @@
 \newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
 \newcommand{\ts}{\textsuperscript}
 
+\usepackage{caption}
+\usepackage{subcaption}
+
 \usepackage{amsmath}
 \usepackage{amsfonts}    % fancy maths font
 \usepackage{mathrsfs}    % fancy maths font
@@ -354,6 +357,40 @@ It can be also used to scatter a plot of selected features against each other.\\
 \section{Results}
 The application is evaluated on signals produced by described above generators (see §\ref{sec:generators}).\\
 Describe results of AP clustering --- not given.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.7\textwidth]{./gfx/feature5.png}
+  \caption{Generated signal sample---noisy sine wave.\label{fig:signal}}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/feature1-1.png}
+    \caption{Signal average in time.\label{fig:average}}
+  \end{subfigure}%
+  ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+    %(or a blank line to force the subfigure onto a new line)
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/feature2-1.png}
+    \caption{Signal standard deviation in time.\label{fig:standarddeviation}}
+  \end{subfigure}
+  ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+    %(or a blank line to force the subfigure onto a new line)
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/feature3-1.png}
+    \caption{Signal $5$-Lag in time.\label{fig:lag}}
+  \end{subfigure}
+  \caption{Features extracted form signal.\label{fig:features}}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.7\textwidth]{./gfx/f2f5.png}
+  \caption{Signal clustering based on extracted features.\label{fig:clustering}}
+\end{figure}
+
 \subsection{why particulat algorithms were chosen}
 \subsection{WEKA algorithms review}
 
