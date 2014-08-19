@@ -160,6 +160,15 @@ if __name__ == '__main__':
 				plt.ylabel( "Feature " + str(j+1) )
 				plt.title("Feature " + str(i+1) + " against feature " + str(j+1))
 				
+				# for (a,b) in zip(col1,col2):
+				# 	print a
+				# 	color =''
+				# 	if float(a) > 0.65:
+				# 		color = 'red'
+				# 	else:
+				# 		color = 'blue'
+				# 	f=plt.scatter(a,b, c=color)
+				
 				# f.axes.get_xaxis().set_visible(False)
 				# f.axes.get_yaxis().set_visible(False)
 				# plt.axis([ 0, 1, -0.075, -0.035 ])
