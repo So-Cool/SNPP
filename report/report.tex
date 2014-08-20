@@ -374,7 +374,7 @@ The application is evaluated on signals produced by described above generators (
 
 The second step in processing is feature extraction. The sample of such features, extracted in \emph{60 seconds sliding time window}, represented by \emph{average}, \emph{standard deviation}, and \emph{5-Lag} are presented in \emph{Figure}~\ref{fig:features}.\\
 
-\begin{figure}[htbp]
+\begin{figure}[phtbp]
   \centering
   \begin{subfigure}[b]{0.5\textwidth}
     \includegraphics[width=\textwidth]{./gfx/feature1-1.png}
@@ -395,8 +395,16 @@ The second step in processing is feature extraction. The sample of such features
   \caption{Features extracted form signal.\label{fig:features}}
 \end{figure}
 
+Finally, affinity propagation clustering runs in the background to classify incoming points. Sample results of clustering can be seen in \emph{Figure}~\ref{fig:clustering}, where each colour corresponds to separate cluster.\\
+The main idea behind clustering of signals is to either raise an alarm in case of abnormal behavior or recognize the current status of signal. The first one can be understood as points appearing outside of main cluster (see \emph{Figures}~\ref{fig:Caverage}~and~\ref{fig:Cstandarddeviation}), and the later as current status of signal (see \emph{Figure}~\ref{fig:Clag}).\\
+In case of sine wave the first one could be sudden change of \emph{period} or stretch in $y$-axis dimension, and the later classification on:
+\begin{itemize}
+  \item increasing---decreasing,
+  \item positive---negative,
+  \item high---medium---low.
+\end{itemize}
 
-\begin{figure}[htbp]
+\begin{figure}[phtbp]
   \centering
   \begin{subfigure}[b]{0.5\textwidth}
     \includegraphics[width=\textwidth]{./gfx/f1f5.png}
@@ -417,16 +425,16 @@ The second step in processing is feature extraction. The sample of such features
   \caption{Signal clustering based on extracted features.\label{fig:clustering}}
 \end{figure}
 
+Lol.\\
 
-\begin{figure}[htbp]
+\begin{figure}[phtbp]
   \centering
   \includegraphics[width=.7\textwidth]{./gfx/f1f2.png}
   \caption{Signal clustering based on extracted features.\label{fig:Wclustering}}
 \end{figure}
 
-
-\subsection{why particulat algorithms were chosen}
-\subsection{WEKA algorithms review}
+\subsection{Static clustering comparison}
+To benchmark above results I used static clustering on data repository created by one run of program. The algorithms are: ..., and ... implemented in \texttt{WEKA} machine learning package. The choice the algorithms is motivated by no need of fixing ``number of clusters'' parameter.\\
 
 \section{Lookahead}
 Created application scratches only surface of a broad topic of live signal analysis.\\

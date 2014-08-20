@@ -25,11 +25,19 @@ public class FeatureExtractor {
 		else
 			return 6;
 	}
-	public static int posNeg(double n) {
+	public static int posNegC(double n) {
 		if( n < 0 )
 			return -1;
 		else if( n == 0 )
 			return 0;
+		else
+			return 1;
+	}
+	public static int posNeg(double n) {
+		if( n < 0 )
+			return -1;
+		else if( n == 0 )
+			return (int)Double.NaN;
 		else
 			return 1;
 	}
