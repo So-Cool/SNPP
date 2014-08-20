@@ -42,3 +42,6 @@ bin/*
 
 # MS Visio
 *.vsd
+
+# Reading
+Reading/*

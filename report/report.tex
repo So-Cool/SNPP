@@ -303,7 +303,9 @@ I use this module to pass features extracted from signal to clustering framework
 \citep{zhang2013data} introduced adaptation of Affinity Propagation unsupervised clustering algorithm for data streams. The presented solution is a general framework for adapting an unsupervised clustering algorithm to data streams. The overview of the approach is presented in \emph{Figure}~\ref{fig:APC}.\\
 
 The process begins by feeding the framework with stream of extracted features. The algorithm uses initial batch of data (user defined, fixed number of initialization points) to create its first model.\\
-.\\
+Once the model is initialized, all incoming points are tested for fitting the model: if they do, they are appended to current model, if not they are stored in \emph{reservoir}.\\
+There are two test which can trigger model rebuild: full reservoir---its size is defined by user, or positive outcome of \emph{change point detection} test on incoming stream---it detects ``significant'', ``sudden'' change on the input stream.\\
+If any of these triggers fire, the model is rebuild with data from reservoir.\\
 
 \begin{figure}[htbp]
     \centering
