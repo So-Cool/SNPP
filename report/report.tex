@@ -443,22 +443,82 @@ To benchmark above results I used static clustering on data repository created b
 
 \begin{figure}[htbp]
   \centering
-  \begin{subfigure}[b]{0.33\textwidth}
-    \includegraphics[width=\textwidth]{./gfx/f1f5.png}
-    \caption{Average clustering.\label{fig:Caverage}}
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/km12.png}
+    \caption{2-means clustering.\label{fig:avgstd:km}}
   \end{subfigure}
   \hfill
-  \begin{subfigure}[b]{0.33\textwidth}
-    \includegraphics[width=\textwidth]{./gfx/f2f5.png}
-    \caption{Standard deviation clustering.\label{fig:Cstandarddeviation}}
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/em12.png}
+    \caption{EM clustering.\label{fig:avgstd:em}}
   \end{subfigure}
   \hfill
-  \begin{subfigure}[b]{0.33\textwidth}
-    \includegraphics[width=\textwidth]{./gfx/f1f2.png}
-    \caption{Average---Standard Deviation clustering.\label{fig:Cavgstd}}
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[height=\textwidth]{./gfx/ap12.png}
+    \caption{Affinity Propagation clustering.\label{fig:avgstd:ap}}
   \end{subfigure}
 
-  \caption{Signal clustering based on extracted features.\label{fig:clustering}}
+  \caption{Average vs.\ Standard Deviation clustering.\label{fig:avgstd}}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/km15.png}
+    \caption{2-means clustering.\label{fig:svavg:km}}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/em15.png}
+    \caption{EM clustering.\label{fig:svavg:em}}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[height=\textwidth]{./gfx/ap15.png}
+    \caption{Affinity Propagation clustering.\label{fig:svavg:ap}}
+  \end{subfigure}
+
+  \caption{Signal Value vs.\ Average clustering.\label{fig:svavg}}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/km25.png}
+    \caption{2-means clustering.\label{fig:svstd:km}}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/em25.png}
+    \caption{EM clustering.\label{fig:svstd:em}}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[height=\textwidth]{./gfx/ap25.png}
+    \caption{Affinity Propagation clustering.\label{fig:svstd:ap}}
+  \end{subfigure}
+
+  \caption{Signal Value vs.\ Standard Deviation clustering.\label{fig:svstd}}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/km35.png}
+    \caption{2-means clustering.\label{fig:svlag:km}}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/em35.png}
+    \caption{EM clustering.\label{fig:svlag:em}}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.32\textwidth}
+    \includegraphics[height=\textwidth]{./gfx/ap35.png}
+    \caption{Affinity Propagation clustering.\label{fig:svlag:ap}}
+  \end{subfigure}
+
+  \caption{Signal Value vs.\ 5-Lag clustering.\label{fig:svlag}}
 \end{figure}
 
 \section{Lookahead}
