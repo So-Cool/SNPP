@@ -438,8 +438,28 @@ It suffices to say, that if new-coming points are assigned to first the system w
 \emph{Figure}~\ref{fig:Clag} shows perfect signal recognition clustering, where each colour corresponds to combination of listed above signal states e.g.\ \emph{\textcolor{darkgreen}{green}} is \emph{decreasing-negative-low}.
 
 \subsection{Static clustering comparison}
-To benchmark above results I used static clustering on data repository created by one run of program. The algorithms are: \emph{k-means}, and \emph{EM} implemented in \texttt{WEKA} machine learning package. The choice the first one is motivated by its simplicity and popularity, nevertheless it demands fixing number of clusters therefore its application in our case is not realistic. The later one does not need aforementioned parameter hence is more suitable for my approach.\\
-Algorithms is motivated by no need of fixing ``number of clusters'' parameter.\\
+To benchmark above results I used static clustering on data repository created by one run of program. The algorithms are: \emph{k-means}, \emph{EM}, and \emph{Affinity Propagation}; first two implemented in \texttt{WEKA} machine learning package, and the last being package for \texttt{R} language. The choice the first one is motivated by its simplicity and popularity, nevertheless it demands fixing number of clusters therefore its application in our case is not realistic. Two later ones do not need aforementioned parameter hence are more suitable for my approach.\\
+
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.33\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/f1f5.png}
+    \caption{Average clustering.\label{fig:Caverage}}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.33\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/f2f5.png}
+    \caption{Standard deviation clustering.\label{fig:Cstandarddeviation}}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.33\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/f1f2.png}
+    \caption{Average---Standard Deviation clustering.\label{fig:Cavgstd}}
+  \end{subfigure}
+
+  \caption{Signal clustering based on extracted features.\label{fig:clustering}}
+\end{figure}
 
 \section{Lookahead}
 Created application scratches only surface of a broad topic of live signal analysis.\\
