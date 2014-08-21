@@ -376,19 +376,19 @@ The second step in processing is feature extraction. The sample of such features
 
 \begin{figure}[phtbp]
   \centering
-  \begin{subfigure}[b]{0.5\textwidth}
+  \begin{subfigure}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{./gfx/feature1-1.png}
     \caption{Signal average in time.\label{fig:average}}
   \end{subfigure}%
   ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
     %(or a blank line to force the subfigure onto a new line)
-  \begin{subfigure}[b]{0.5\textwidth}
+  \begin{subfigure}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{./gfx/feature2-1.png}
     \caption{Signal standard deviation in time.\label{fig:standarddeviation}}
   \end{subfigure}
   ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
     %(or a blank line to force the subfigure onto a new line)
-  \begin{subfigure}[b]{0.5\textwidth}
+  \begin{subfigure}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{./gfx/feature3-1.png}
     \caption{Signal $5$-Lag in time.\label{fig:lag}}
   \end{subfigure}
@@ -405,33 +405,32 @@ In case of sine wave the first one could be sudden change of \emph{period} or st
 \end{itemize}
 
 \begin{figure}[phtbp]
+  %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+  %(or a blank line to force the subfigure onto a new line)
   \centering
-  \begin{subfigure}[b]{0.5\textwidth}
+  \begin{subfigure}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{./gfx/f1f5.png}
     \caption{Average clustering.\label{fig:Caverage}}
   \end{subfigure}%
-  ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
-    %(or a blank line to force the subfigure onto a new line)
-  \begin{subfigure}[b]{0.5\textwidth}
+  \hfill
+  \begin{subfigure}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{./gfx/f2f5.png}
     \caption{Standard deviation clustering.\label{fig:Cstandarddeviation}}
   \end{subfigure}
-  ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
-    %(or a blank line to force the subfigure onto a new line)
-  \begin{subfigure}[b]{0.5\textwidth}
+
+  \begin{subfigure}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{./gfx/f4f5.png}
     \caption{$5$-Lag clustering.\label{fig:Clag}}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.49\textwidth}
+    \includegraphics[width=\textwidth]{./gfx/f1f2.png}
+    \caption{Average---Standard Deviation\label{fig:Cavgstd}}
   \end{subfigure}
   \caption{Signal clustering based on extracted features.\label{fig:clustering}}
 \end{figure}
 
 Lol.\\
-
-\begin{figure}[phtbp]
-  \centering
-  \includegraphics[width=.7\textwidth]{./gfx/f1f2.png}
-  \caption{Signal clustering based on extracted features.\label{fig:Wclustering}}
-\end{figure}
 
 \subsection{Static clustering comparison}
 To benchmark above results I used static clustering on data repository created by one run of program. The algorithms are: ..., and ... implemented in \texttt{WEKA} machine learning package. The choice the algorithms is motivated by no need of fixing ``number of clusters'' parameter.\\
