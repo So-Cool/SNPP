@@ -45,3 +45,6 @@ bin/*
 
 # Reading
 Reading/*
+
+# External classification figures
+WEKA-Figures/*
