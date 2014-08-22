@@ -4,22 +4,30 @@ classpath=.:target/classes:$(libe)/esper-5.0.0.jar:$(libe)/commons-collections4-
 sourcepath=src
 memoryoptions=-Xms512m -Xmx512m -server -XX:+UseParNewGC
 
-all: compile_all
-run: run_testRun.ex1
-clean: clean_testRun.ex1
+all: compile_ex
+in: compile_in
+run: run_ex
+clean: clean_all
 
-compile_all:
+compile_ex:
 	@if [ -z "$${JAVA_HOME}" ] ; then echo "JAVA_HOME not set" & echo "In redHat it might be: /usr/lib/jvm/java-1.7.0-openjdk.x86_64" & echo 'In OS X it is: export JAVA_HOME=$$(/usr/libexec/java_home)' & echo "To set execute: export JAVA_HOME=path/to/your/java/environment" & exit 0 ; fi
 	@if [ ! -x "$${JAVA_HOME}/bin/java" ] ; then echo Cannot find java executable, check JAVA_HOME & exit 0 ; fi
 	@if [ ! -d "target" ] ; then mkdir target ; fi
 	@if [ ! -d "target/classes" ] ; then mkdir target/classes ; fi
 	@$${JAVA_HOME}/bin/javac -cp ${classpath} -d target/classes -source 1.6 -sourcepath $(sourcepath) $(sourcepath)/engine/DriverExternal.java
 
+compile_in:
+	@if [ -z "$${JAVA_HOME}" ] ; then echo "JAVA_HOME not set" & echo "In redHat it might be: /usr/lib/jvm/java-1.7.0-openjdk.x86_64" & echo 'In OS X it is: export JAVA_HOME=$$(/usr/libexec/java_home)' & echo "To set execute: export JAVA_HOME=path/to/your/java/environment" & exit 0 ; fi
+	@if [ ! -x "$${JAVA_HOME}/bin/java" ] ; then echo Cannot find java executable, check JAVA_HOME & exit 0 ; fi
+	@if [ ! -d "target" ] ; then mkdir target ; fi
+	@if [ ! -d "target/classes" ] ; then mkdir target/classes ; fi
+	@$${JAVA_HOME}/bin/javac -cp ${classpath} -d target/classes -source 1.6 -sourcepath $(sourcepath) $(sourcepath)/engine/Driver.java
 
-run_testRun.ex1:
-	@#$JAVA_HOME/bin/java $MEMORY_OPTIONS -Dlog4j.configuration=log4j.xml -cp ${CLASSPATH} com.espertech.esper.example.marketdatafeed.FeedSimMain $1 $2 $3
-	@$$JAVA_HOME/bin/java ${memoryoptions} -Dlog4j.configuration=log4j.xml -cp ${classpath} testRun.ex1
+run_ex:
+	@$$JAVA_HOME/bin/java ${memoryoptions} -Dlog4j.configuration=log4j.xml -cp ${classpath} engine.DriverExternal
 	
+run_in:
+	@$$JAVA_HOME/bin/java ${memoryoptions} -Dlog4j.configuration=log4j.xml -cp ${classpath} engine.Driver
 
-clean_testRun.ex1:
-	rm -rf target/classes/testRun
+clean_all:
+	rm -rf target
