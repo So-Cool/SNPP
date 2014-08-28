@@ -77,19 +77,11 @@
 
 \makeatletter
 \define@key{beamerframe}{foot}[true]{
-  \setbeamertemplate*{footline}
-  \setbeamertemplate{headline}[default]
+  \setbeamertemplate{footline}[]                 % \setbeamertemplate*{footline}
+  \setbeamertemplate{headline}[plain]            % \setbeamertemplate*{headline}
   \def\beamer@entrycode{\vspace*{-\headheight}}
 }
 \makeatother
-
-\newenvironment{foot}{
-  \setbeamertemplate*{footline}
-  \makeatletter
-    \setbeamertemplate{headline}[default]
-    \def\beamer@entrycode{\vspace*{-\headheight}}
-  \makeatother
-}
 
 \newcommand{\cfbox}[2]{%
     \colorlet{currentcolor}{.}

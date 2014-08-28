@@ -15,13 +15,14 @@ compile_ex:
 	@if [ ! -d "target" ] ; then mkdir target ; fi
 	@if [ ! -d "target/classes" ] ; then mkdir target/classes ; fi
 	@$${JAVA_HOME}/bin/javac -cp ${classpath} -d target/classes -source 1.6 -sourcepath $(sourcepath) $(sourcepath)/engine/DriverExternal.java
+	@$${JAVA_HOME}/bin/javac -cp ${classpath} -d target/classes -source 1.6 $(sourcepath)/featureExtractors/FeatureExtractor.java
 
 compile_in:
 	@if [ -z "$${JAVA_HOME}" ] ; then echo "JAVA_HOME not set" & echo "In redHat it might be: /usr/lib/jvm/java-1.7.0-openjdk.x86_64" & echo 'In OS X it is: export JAVA_HOME=$$(/usr/libexec/java_home)' & echo "To set execute: export JAVA_HOME=path/to/your/java/environment" & exit 0 ; fi
 	@if [ ! -x "$${JAVA_HOME}/bin/java" ] ; then echo Cannot find java executable, check JAVA_HOME & exit 0 ; fi
 	@if [ ! -d "target" ] ; then mkdir target ; fi
 	@if [ ! -d "target/classes" ] ; then mkdir target/classes ; fi
-	@$${JAVA_HOME}/bin/javac -cp ${classpath} -d target/classes -source 1.6 -sourcepath $(sourcepath) $(sourcepath)/engine/Driver.java
+#	@$${JAVA_HOME}/bin/javac -cp ${classpath} -d target/classes -source 1.6 -sourcepath $(sourcepath) $(sourcepath)/engine/Driver.java
 
 run_ex:
 	@$$JAVA_HOME/bin/java ${memoryoptions} -Dlog4j.configuration=log4j.xml -cp ${classpath} engine.DriverExternal

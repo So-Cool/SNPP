@@ -1,6 +1,8 @@
 package engine;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,8 +110,8 @@ public class Killer implements Runnable {
 				String fNames = " ";
 				for (String element : name)
 					fNames += ( element + ".csv " );
-					Runtime.getRuntime().exec("./visualize.py novis" + fNames).waitFor();
-				} catch (InterruptedException e) {
+				Runtime.getRuntime().exec("./visualize.py novis " + fNames).waitFor();
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
