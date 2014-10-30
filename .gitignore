@@ -48,3 +48,6 @@ Reading/*
 
 # External classification figures
 WEKA-Figures/*
+
+# Mac OS X
+.DS_Store
