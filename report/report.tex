@@ -119,7 +119,7 @@ In this study the Complex Event Processing classification is run over signals pr
 \newpage
 
 \section*{Abstract}
-This project aims at building a tool to process live streams of data produced by various sensors and artificial generators. To this end, a \texttt{Java} code is written, which uses \texttt{Esper} \emph{Complex Event Processing} package to: receive data feeds, apply user defined rules and filters, and pass resulting information to clustering framework.\\
+This project aims at building a tool to process live streams of data produced by various sensors and artificial generators. To this end, a \texttt{Java} code is written, which uses \texttt{Esper} \emph{Complex Event Processing} package to: receive data feeds, apply user defined rules and filters, and pass the resulting information to a clustering framework.\\
 The last step employs \emph{Affinity Propagation} based clustering algorithm, which choice is motivated by its dynamic adaptation to number of clusters in the data. This is key feature in data streaming scenario as the number of clusters can evolve with time. Furthermore,~\citep{zhang2013data} have documented overall good performance of Affinity Propagation in cases of live data analysis.\\
 Finally, presented here approach is compared and contrasted against static clustering algorithms applied to data gathered from streams incoming over one run of the program, followed by in-depth results analysis.\\[1cm]
 \textbf{Keywords:} Esper, Complex Event Processing, Affinity Propagation, data streams
@@ -136,42 +136,54 @@ Finally, presented here approach is compared and contrasted against static clust
 \fancyfoot[LE,LO]{\footerfont\fontsize{9}{11}\selectfont \textcolor{footerc}{\textbf{\thepage~$|$}}~\textcolor{footerc1}{\footerfont\so{\texttt{Page}}}} % \fontfamily{ppl}\selectfont
 
 \section{Introduction}
-Physicists at CERN are mainly concerned with event reconstruction. This implies collecting data first and then processing them. It is not possible with sensors data like pressure, or temperature as in case of abnormal behavior, e.g.\ overheating, the action need to be taken instantly.\\
-This study presents an approach to handling live data streams and analyzing them ``on the fly'' to produce human readable data inferences.\\
+Physicists at CERN are mainly concerned with event reconstruction. This implies collecting data first and then processing them. It is not possible with sensors data like pressure, or temperature. In case of abnormal behaviour, e.g.\ overheating, the action need to be taken instantly.\\
+This study presents an approach to handle live data streams and analyse them ``on the fly'' to differentiate between noisy feed and real threats, hence produce human readable data inferences.\\
 
-In machine learning, unsupervised clustering aims at discovering cluster structure underpinning the data (\citep{Flach:2012:MLA:2490546} extensively describes main concepts of machine learning). There are many state-of-the-art algorithms designed to solve this problem performing well on the data. All major algorithms deal with static data, forcing user to define many parameter prior to classification. The example of this might be predefined number of clusters. Also, many of this algorithm need static distribution of data, and what is more static data.\\
-The major trial to address this issue was presented by~\citep{zhang2013data} with clustering algorithm based on affinity propagation that adressess all of the above concerns: adapts the number of clusters to the data therefere handles unstationary data distribution, and what is more works on a data stream.\\
-I aim at extending presented above approach with \texttt{Esper} framework, briefly introduced by~\citep{Marinescu2006}. I add possibility of modular feature extractors with all advantages of time windowing the signal stream.\\
-I provide complete feature extraction system based on \texttt{EPL} statement and clustering solution, capable of clustering live stream of data whit chosen by user complex features.\\
+In machine learning, unsupervised clustering aims at discovering cluster structure underpinning the data (\citep{Flach:2012:MLA:2490546} extensively describes main concepts of machine learning). There are many state-of-the-art algorithms designed to solve this problem, nevertheless, majority of them deals with static data, forcing user to define many parameters prior to classification. The example of these might be a predefined number of clusters. Also, many of these algorithms need data with static distribution, and what is more static dataset, i.e.\ not changing with time.\\
+The major study addressing these issues is presented by~\citep{zhang2013data}, who proposed clustering algorithm based on affinity propagation scheme that solves all of the above concerns: it adapts to patterns evolving in data by tracking current number of clusters, therefore it handles non-stationary data distribution; furthermore it can be easily adjusted to data streams.\\
 
+I aim at extending presented by~\citep{zhang2013data} approach with \texttt{Esper} framework (\texttt{Esper} engine is briefly introduced by~\citep{Marinescu2006}). My concept facilitate modular feature extraction: user can change signal characteristics of interest while application is running; and it gives all advantages of time windowing provided by \texttt{Esper}.\\
+I construct feature extraction system based on \texttt{EPL} statements and clustering solution capable of handling live data stream.\\
 
+%The \texttt{EPL} language are simple human readable sentences defining features to be extracted using predefined handlers like average and standard deviation as well as functions written in Java.
 
 \subsection{What is \emph{Complex Event Processing}}
-\emph{Complex Event Processing} is a software family facilitating high throughput, complex analysis of live data feeds.\\
-The concept behind it is similar to database querying, but doing it on live data. It gives possibility of applying filters, functions, and statistical analysis to chosen part of signal by \emph{querying} the signal. \citep{Etzion:2010:EPA:1894960} presents comprehensive introduction to the topic.
+\emph{Complex Event Processing} (CEP) is a software family facilitating complex analysis of high throughput live data feeds.\\
+The concept behind it is similar to database queries, but instead of interacting with static data pool the extraction is done on live streams. It gives possibility of applying filters, functions, and statistical analysis to chosen part of signal by \emph{querying} it. \citep{Etzion:2010:EPA:1894960} presents comprehensive introduction to the topic.
 
 \subsection{What is \texttt{Esper}}
-\texttt{Esper} tool used to handle incoming data streams and to extract chosen features belongs to family of \emph{Complex Event Processing} tools. These software analyses multiple live data streams. Its main advantage is \emph{time windowing}, which allows to focus on a specific time period. Aforementioned feature can work in multiple modes:
+\texttt{Esper} is a flagship software of Complex Event Processing tools family. It is capable of handling and analysing multiple independent incoming data streams. The main goal of analysis is to trigger user defined actions, e.g.\ if the temperature feed is above some level for given amount of time an additional cooling system can be deployed.\\
+
+\texttt{Esper}'s main advantage is \emph{time windowing}, which allows to focus on a specific time period. The windowing can be done in multiple modes:
 \begin{description}
-    \item[Time] incoming data from last $t$ milliseconds/seconds/minutes/etc.\ are processed.
-    \item[Time batch] data are processed in $t$ milliseconds/seconds/minutes/etc.\ batches i.e.\ algorithm collects data for $t$ units of time, then process them and repeat this cycle.
-    \item[Length] $n$ latest events are processed.
+    \item[Time] incoming data from last $t$ milliseconds/seconds/minutes/etc.\ are processed---sliding window.
+    \item[Time batch] data are processed in $t$ milliseconds/seconds/minutes/etc.\ batches i.e.\ algorithm collects data for $t$ units of time, then process them, and repeats this cycle---fixed length interval windows e.g.\ $\left\{ [0, t); [t, 2t); [2t, 3t), ...\right\}$ where $0$ point is the start of our analysis.
+    \item[Length] $n$ most recent events are processed---the order of arrivals is the only quantity of interest.
 \end{description}
-The package also allow joining multiple incoming signals for processing purposes. With proprietary \texttt{EPL} querying language the analysis boils down to simple statements. One approach is to hard-code the EPL queries but it is also possible to provide them as module(text file) what gives flexibility of new extracting features without need of stopping the analysis.\\
-\texttt{Esper} is available as \texttt{Java} and \texttt{.NET} framework hence is multi-platform and easy to incorporate. It can also work as server with possibility of introducing on-the-go changes via AIP like rules can injection on the fly.\\
+
+Moreover, \texttt{Esper} is capable of joining multiple, independent, asynchronous (events form one stream can be lively processed regardless of others) incoming signals for processing purposes. With proprietary \texttt{EPL} querying language the analysis is as simple as writing number of human readable statements.\\
+One approach is to hard-code the EPL queries in the application but it is more convenient to provide them as a module (external plain text file) what gives flexibility of changing the queries without stopping the application.\\
+
+Finally, \texttt{Esper} is available as a \texttt{Java} and \texttt{.NET} framework hence it is multi-platform and easy to incorporate into any application. It can work as both: local and server programme, where later solution facilitates on-the-fly changes like rules injection via AIP.\\
 
 \subsection{Why to use it}
-The major advantage of \texttt{Esper} is ability of processing millions of events per second, low computational complexity, and no time consuming read-write disk processes.\\
-The data processing can be describe in ``\textbf{4D}'' steps:
+The major advantage of \texttt{Esper} is ability to process millions of events per second with low computational complexity and no time consuming read/write disk operations.\\
+The data processing is describe by developers as ``\textbf{4-D}'' concept:
 \begin{description}
 \item[\textit{D}etect] events of interest.
 \item [\textit{D}erive] events complying with specified rules.
-\item [\textit{D}ecide] what to do based on gathered evidences(data).
+\item [\textit{D}ecide] what to do based on gathered evidences---data.
 \item [\textit{D}o] the action bonded with occurring event.
 \end{description}
 
-\subsubsection{CEP at CERN}
-I adopt the ``\textbf{4D}'' flow by: \emph{detecting} incoming signals from the sensors(generators); \emph{deriving} the specified features from the signal; \emph{deciding} to send the features to clustering algorithm; and \emph{do}ing the classification.
+\subsubsection{Complex Event Processing at CERN}
+I adopt the ``\textbf{4-D}'' flow to my application as follows:
+\begin{itemize}
+\item \emph{detect} incoming signals from the sensors (generators);
+\item \emph{derive} the specified features from the signal;
+\item \emph{decide} to send the features to clustering algorithm; and
+\item \emph{do} the classification.
+\end{itemize}
 
 \subsection{Applications}
 The software is mainly used in high throughput analysis services, where analysis must be easily adaptable (rules injection). The following examples show different aspects of \emph{Complex Event Processing} tools being used.
