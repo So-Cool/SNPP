@@ -186,32 +186,40 @@ I adopt the ``\textbf{4-D}'' flow to my application as follows:
 \end{itemize}
 
 \subsection{Applications}
-The software is mainly used in high throughput analysis services, where analysis must be easily adaptable (rules injection). The following examples show different aspects of \emph{Complex Event Processing} tools being used.
+\texttt{Esper} is mainly used in high throughput data analysis services, where processing must be flexible and adaptable to constantly changing environment. The following examples show different aspects of \emph{Complex Event Processing}.
+
 \subsubsection{Nuclear Power Plant}
-While managing nuclear plant there is plenty of factors that may lead to disaster:
+While managing nuclear power station there are plenty of components whose malfunctioning may lead to a disaster, for example:
 \begin{itemize}
-\item core temperature,
-\item cooling pumps status,
-\item seismic movements,
-\item weather forecast,
-\item electricity usage projections, etc.
+\item to high core temperature,
+\item failure of cooling pumps, or
+\item abnormal seismic movements.
+% \item weather forecast,
+% \item electricity usage projections.
 \end{itemize}
-Only specific state of each of this factors should raise an alarm. For instance low cooling flow and raising temperature.\\
-Another useful feature of \texttt{Esper} in managing the station are time windows: if the temperature raises slowly the trend will not be visible in last hour but in last week or month. This \emph{long history} property may prevent a disaster.
-\subsubsection{Stock market}
-In this example we consider signals as all the real time price processes. We filter them with EPL statements hence receive stocks of interest.\\
-\texttt{Esper} allows us to perform complex analysis of prices therefore automatize trading or provide statistics that help making decisions.
+Only specific combination of these factors states should raise an alarm. For instance low flow of cooling liquid and constantly raising core temperature.\\
+\texttt{Esper} is a great fit for this scenario. It allows to view the sensors readings in different time windows hence discover long and short term patterns. For instance, if the temperature raises slowly the trend will not be visible in last hour frame, but it will appear in week or month window. Discovering this long term property may prevent a disaster.
+
+\subsubsection{Stock market exchange}
+In this example we consider signals as all the real time price processes injected to \texttt{Esper}. We begin by filtering them with EPL statements to retrieve stocks of interest. Then, we use our financial knowledge to create inferences between them and perform complex analysis of price processes. We can also use weather forecast and news feed to gather some background. Combining all these rules can trigger market actions like: shares quantity, and buy/sell order; therefore increasing bidding speed and automatizing trading. Other approach could be to extract market statistics which can be used by financial advisers.
 
 
 \section{Model of processing}
-To begin with, I describe model of processing adapted in the application, presented in the \textit{Figure~\ref{fig:model}}.\\
-We divide model into two branches: \emph{Offline resources} and \emph{Live Data Processing}. The first one consists of \texttt{EPL} file (see \textit{Listing~\ref{lst:EPL}}), that defines the features to be extracted form the given signal; \texttt{CSV} file which serves as a data dump; and finally data reconstruction script written in \texttt{Python}: \texttt{visualize.py}, which plots signal and all extracted features against time as well as features against each other using \texttt{CSV} data repository.\\
-\emph{Live Data Processing} module consists of following components:
+In this section I describe a model of processing used in the application, and presented in \textit{Figure~\ref{fig:model}}.\\
+
+We divide the model into two main branches: \emph{off-line resources} and \emph{live data processing}.\\
+The first one consists of
+\begin{itemize}
+\item \texttt{EPL} file (see \textit{Listing~\ref{lst:EPL}}), that defines the features to be extracted form the incoming signal (rules);
+\item \texttt{CSV} file which serves as a data repository---signals are saved here for future analysis; and finally
+\item data reconstruction script written in \texttt{Python}: \texttt{visualize.py}, which uses \texttt{CSV} data repository to plot signal and all extracted features against time as well as features against each other.
+\end{itemize}
+\emph{Live data processing} module consists of the following components:
 \begin{description}
-    \item[Signals layer] includes signal generators and signal feeds.
-    \item[\texttt{Esper} layer] collects signals, and applies rules taken form \texttt{EPL} file to them. It also saves signals, extracted features, and time stamp to \texttt{CSV} repository. Finally, it performs defined actions, in this particular example supplies them to clustering algorithm.
+    \item[Signals layer] includes signal generators and signal feeds interfaces.
+    \item[\texttt{Esper} layer] collects signals, and applies to them rules taken form \texttt{EPL} file. It also saves signals, extracted features, and time stamps to \texttt{CSV} repository. Finally, it performs defined actions, in this particular application it supplies them to clustering algorithm.
     \item[Events layer] transfers data (events) to clustering module.
-    \item[Affinity Propagation Clustering layer] receives events and performs clustering on live data stream. Once a datum point is assigned to cluster, this information is recorded in \texttt{CSV} repository.
+    \item[Affinity Propagation Clustering layer] receives events and performs clustering on live data stream. Once a datum point is assigned to cluster, this information is appended to \texttt{CSV} repository.
 \end{description}
 
 \begin{figure}[htbp]
@@ -220,18 +228,18 @@ We divide model into two branches: \emph{Offline resources} and \emph{Live Data 
   \caption{Data processing model.\label{fig:model}}
 \end{figure}
 
-\subsection{Generators, signals\label{sec:generators}}
+\subsection{Feeds and generators\label{sec:generators}}
 A number of signal generators is implemented to test the framework:
 \begin{itemize}
-    \item \emph{sine} wave with possibility to add normally distributed noise,
-    \item \emph{cosine} wave with possibility to add normally distributed noise,
+    \item \emph{sine} wave with normally distributed noise,
+    \item \emph{cosine} wave with normally distributed noise,
     \item \emph{normal} distribution generator,
     \item \emph{uniform} distribution generator,
     \item \emph{multivariate normal} distribution generator.
 \end{itemize}
-In generators the time between samples is distributed according to \emph{Poisson} distribution to simulate pseudo-random signal occurrence.\\
+The time between generated samples is modelled according to \emph{Poisson} distribution---it simulates pseudo-random signal occurrence.\\
 
-The package also contains module, reading temperature data from the electronic thermometer placed at CERN Prévessin site, and Yahoo! weather forecast feed for the same location. Both of them can be used as signal providers for the application.
+The package also contains module which collects temperature readings from the electronic thermometer placed at CERN Prévessin site, and Yahoo! weather forecast feed for the same location. Both of them can be used as signal providers for the application.
 
 \subsection{\texttt{Esper} engine}
 The \texttt{Esper} engine runs in the background gathering signals from all indicated by user (see §\ref{sec:rules}) sources. It filters all this incoming data with \texttt{EPL} rules and delivers them to corresponding listener (see §\ref{sec:listeners}).\\
