@@ -239,39 +239,42 @@ A number of signal generators is implemented to test the framework:
 \end{itemize}
 The time between generated samples is modelled according to \emph{Poisson} distribution---it simulates pseudo-random signal occurrence.\\
 
-The package also contains module which collects temperature readings from the electronic thermometer placed at CERN Prévessin site, and Yahoo! weather forecast feed for the same location. Both of them can be used as signal providers for the application.
+The package also contains module which collects temperature readings from the electronic thermometer placed at CERN Prévessin site, and Yahoo! weather forecast feed for the same location. Both of them can be used as signal providers for the application.\\
+
+In \emph{Esper} the easiest (and the one that I use) way to represent a signal is \emph{POJO}---Plain Old Java Object. Such object contains some properties---constants---like \texttt{current_value} and \texttt{time_stamp}. Every event arriving from source is or can be converted to a POJO. Such container holding signal properties is delivered to the processing unit of \texttt{Esper} via \emph{listeners}.
 
 \subsection{\texttt{Esper} engine}
-The \texttt{Esper} engine runs in the background gathering signals from all indicated by user (see §\ref{sec:rules}) sources. It filters all this incoming data with \texttt{EPL} rules and delivers them to corresponding listener (see §\ref{sec:listeners}).\\
-The \texttt{Esper} framework is capable of running multiple servers simultaneously. It also allows to make changes to model of processing \textbf{lively} i.e.\ connect to it once running and introduce all changes without switching it off. This feature significantly increases usability of \texttt{Esper} as it prevents from data and analysis loses.\\
+The \texttt{Esper} engine runs in the background gathering signals from all indicated by user (see §\ref{sec:rules}) sources. It filters all these incoming data with \texttt{EPL} rules and delivers desired ones to corresponding listener (see §\ref{sec:listeners}).\\
+The \texttt{Esper} framework is capable of running multiple servers simultaneously. It also allows to make changes to model of processing without stopping the server via provided API. This feature significantly increases usability of \texttt{Esper} as it prevents any data lose and allows fine-tuning.\\
 
-\subsection{Rules---Feature extraction\label{sec:rules}}
-In presented model \emph{rules} decide what measures of data feed the user is interested in. They allow to get the value of signal and on-the-run apply built-in or \textbf{user-defined} filters.\\
-\texttt{Esper} allows to either \emph{hard-code} the rules in written program or create and external \texttt{EPL} file which can be either specified in the code or deployed while engine is running.\\
-The \texttt{EPL} language can be compared to database querying but instead of fixed pool it uses selected by time-window part of stream.\\
+\subsection{Rules: feature extraction\label{sec:rules}}
+In presented model \emph{rules} decide what measures of data feed the user is interested in. They allow to get the value of the signal and apply built-in or \textbf{user-defined} filters on-the-fly.\\
+\texttt{Esper} allows to either \emph{hard-code} the rules in a source code of a program, or read them in from external \texttt{EPL} file, alternatively they can be sent to the engine via API.\\
+The \texttt{EPL} language is similar to database queries, but instead of fixed pool it uses part of stream selected by time-window.\\
+%  which can be either specified in the code or deployed while engine is running
 
-In my application I use rules as \emph{feature extractors}. In particular I am interested in:
+In my application I use rules as \emph{signal feature extractors}. In particular I am interested in:
 \begin{description}
   \item[mean] signal average in given time period $\bar{v}$,
   \item[standard deviation] standard deviation in given time period $v_\sigma$,
-  \item[$k$-lag] is a difference between current value of signal and n\ts{th} previous value i.e.\ $v_t - v_{t-n}$,
-  \item[threshold] is user-defined function which thresholds the signal based on single value $\mathscr{V}$,
-  \item[current value] represents current value of a signal $v_t$,
-  \item[\texttt{FN}] represents number of defined features,
-  \item[\texttt{TS}] assigns time-stamp $t$ to received signal.
+  \item[$k$-lag] a difference between current value of the signal and n\ts{th} previous value i.e.\ $v_t - v_{t-n}$,
+  \item[threshold] a user-defined function which thresholds the signal based on a single value $\mathscr{V}$,
+  \item[current value] a current value of the signal $v_t$,
+  \item[\texttt{FN}] a number of defined features,
+  \item[\texttt{TS}] an assigns time-stamp $t$ of received signal.
 \end{description}
 
-The example of rules contained in \texttt{EPL} file are shown in \emph{Listing}~\ref{lst:EPL}.\\
-The \texttt{EPL} file consists of (order preserved):
+The example of rules extracting above features are placed in \texttt{EPL} file shown in \emph{Listing}~\ref{lst:EPL}.\\
+The \texttt{EPL} file consists of (in preserved order):
 \begin{itemize}
   \item module name,
   \item dependencies that need to be imported,
   \item alias definitions i.e.\ short names for signals,
   \item rule name,
   \item rule description,
-  \item the rule body.
+  \item rule body.
 \end{itemize}
-Generic rule starts with \texttt{select} keyword. Then, functions of \emph{property of signal} are defined with their aliases by \texttt{as} keyword. For clarity, in given below example \texttt{current} and \texttt{timer} are members of \texttt{randomGenerators.Sine} class. Finally, \texttt{from} keyword is used to indicate which signal is used and \texttt{win:time(60 sec)} is placed to indicate time period of interest.\\
+Generic rule starts with a \texttt{select} keyword. Then, features are extracted by applying functions to current signal value. For simplicity, each extracted feature is assigned an alias with \texttt{as} keyword. To clarify, in example given below variables \texttt{current} and \texttt{timer} are members of \texttt{randomGenerators.Sine} class---they are signal properties. Finally, \texttt{from} keyword is used to indicate which signal is used and \texttt{win:time(60 sec)} is placed to indicate time window of interest.\\
 For convenience each file can contain multiple rules.
 
 \vspace{1em}
@@ -311,20 +314,20 @@ from SinTick.win:time(60 sec);
 
 
 \subsection{Listeners for change\label{sec:listeners}}
-A listener is a thread running in the background and acting upon new event (signal tick) arriving, according to some attached rule.\\
-\texttt{Esper} gives user flexibility to define multiple rules and listeners and then bind them in nonrestrictive manner e.g.:
+A listener is a thread running in the background and acting upon arrival of new event---signal tick---according to some attached rule.\\
+\texttt{Esper} gives user a flexibility to define multiple rules and listeners, and pair them in non-restrictive manner e.g.\ :
 \begin{itemize}
-\item multiple listeners are attached to single rule,
+\item multiple listeners are attached to a single rule,
 \item one listener is attached to multiple rules,
 \item one listener is bonded with one rule.
 \end{itemize}
 
-\noindent I use this module to pass features extracted from signal to clustering framework (see §\ref{sec:sclustering}).
+\noindent I use this module to pass features extracted from signals to clustering framework (see §\ref{sec:sclustering} for reference).
 
 \subsection{Clustering with Affinity Propagation\label{sec:sclustering}}
 
 \subsubsection{Live stream adaptation of clustering algorithms\label{sec:livestream}}
-\citep{zhang2013data} introduced adaptation of Affinity Propagation unsupervised clustering algorithm for data streams. The presented solution is a general framework for adapting an unsupervised clustering algorithm to data streams. The overview of the approach is presented in \emph{Figure}~\ref{fig:APC}.\\
+\citep{zhang2013data} introduced adaptation of Affinity Propagation unsupervised clustering algorithm to data streams. They presented a general framework for adapting an unsupervised clustering algorithm to data streams. The overview of the approach is presented in \emph{Figure}~\ref{fig:APC}.\\
 
 The process begins by feeding the framework with stream of extracted features. The algorithm uses initial batch of data (user defined, fixed number of initialization points) to create its first model.\\
 Once the model is initialized, all incoming points are tested for fitting the model: if they do, they are appended to current model, if not they are stored in \emph{reservoir}.\\
