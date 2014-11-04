@@ -241,7 +241,7 @@ The time between generated samples is modelled according to \emph{Poisson} distr
 
 The package also contains module which collects temperature readings from the electronic thermometer placed at CERN Prévessin site, and Yahoo! weather forecast feed for the same location. Both of them can be used as signal providers for the application.\\
 
-In \emph{Esper} the easiest (and the one that I use) way to represent a signal is \emph{POJO}---Plain Old Java Object. Such object contains some properties---constants---like \texttt{current_value} and \texttt{time_stamp}. Every event arriving from source is or can be converted to a POJO. Such container holding signal properties is delivered to the processing unit of \texttt{Esper} via \emph{listeners}.
+In \emph{Esper} the easiest (and the one that I use) way to represent a signal is \emph{POJO}---Plain Old Java Object. Such object contains some properties---constants---like \texttt{currentValue} and \texttt{timeStamp}. Every event arriving from source is or can be converted to a POJO. Such container holding signal properties is delivered to the processing unit of \texttt{Esper} via \emph{listeners}.
 
 \subsection{\texttt{Esper} engine}
 The \texttt{Esper} engine runs in the background gathering signals from all indicated by user (see §\ref{sec:rules}) sources. It filters all these incoming data with \texttt{EPL} rules and delivers desired ones to corresponding listener (see §\ref{sec:listeners}).\\
@@ -327,20 +327,19 @@ A listener is a thread running in the background and acting upon arrival of new 
 \subsection{Clustering with Affinity Propagation\label{sec:sclustering}}
 
 \subsubsection{Live stream adaptation of clustering algorithms\label{sec:livestream}}
-\citep{zhang2013data} introduced adaptation of Affinity Propagation unsupervised clustering algorithm to data streams. They presented a general framework for adapting an unsupervised clustering algorithm to data streams. The overview of the approach is presented in \emph{Figure}~\ref{fig:APC}.\\
+\citep{zhang2013data} presented a general framework for adapting an unsupervised clustering algorithm to data streams. Their approach can be used with any clustering algorithm that does not need a fixed, predefined number of clusters as a model parameter. This restriction motivates their use of \emph{Affinity Propagation} unsupervised clustering which is presented in more details in \emph{§}\ref{sec:AfinProp}.\\
 
-The process begins by feeding the framework with stream of extracted features. The algorithm uses initial batch of data (user defined, fixed number of initialization points) to create its first model.\\
-Once the model is initialized, all incoming points are tested for fitting the model: if they do, they are appended to current model, if not they are stored in \emph{reservoir}.\\
-There are two test which can trigger model rebuild: full reservoir---its fixed size is defined by user, or positive outcome of \emph{change point detection} test on incoming stream---it detects ``significant'' and ``sudden'' change on the input stream.\\
-If any of these triggers fire, the model is rebuild with data from reservoir.\\
+The overview of their approach is presented in \emph{Figure}~\ref{fig:APC}.\\
+
+The process begins by feeding the framework with stream of extracted features. The algorithm uses initial batch of data (user defined, fixed number of initialization points) to create first model.\\
+Once the model is initialized, all incoming points are tested for fitting the model: if they do, they are appended to current model, and if they do not they are stored in \emph{reservoir}. Fitness test checks whether given point is an outlier with regard to current model.\\
+There are two possibles events that can trigger model rebuild: full reservoir---its fixed size is defined by user, or positive outcome of \emph{change point detection} test on incoming stream---it detects ``significant'' and ``sudden'' change on the input stream. If any of these triggers fire, the model is rebuilt with data from reservoir.\\
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{./gfx/APC_Presentation.pdf}
   \caption{Stream clustering model.\label{fig:APC}}
 \end{figure}
-
-Such a framework can be used with any clustering algorithm that does not need fixed, predefined number of clusters. This restriction motivates my use of \emph{Affinity Propagation}.\\
 
 \noindent The detailed description of outlined approach is presented in \emph{Algorithm}~\ref{alg:APC}.\\
 
@@ -376,18 +375,21 @@ Such a framework can be used with any clustering algorithm that does not need fi
 \vspace{1cm}
 
 
-\subsubsection{Affinity Propagation}
-The predominant part of application is \emph{Affinity Propagation} module---unsupervised clustering algorithm adapted to data streams with described above framework (§\ref{sec:livestream}).\\
+\subsubsection{Affinity Propagation\label{sec:AfinProp}}
+The predominant part of my application is \emph{Affinity Propagation} module---an unsupervised clustering algorithm adapted to data streams as described above (§\ref{sec:livestream}).\\
+Affinity Propagation is a state-of-the-art clustering solution based on message passing between points.\\
+For more details please refer to~\citep{frey07affinitypropagation}.\\
 
-Affinity Propagation is state-of-the-art clustering solution based on message passing between points. It is extensively described by~\citep{frey07affinitypropagation}.\\
-Clustering can be described in two dimensional scenario as finding \emph{clouds} of points which are similar. If our similarity measure is just an Euclidean distance we define as cloud point lying close together.\\
+Clustering can be described in two dimensions as finding \emph{clouds} of points which are similar. If our similarity measure is just an Euclidean distance we define as cloud point lying close together.\\
 Each cluster can be represented by a \emph{medoid} or a \emph{centroid}. The first is a central datum point which \emph{belongs} to the data set; on contrary, the later is a point on a plane which does not need to belong to data set.\\
 The algorithm finds centroids by considering measures of similarity between all pairs of data points and simultaneously treating all encountered points as possible centroids.\\
-Its use is mainly motivated by no need of specifying number of clusters prior to classification.\\
 
 \subsection{Data visualization}
-To visualize gathered data, separate \texttt{Python} script is written. It uses \texttt{CSV} repository generated by the main program to show the signal and its defined features as a function of time. It is also capable of plotting in ``re-play'' mode, where timestamps are used to pause between plotting adjacent points.\\
-It can be also used to scatter a plot of selected features against each other.\\
+To visualize gathered data, I wrote a separate \texttt{Python} script. It uses \texttt{CSV} repository generated by the main program to show the signal and its defined features as functions of time. It is also capable of plotting in ``re-play'' mode, where timestamps are used to model pause between plotting two adjacent points.\\
+The script can also be used to scatter a plot of selected features against each other.\\
+
+\subsection{Static clustering}
+I also used \emph{Weka} tool-kit to calssify collected data and compare them against above results.
 
 
 \section{Results}
@@ -547,15 +549,15 @@ To benchmark above results I used static clustering on data repository created b
   \caption{Signal Value vs.\ 5-Lag clustering.\label{fig:svlag}}
 \end{figure}
 
-\section{Lookahead}
-Created application scratches only surface of a broad topic of live signal analysis.\\
-This study is missing throughout comparison of different clustering algorithm that could be used with proposed framework. Another step worth taking is approach evaluation with real data.\\
+\section{Future work}
+Created application only scratches the surface of a vast field of live signal analysis.\\
+In further study I aim to address throughout comparison of different clustering algorithm that could be used with proposed framework. Another step worth taking is approach evaluation with real data.\\
 
 The major lacking features of the application are: graphic interface which shows lively incoming signal, extracted features, and current cluster structure.\\
 Furthermore, \texttt{Esper} facilitates new rules deployment on running application. Such possibility allows changing features of interest without stopping signal processing.\\
 
 \section{Conclusions}
-This paper proposes application of \emph{Complex Event Processing} tool \texttt{Esper} to \underline{make sense of data streams}. It covers all the processing steps from \emph{signal generation} through \emph{feature extraction} to \emph{data clustering}. Use of \texttt{Esper} brings all the advantages of efficient, multi-platform, and simple to us framework, which can process thousands of events produced by multiple signals per second.\\
+This paper proposes application of \emph{Complex Event Processing} tool \texttt{Esper} to \underline{make sense of data streams}. It covers all the processing steps from \emph{signal generation} through \emph{feature extraction} and \emph{data clustering}. Use of \texttt{Esper} brings all the advantages of efficient, multi-platform, and simple to us framework, which can process thousands of events produced by multiple signals per second.\\
 
 Designed approach allows to analyze the live stream of data and automatically raise an alarm based on specified conditions. It can be used to monitor systems that demand more than simple signal thresholding.\\
 
